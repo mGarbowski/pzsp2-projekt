@@ -17,24 +17,9 @@ Tylko robocze, do uzgodnienia z ustaleniami reszty zespołu
 
 ![Diagram UML przypadków użycia](./diagrams/business-use-cases.drawio.png)
 
-### PB1 Wprowadzanie opisu sieci do systemu
+### PB1 Przeglądanie prezentacji sieci
 
-Aktorzy: użytkownik
-
-Scenariusz główny:
-
-1. Użytkownik wprowadza opis sieci do systemu.
-2. System informuje o poprawnym wczytaniu danych.
-
-Scenariusz alternatywny - nieprawidłowy opis:
-
-1. Użytkownik wprowadza nieprawidłowy opis sieci do systemu.
-2. System informuje użytkownika o nieprawidłowych danych.
-3. System umożliwia kolejną próbę wprowadzenia opisu sieci, powrót do kroku 1.
-
-### PB2 Przeglądanie prezentacji sieci
-
-Aktorzy: użytkownik
+Aktorzy: użytkownik.
 
 Scenariusz główny:
 
@@ -43,9 +28,9 @@ Scenariusz główny:
 3. Użytkownik wybiera element sieci.
 4. System wyświetla szczegółowe informacje o elemencie
 
-### PB3 Wygenerowanie zestawienia zajętości pasma przez kanały
+### PB2 Wygenerowanie zestawienia zajętości pasma przez kanały
 
-Aktorzy: użytkownik
+Aktorzy: użytkownik.
 
 Scenariusz główny:
 
@@ -53,9 +38,9 @@ Scenariusz główny:
 2. System generuje zestawienie.
 3. Użytkownik pobiera plik z zestawieniem.
 
-### PB4 Wyznaczenie nowego kanału
+### PB3 Wyznaczenie nowego kanału
 
-Aktorzy: użytkownik
+Aktorzy: użytkownik.
 
 Scenariusz główny:
 
@@ -76,8 +61,6 @@ Scenariusz alternatywny - system nie może wyznaczyć żądanego kanału:
 
 ### FU1 Wprowadzenie opisu sieci do systemu
 
-Wspiera procedurę PB1 - Wprowadzanie opisu sieci do systemu.
-
 Aktorzy: użytkownik.
 
 Scenariusz główny:
@@ -85,8 +68,6 @@ Scenariusz główny:
 1. Użytkownik otwiera widok wprowadzania danych **[wybór operacji]**
 
 ### FU2 Załadowanie danych z pliku
-
-Wspiera procedurę PB1 - Wprowadzanie opisu sieci do systemu.
 
 Rozszerza funkcję FU1 po kroku 1. (wybór operacji).
 
@@ -108,8 +89,6 @@ Scenariusz alternatywny - nieprawidłowy plik:
 
 ### FU3 Ręczne wprowadzenie danych
 
-Wspiera procedurę PB1 - Wprowadzanie opisu sieci do systemu.
-
 Rozszerza funkcję FU1 po kroku 1. (wybór operacji).
 
 Aktorzy: użytkownik.
@@ -130,7 +109,7 @@ Scenariusz alternatywny - nieprawidłowe parametry elementu:
 
 ### FU4 Przeglądanie prezentacji sieci
 
-Wspiera procedurę PB2 - Przeglądanie prezentacji sieci.
+Wspiera procedurę PB1 - Przeglądanie prezentacji sieci.
 
 Korzysta z FU1.
 
@@ -147,7 +126,7 @@ Scenariusz główny:
 
 ### FU5 Wygenerowanie zestawienia zajętości pasma przez kanały
 
-Wspiera procedurę PB3 - Wygenerowanie zestawienia zajętości pasma przez kanały.
+Wspiera procedurę PB2 - Wygenerowanie zestawienia zajętości pasma przez kanały.
 
 Korzysta z FU1.
 
@@ -162,7 +141,7 @@ Scenariusz główny:
 
 ### FU6 Wyznaczenie nowego kanału
 
-Wspiera procedurę PB4 - Wyznaczenie nowego kanału.
+Wspiera procedurę PB3 - Wyznaczenie nowego kanału.
 
 Korzysta z funkcji FU1.
 

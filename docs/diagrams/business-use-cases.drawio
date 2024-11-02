@@ -1,55 +1,38 @@
-<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:131.0) Gecko/20100101 Firefox/131.0" version="24.7.17">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:131.0) Gecko/20100101 Firefox/131.0" version="24.8.3">
   <diagram name="Page-1" id="aUSR-PTRuUPnyYadsCrG">
-    <mxGraphModel dx="1073" dy="689" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1564" dy="744" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="h0-IHjNkmwFq_L-anwGD-1" value="&lt;div&gt;PB1.&lt;/div&gt;&lt;div&gt;Wprowadzenie opisu sieci do systemu&lt;br&gt;&lt;/div&gt;" style="ellipse;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#F2CC8F;strokeColor=#E07A5F;fontColor=#393C56;" vertex="1" parent="1">
-          <mxGeometry x="350" y="130" width="120" height="80" as="geometry" />
+        <mxCell id="h0-IHjNkmwFq_L-anwGD-3" value="&lt;div&gt;PB1.&lt;/div&gt;&lt;div&gt;Przeglądanie prezentacji sieci&lt;/div&gt;" style="ellipse;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#F2CC8F;strokeColor=#E07A5F;fontColor=#393C56;" parent="1" vertex="1">
+          <mxGeometry x="295" y="160" width="120" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="h0-IHjNkmwFq_L-anwGD-3" value="&lt;div&gt;PB2.&lt;/div&gt;&lt;div&gt;Przeglądanie prezentacji sieci&lt;/div&gt;" style="ellipse;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#F2CC8F;strokeColor=#E07A5F;fontColor=#393C56;" vertex="1" parent="1">
-          <mxGeometry x="350" y="260" width="120" height="80" as="geometry" />
+        <mxCell id="h0-IHjNkmwFq_L-anwGD-4" value="&lt;div&gt;PB2.&lt;/div&gt;&lt;div&gt;Wygenerowanie zestawienia zajętości pasma przez kanały&lt;br&gt;&lt;/div&gt;" style="ellipse;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#F2CC8F;strokeColor=#E07A5F;fontColor=#393C56;" parent="1" vertex="1">
+          <mxGeometry x="285" y="270" width="140" height="90" as="geometry" />
         </mxCell>
-        <mxCell id="h0-IHjNkmwFq_L-anwGD-4" value="&lt;div&gt;PB3.&lt;/div&gt;&lt;div&gt;Wygenerowanie zestawienia zajętości pasma przez kanały&lt;br&gt;&lt;/div&gt;" style="ellipse;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#F2CC8F;strokeColor=#E07A5F;fontColor=#393C56;" vertex="1" parent="1">
-          <mxGeometry x="340" y="370" width="140" height="90" as="geometry" />
+        <mxCell id="h0-IHjNkmwFq_L-anwGD-5" value="&lt;div&gt;PB3.&lt;/div&gt;&lt;div&gt;&amp;nbsp;Wyznaczenie nowego kanału&lt;br&gt;&lt;/div&gt;" style="ellipse;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#F2CC8F;strokeColor=#E07A5F;fontColor=#393C56;" parent="1" vertex="1">
+          <mxGeometry x="295" y="400" width="120" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="h0-IHjNkmwFq_L-anwGD-5" value="&lt;div&gt;PB4.&lt;/div&gt;&lt;div&gt;&amp;nbsp;Wyznaczenie nowego kanału&lt;br&gt;&lt;/div&gt;" style="ellipse;whiteSpace=wrap;html=1;labelBackgroundColor=none;fillColor=#F2CC8F;strokeColor=#E07A5F;fontColor=#393C56;" vertex="1" parent="1">
-          <mxGeometry x="350" y="500" width="120" height="80" as="geometry" />
+        <mxCell id="h0-IHjNkmwFq_L-anwGD-6" value="Użytkownik" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;labelBackgroundColor=none;fillColor=#F2CC8F;strokeColor=#E07A5F;fontColor=#393C56;" parent="1" vertex="1">
+          <mxGeometry x="70" y="265" width="50" height="100" as="geometry" />
         </mxCell>
-        <mxCell id="h0-IHjNkmwFq_L-anwGD-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;labelBackgroundColor=none;strokeColor=#E07A5F;fontColor=default;" edge="1" parent="1" source="h0-IHjNkmwFq_L-anwGD-6" target="h0-IHjNkmwFq_L-anwGD-1">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="200" y="350" />
-              <mxPoint x="200" y="170" />
-            </Array>
+        <mxCell id="GtU4dxC1JaKYma6VVfJc-1" value="" style="endArrow=open;endFill=1;endSize=12;html=1;rounded=0;entryX=0.017;entryY=0.588;entryDx=0;entryDy=0;entryPerimeter=0;labelBackgroundColor=none;strokeColor=#E07A5F;fontColor=default;" edge="1" parent="1" source="h0-IHjNkmwFq_L-anwGD-6" target="h0-IHjNkmwFq_L-anwGD-3">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="340" y="390" as="sourcePoint" />
+            <mxPoint x="500" y="390" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="h0-IHjNkmwFq_L-anwGD-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;labelBackgroundColor=none;strokeColor=#E07A5F;fontColor=default;" edge="1" parent="1" source="h0-IHjNkmwFq_L-anwGD-6" target="h0-IHjNkmwFq_L-anwGD-3">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="200" y="350" />
-              <mxPoint x="200" y="300" />
-            </Array>
+        <mxCell id="GtU4dxC1JaKYma6VVfJc-2" value="" style="endArrow=open;endFill=1;endSize=12;html=1;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;labelBackgroundColor=none;strokeColor=#E07A5F;fontColor=default;" edge="1" parent="1" source="h0-IHjNkmwFq_L-anwGD-6" target="h0-IHjNkmwFq_L-anwGD-4">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="340" y="390" as="sourcePoint" />
+            <mxPoint x="500" y="390" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="h0-IHjNkmwFq_L-anwGD-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;labelBackgroundColor=none;strokeColor=#E07A5F;fontColor=default;" edge="1" parent="1" source="h0-IHjNkmwFq_L-anwGD-6" target="h0-IHjNkmwFq_L-anwGD-4">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="200" y="350" />
-              <mxPoint x="200" y="415" />
-            </Array>
+        <mxCell id="GtU4dxC1JaKYma6VVfJc-3" value="" style="endArrow=open;endFill=1;endSize=12;html=1;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;labelBackgroundColor=none;strokeColor=#E07A5F;fontColor=default;" edge="1" parent="1" source="h0-IHjNkmwFq_L-anwGD-6" target="h0-IHjNkmwFq_L-anwGD-5">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="340" y="390" as="sourcePoint" />
+            <mxPoint x="500" y="390" as="targetPoint" />
           </mxGeometry>
-        </mxCell>
-        <mxCell id="h0-IHjNkmwFq_L-anwGD-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;labelBackgroundColor=none;strokeColor=#E07A5F;fontColor=default;" edge="1" parent="1" source="h0-IHjNkmwFq_L-anwGD-6" target="h0-IHjNkmwFq_L-anwGD-5">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="200" y="350" />
-              <mxPoint x="200" y="540" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="h0-IHjNkmwFq_L-anwGD-6" value="Użytkownik" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;labelBackgroundColor=none;fillColor=#F2CC8F;strokeColor=#E07A5F;fontColor=#393C56;" vertex="1" parent="1">
-          <mxGeometry x="50" y="300" width="50" height="100" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
