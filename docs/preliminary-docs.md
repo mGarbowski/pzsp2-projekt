@@ -23,7 +23,7 @@ Projekt zrealizowany będzie jako aplikacja webowa podłączona do REST API.
 * Frontend realizowany będzie w typescript.
 * Backend realizowany będzie w pythonie jako serwer bezstanowy.
 
-<!-- Wybieranie opotymalnej ścieżki będzie możliwe na kilka sposobów.
+<!-- Wybieranie optymalnej ścieżki będzie możliwe na kilka sposobów.
 * Algorytm Dijkstry
 * Model liniowy (realizowany w pyomo)
 * Model genetyczny -->
@@ -33,9 +33,9 @@ Projekt nie przewiduje konieczności tworzenia użytkowników ani korzystania z 
 
 ## 2 Metodologia wytwarzania
 
-Praca, poza określonymi w harmonogramie konultacjami, organizowana jest w formie zwinnej.
+Praca, poza określonymi w harmonogramie konsultacjami, organizowana jest w formie zwinnej.
 
-Przewidziane są cotygodniowe spotkania zdalenw ramach zespołu, w trakcie których członkowie ustalaja priorytety i dzielą się zadaniami.
+Przewidziane są cotygodniowe spotkania zdalne w ramach zespołu, w trakcie których członkowie ustalaja priorytety i dzielą się zadaniami.
 
 Przydział zadań widoczny jest na Github w postaci issues.
 
