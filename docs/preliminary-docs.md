@@ -2,11 +2,7 @@
 
 ### 1.1 Cel projektu
 
-Celem projekty jest symulacja ruchu w sieci optycznej na podstawie danych z pliku csv.
-
-Aplikacja będzie wpsierać wczytywanie plików i rysowanie na ich podstawie grafów.
-
-Aplikacja będzie pozwalac na dodawanie kanałów komnikacyjnych i obliczanie dla nich najlepszej ścieżki. W decyzji uwzglediona będzie dostępność kanałów w sieci.
+Celem projektu jest symulacja i optymalizacja ruchu w sieci optycznej na podstawie danych z pliku csv.
 
 ### 1.2 Wstępna wizja projektu
 
@@ -16,17 +12,19 @@ Projekt zrealizowany będzie jako aplikacja webowa podłączona do REST API.
 * Backend realizowany będzie w pythonie jako serwer bezstanowy.
 
 Wybieranie opotymalnej ścieżki będzie możliwe na kilka sposobów.
-* Algorytm dikstry
+* Algorytm Dijkstry
 * Model liniowy (realizowany w pyomo)
 * Model genetyczny
 
-Projket nie orzewiduje konieczności tworzenie użytkowników ani kożystania z bazy danych.
+Projekt nie przewiduje konieczności tworzenia użytkowników ani korzystania z bazy danych.
 
 ## 2 Metodologia wytwarzania
 
 Praca, poza określonymi w harmonogramie konultacjami, organizowana jest w formie zwinnej.
 
 Przewidziane są cotygodniowe spotkania zdalenw ramach zespołu, w trakcie których członkowie ustalaja priorytety i dzielą się zadaniami.
+
+Przydział zadań widoczny jest na Github w postaci issues.
 
 Dodatkowo dostępna jest ciągła komunikacja na platformie discord.
 
