@@ -2,7 +2,10 @@
 
 ### 1.1 Cel projektu
 
-Celem projektu jest symulacja i optymalizacja ruchu w sieci optycznej na podstawie danych z pliku csv.
+Problem: Optymalizacja bieżącego obciążenia sieci optycznej.
+
+
+Cel: Stworzenie aplikacji reprezentującej graficznie obciążenie sieci, wspomagającą użytkownika w balansowaniu obciążeniem w sieci i dodawaniu nowych kanałów.
 
 ### 1.2 Wstępna wizja projektu
 
