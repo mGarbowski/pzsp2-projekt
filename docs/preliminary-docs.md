@@ -5,20 +5,30 @@
 Problem: Optymalizacja bieżącego obciążenia sieci optycznej.
 
 
-Cel: Stworzenie aplikacji reprezentującej graficznie obciążenie sieci, wspomagającą użytkownika w balansowaniu obciążeniem w sieci i dodawaniu nowych kanałów.
+Cel:
+* Stworzenie aplikacji reprezentującej obciążenie sieci, w formie grafu i pliku csv na podstawie wgranych danych.
+* Wspomaganie użytkownika w balansowaniu obciążeniem w sieci i dodawaniu nowych kanałów.
+* Udostępnienie narzędzi do definicji własnych scenariuszy.
 
 ### 1.2 Wstępna wizja projektu
 
 Projekt zrealizowany będzie jako aplikacja webowa podłączona do REST API.
 
+#### Architektura
+<!-- jaka? -->
+<!-- do uzgodnienia -->
+
+#### Technologia
+
 * Frontend realizowany będzie w typescript.
 * Backend realizowany będzie w pythonie jako serwer bezstanowy.
 
-Wybieranie opotymalnej ścieżki będzie możliwe na kilka sposobów.
+<!-- Wybieranie opotymalnej ścieżki będzie możliwe na kilka sposobów.
 * Algorytm Dijkstry
 * Model liniowy (realizowany w pyomo)
-* Model genetyczny
+* Model genetyczny -->
 
+#### Dane
 Projekt nie przewiduje konieczności tworzenia użytkowników ani korzystania z bazy danych.
 
 ## 2 Metodologia wytwarzania
@@ -30,7 +40,6 @@ Przewidziane są cotygodniowe spotkania zdalenw ramach zespołu, w trakcie któr
 Przydział zadań widoczny jest na Github w postaci issues.
 
 Dodatkowo dostępna jest ciągła komunikacja na platformie discord.
-
 
 ## 3 Analiza wymagań
 
