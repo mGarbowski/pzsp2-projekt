@@ -7,7 +7,7 @@ Problem: Optymalizacja i wizualizacja zajętości sieci optycznej.
 
 Cel:
 Stworzenie aplikacji realizującej zagadnienia:
-* reprezentacja zajętość sieci, w formie grafu nałożonego na mapę i pliku csv.
+* Reprezentacja zajętość sieci, w formie grafu nałożonego na mapę i pliku csv.
 * Wspomaganie użytkownika w balansowaniu zajętością w sieci i dodawaniu nowych kanałów.
 * Udostępnienie narzędzi do definicji własnych scenariuszy sieci.
 
@@ -18,22 +18,17 @@ Projekt realizowany jako aplikacja sieciowa podłączona do REST API.
 #### Technologia
 
 * Frontend realizowany w typescript.
-* Backend realizowany w pythonie
+* Backend realizowany w pythonie (Django)
 
 #### Tryb Działania
 
-Po stronie użytkownika generowanie graficznego przedstawienia danych.
-<!-- Po kliknięciu w dany element wyswietlanie dodatkowych informacji. -->
+Po stronie użytkownika: generowanie graficznego przedstawienia danych i interfejsu użtkownika.
 
-Serwer bezstanowy
+Po stronie serwera: dizałanie algorytmów optymalizacyjnych, wytyczanie nowych połączeń i optymalizacja obecnych.
 
-<!-- Wybieranie optymalnej ścieżki będzie możliwe na kilka sposobów.
-* Algorytm Dijkstry
-* Model liniowy (realizowany w pyomo)
-* Model genetyczny -->
 #### Dane
 
-Projekt nie przewiduje konieczności tworzenia użytkowników ani korzystania z bazy danych.
+Projekt nie przewiduje konieczności tworzenia kont użytkowników ani korzystania z bazy danych.
 
 ## 2 Metodologia wytwarzania
 
@@ -44,6 +39,13 @@ Przewidziane są cotygodniowe spotkania zdalne w ramach zespołu, w trakcie któ
 Przydział zadań widoczny jest na Github w postaci issues.
 
 Dodatkowo dostępna jest ciągła komunikacja na platformie discord.
+
+#### Role w zespole
+Według podziału Belbina
+* Mikołaj Grabowski -Shaper, Implementer, Team worker
+* Maksym Bieńkowski - Implementer, Resource Investgator, Team Worker
+* Michał Luszczek -Coordinator, Implementer, Team Worker
+* Krzysztof Sokół - Implementator, Evaluator
 
 ## 3 Analiza wymagań
 
