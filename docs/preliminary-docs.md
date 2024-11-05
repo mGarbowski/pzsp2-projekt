@@ -20,20 +20,24 @@
 
 #### Wymagania funkcjonalne
 
-* Użytkownik powinien mieć możliwość przesłania pliku zawierającego reprezentację sieci.
-* Po przesłaniu pliku aplikacja powinna udostępnić użytkownikowi graficzną reprezentację sieci w formie grafu.
-* Użytkownik powinien mieć możliwość wyświetlania grafu zrzutowanego na mapę geograficzną obszaru na podstawie koordynatów poszczególnych węzłów.
-* Użytkownik powinien mieć możliwość wizualnego podglądu zajętości slice’ów poszczególnych połączeń w sieci (najechanie myszką, oznaczenia kolorystyczne).
-* Użytkownik powinien mieć możliwość zdefiniowania nowej ścieżki w sieci łączącej zadane dwa wierzchołki o określonej przepustowości.
+* Użytkownik powinien mieć możliwość przesłania pliku w formacie `.csv` zawierającego reprezentację sieci.
+* Aplikacja powinna udostępnić użytkownikowi graficzną reprezentację sieci w postaci grafu.
+* Użytkownik powinien móc dodać do grafu nowy wierzchołek, wybierając jego położenie na istniejącej wizualizacji.
+* Użytkownik powinien móc dodać do grafu nowy wierzchołek, wpisując jego współrzędne geograficzne.
+* Użytkownik powinien mieć możliwość zdefiniowania nowej ścieżki w sieci łączącej zadane dwa wierzchołki, określając jej przepustowość.
+* Użytkownik powinien mieć możliwość wyświetlania grafu zrzutowanego na mapę geograficzną obszaru na podstawie współrzędnych poszczególnych węzłów.
+* Aplikacja powinna dynamicznie zmieniać kolor krawędzi grafu w zależności od poziomu zajętości slice'ów tej krawędzi.
+* Użytkownik powinien mieć możliwość podglądu szczegółowych danych dotyczących zajętości slice'ów określonej krawędzi poprzez najechanie na nią kursorem.
 * Ułożenie nowych ścieżek określane będzie przy pomocy algorytmu optymalizacyjnego.
-* Aplikacja udostępni optymalizację ułożenia dodawanej ścieżki przy pomocy przynajmniej dwóch algorytmów: algorytmu Dijkstry oraz modelu całkowitoliczbowego.
+* Aplikacja umożliwia optymalizację ułożenia nowej ścieżki za pomocą algorytmu Dijkstry.
+* Aplikacja umożliwia optymalizację ułożenia nowej ścieżki przy użyciu modelu całkowitoliczbowego.
 
 * Aplikacja umożliwi wyeksportowanie reprezentacji sieci w pliku CSV w następującym formacie:
   * Wierszowi odpowiada pojedynczy kanał
   * Kolumnie odpowiada pojedynczy slice
   * Zawartością komórki jest binarna informacja o zajętości kanału w danej ścieżce
 
-* Reprezentacja sieci w sesji danego użytkownika powinna być widoczna tylko dla niego.
+* Reprezentacja sieci wprowadzonej przez danego użytkownika powinna być widoczna tylko dla niego.
 
 #### Wymagania niefunkcjonalne
 
