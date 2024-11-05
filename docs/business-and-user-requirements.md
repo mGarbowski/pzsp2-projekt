@@ -32,7 +32,7 @@ Aktorzy: osoba zarządzająca rozkładem połączeń w sieci
 * System powinien udostępniać możliwość ręcznego zdefiniowania nowego węzła w sieci
 * System powinien udostępniać możliwość ręcznego zdefiniowania nowego kanału w sieci
 * System powinien udostępniać możliwość ręcznego zdefiniowania nowej krawędzi w sieci (fizycznego połączenia)
-* Użytkownik powinien mieć możliwość wyświetlania grafu zrzutowanego na mapę geograficzną obszaru na podstawie koordynatów poszczególnych węzłów. 
+* System powinien móc wyświetlać graf rzutowany na mapę geograficzną obszaru na podstawie koordynatów poszczególnych węzłów. 
 * System powinien wyświetlać zajętość slice'ów danej krawędzi po najechaniu na nią myszką 
 * System powinien wyświetlać krawędzie w różnych kolorach reprezentujących zajętość pasma
 * System powinien ustalać ułożenie nowo zdefiniowanego kanału za pomocą algorytmu optymalizacyjnego
