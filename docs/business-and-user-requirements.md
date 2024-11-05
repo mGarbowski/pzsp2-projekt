@@ -35,7 +35,7 @@ Aktorzy: osoba zarządzająca rozkładem połączeń w sieci
 * System powinien móc wyświetlać graf rzutowany na mapę geograficzną obszaru na podstawie koordynatów poszczególnych węzłów 
 * System powinien wyświetlać zajętość slice'ów danej krawędzi po najechaniu na nią myszką 
 * System powinien wyświetlać krawędzie w różnych kolorach reprezentujących zajętość pasma
-* System powinien ustalać ułożenie nowo zdefiniowanego kanału za pomocą algorytmu optymalizacyjnego
+* System powinien ustalać optymalne ułożenie nowo zdefiniowanego kanału
 * System powinien udostępniać optymalizację ułożenia dodawanego kanału przy pomocy algorytmu Dijkstry
 * System powinien udostępniać optymalizację ułożenia dodawanego kanału przy pomocy modelu całkowitoliczbowego
 * System powinien umożliwić wyeksportowanie reprezentacji sieci w pliku CSV w następującym formacie:
