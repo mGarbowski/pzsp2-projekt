@@ -1,17 +1,17 @@
 # Przypadki użycia
 
 ## Wymagania
-Tylko robocze, do uzgodnienia z ustaleniami reszty zespołu
+Tylko robocze, do uzgodnienia z ustaleniami reszty zespołu.
 
-* System ma umożliwić wczytanie zbioru danych opisującego sieć teletransmisyjną z pliku dostarczonego przez użytkownika
-* System ma umożliwić ręczne dodawanie węzłów i krawędzi sieci przez graficzny interfejs
-* System ma prezentować graficznie topologię sieci teletransmisyjnej i zajętość pasma
-* System ma umożliwić wygenerowanie pliku z tabelarycznym zestawieniem kanałów z wykorzystywanymi przez nie slice'ami
-* System ma umożliwić znalezienie optymalnego kanału między węzłami sieci i prezentować wynik
-* System ma dostarczyć różnych metod do znajdowania optymalnego kanału
+* System ma umożliwić wczytanie zbioru danych opisującego sieć teletransmisyjną z pliku dostarczonego przez użytkownika.
+* System ma umożliwić ręczne dodawanie węzłów i krawędzi sieci przez graficzny interfejs.
+* System ma prezentować graficznie topologię sieci teletransmisyjnej i zajętość pasma.
+* System ma umożliwić wygenerowanie pliku z tabelarycznym zestawieniem kanałów z wykorzystywanymi przez nie slice'ami.
+* System ma umożliwić znalezienie optymalnego kanału między węzłami sieci i prezentować wynik.
+* System ma dostarczyć różnych metod do znajdowania optymalnego kanału.
 
 ## Aktorzy
-* Użytkownik systemu - korzysta z graficznego interfejsu
+* Użytkownik systemu - korzysta z graficznego interfejsu.
 
 ## Biznesowe przypadki użycia
 
@@ -26,7 +26,7 @@ Scenariusz główny:
 1. System wyświetla graficzną prezentację sieci teletransmisyjnej.
 2. System wyświetla zbiorcze statystyki sieci.
 3. Użytkownik wybiera element sieci.
-4. System wyświetla szczegółowe informacje o elemencie
+4. System wyświetla szczegółowe informacje o elemencie.
 
 ### PB2 Wygenerowanie zestawienia zajętości pasma przez kanały
 
@@ -103,8 +103,11 @@ Scenariusz główny:
 
 Scenariusz alternatywny - nieprawidłowe parametry elementu:
 
-1-4. Jak w scenariuszu głównym
-5. System informuje o nieprawidłowych wartościach parametrów (RB2, RB3)
+1. Jak w scenariuszu głównym.
+2. Jak w scenariuszu głównym.
+3. Jak w scenariuszu głównym.
+4. Jak w scenariuszu głównym.
+5. System informuje o nieprawidłowych wartościach parametrów (RB2, RB3).
 6. Użytkownik modyfikuje parametry - powrót do kroku 4.
 
 ### FU4 Przeglądanie prezentacji sieci
@@ -118,8 +121,8 @@ Aktorzy: użytkownik.
 Scenariusz główny:
 
 1. Użytkownik wprowadza opis sieci za pomocą funkcji FU1.
-2. Użytkownik otwiera widok prezentacji sieci
-3. System wyświetla graficzną prezentację topologii sieci i zajętości pasma
+2. Użytkownik otwiera widok prezentacji sieci.
+3. System wyświetla graficzną prezentację topologii sieci i zajętości pasma w krawędziach.
 4. System wyświetla zbiorcze statystyki sieci (RB4).
 5. Użytkownik wybiera element sieci (węzeł, krawędź, kanał).
 6. System wyświetla parametry elementu (RB2, RB3, RB5).
@@ -160,7 +163,10 @@ Scenariusz główny:
 
 Scenariusz alternatywny - system nie może wyznaczyć żądanego kanału:
 
-1-4. Jak w scenariuszu głównym.
+1. Jak w scenariuszu głównym.
+2. Jak w scenariuszu głównym.
+3. Jak w scenariuszu głównym.
+4. Jak w scenariuszu głównym.
 5. System informuje użytkownika o niepowodzeniu i jego przyczynie.
 6. System umożliwia zmianę parametrów i podobną próbę - powrót do kroku 4.
 
