@@ -22,7 +22,7 @@ Aktorzy: osoba zarządzająca rozkładem połączeń w sieci
 * Użytkownik powinien mieć możliwość wizualnego podglądu zajętości slice’ów poszczególnych krawędzi w sieci.
 * Użytkownik powinien mieć możliwość zdefiniowania nowego kanału w sieci o określonej przepustowości łączącego zadane dwa wierzchołki.
 * Użytkownik powinien otrzymać optymalne ułożenie nowego kanału w sieci.
-* Użytkownik powinien mieć możliwość pobrać plik reprezentujący zajętość pasma na każdej ze zdefiniowanych ścieżek w sieci
+* Użytkownik powinien mieć możliwość pobrać plik reprezentujący zajętość pasma na każdym ze zdefiniowanych kanałów w sieci
 * Dane użytkownika nie powinny być dostępne dla innych użytkowników systemu.
 
 
