@@ -24,18 +24,18 @@
 * Aplikacja powinna udostępnić użytkownikowi graficzną reprezentację sieci w postaci grafu.
 * Użytkownik powinien móc dodać do grafu nowy wierzchołek, wybierając jego położenie na istniejącej wizualizacji.
 * Użytkownik powinien móc dodać do grafu nowy wierzchołek, wpisując jego współrzędne geograficzne.
-* Użytkownik powinien mieć możliwość zdefiniowania nowej ścieżki w sieci łączącej zadane dwa wierzchołki, określając jej przepustowość.
+* Użytkownik powinien mieć możliwość zdefiniowania nowego kanału w sieci łączącej zadane dwa wierzchołki, określając jego przepustowość.
 * Użytkownik powinien mieć możliwość wyświetlania grafu zrzutowanego na mapę geograficzną obszaru na podstawie współrzędnych poszczególnych węzłów.
 * Aplikacja powinna dynamicznie zmieniać kolor krawędzi grafu w zależności od poziomu zajętości slice'ów tej krawędzi.
 * Użytkownik powinien mieć możliwość podglądu szczegółowych danych dotyczących zajętości slice'ów określonej krawędzi poprzez najechanie na nią kursorem.
-* Ułożenie nowych ścieżek określane będzie przy pomocy algorytmu optymalizacyjnego.
-* Aplikacja umożliwia optymalizację ułożenia nowej ścieżki za pomocą algorytmu Dijkstry.
-* Aplikacja umożliwia optymalizację ułożenia nowej ścieżki przy użyciu modelu całkowitoliczbowego.
+* Ułożenie nowych kanałów określane będzie przy pomocy algorytmu optymalizacyjnego.
+* Aplikacja umożliwia optymalizację ułożenia nowego kanału za pomocą algorytmu Dijkstry.
+* Aplikacja umożliwia optymalizację ułożenia nowego kanału przy użyciu modelu całkowitoliczbowego.
 
 * Aplikacja umożliwi wyeksportowanie reprezentacji sieci w pliku CSV w następującym formacie:
   * Wierszowi odpowiada pojedynczy kanał
   * Kolumnie odpowiada pojedynczy slice
-  * Zawartością komórki jest binarna informacja o zajętości kanału w danej ścieżce
+  * Zawartością komórki jest binarna informacja o zajętości pasma w danym kanale
 
 * Reprezentacja sieci wprowadzonej przez danego użytkownika powinna być widoczna tylko dla niego.
 
