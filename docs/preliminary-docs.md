@@ -48,7 +48,7 @@ Dodatkowo umieszczone sa w nim pola narzędzi administracyjnych. Logika biznesow
 #### Dane
 <!-- CO JEST W MODELU SIECI, NIE GDZIE A CO-->
 Danymi w projekcie są:
-* Zrzut z bazy T-Mobile zawierający koordynaty wierzchołków, istniejące krawędzie i kanały
+* Zrzut z bazy T-Mobile zawierający koordynaty punktów rozdzielczych, istniejące połączenia i kanały
 * wewnętrzna reprezentacja grafowa sieci
 * dane o dodawanych wierzchołkach, krawędziach i kanałach przesyłane do serwera
 * plik csv z informacjami o zajętości slice'ów - informacje o połączeniu, slice i czy jest obecnie używany
