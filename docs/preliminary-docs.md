@@ -15,7 +15,7 @@ Głównymi celami są:
 * generowanie raportów zajętości slice'ów w postaci plików csv
 
 #### słowniczek
-kanał - połączenie między wierzchołkiem a i b zajmujące ten sam slice na każdej krawędzi
+kanał - ścieżka między wierzchołkiem a i b zajmujące ten sam slice na każdej krawędzi
 pasmo - zakres częstotliwości światła na której przesyłane są dane
 slice`y - kawałki pasma o różnej rozpiętości częstotliwościowej
 krawędź - para włókien optycznych dzierżawionych przez firmę telekomunikacyjną
