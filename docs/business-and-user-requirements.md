@@ -24,7 +24,7 @@ Aktorzy: osoba zarządzająca rozkładem połączeń w sieci
 * Użytkownik powinien otrzymać optymalne ułożenie nowego kanału w sieci
 * Użytkownik powinien mieć możliwość pobrać plik reprezentujący zajętość pasma na każdym ze zdefiniowanych kanałów w sieci
 * Dane użytkownika nie powinny być dostępne dla innych użytkowników systemu
-
+* Użytkownik powinien mieć możliwość zmiany parametrów algorytmu optymalizacyjnego.
 
 ## Wymagania systemowe
 
