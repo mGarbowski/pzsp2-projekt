@@ -14,14 +14,6 @@ Głównymi celami są:
 * Udostępnienie narzedzi do dodawania nowych połączeń, miast i kanałów do sieci.
 * generowanie raportów zajętości slice'ów w postaci plików csv
 
-<!-- ROZPISAĆ PROBLEM, TO CO BYŁO NA SPOTKANIU, WPROWADZENIE, WSTĘP TECHNICZNY, KRAWĘDZIE - DZIERŻAWA, SLAJSY, KANAŁY, ITD -->
-<!--
-Problemem jest ...
-Rozważamy realistyczną sieć optyczną opracowaną na podstawie ..
-Problem jest mp trudny ... zasady działania kanałów ... system flex grid
-
-Nasza aplikacja ma na celu ułatwić administracje poprzez automatyczną obsługę funkcji ...
- -->
 #### słowniczek
 kanał - połączenie między wierzchołkiem a i b zajmujące ten sam slice na każdej krawędzi
 pasmo - zakres częstotliwości światła na której przesyłane są dane
@@ -32,21 +24,16 @@ krawędź - para włókien optycznych dzierżawionych przez firmę telekomunikac
 
 Projekt realizowany jako aplikacja sieciowa podłączona do REST API.
 
-#### Technologia
-<!-- USUNĄĆ -->
-
-* Frontend realizowany w typescript.
-* Backend realizowany w pythonie (Django)
 
 #### Tryb Działania
-<!-- UŻYTKOWNIK WPROWADZA DANE PRZEZ GUI, MOŻE PRZEGLĄDAĆ, WPROWADZAĆ DANE, SYSTEM ROBI RZECZY
-OD STRONY UŻYTKOWNIKA-->
 
-Użytkownik ma do dyspozycji interfejs na którym wyświetlana jest sieć w postaci grafu. Dla polepszenia czytelności graf nałożony będzie na mapę Polski, przez co łatwo będzie identyfikowac połączenia.
-Dodatkowo umieszczone sa w nim pola narzędzi administracyjnych. Logika biznesowa odpowiedzialna będzie za obliczanie zmian w strukturze sieci na żądanie użytkownika.
+
+Użytkownik ma do dyspozycji interfejs na którym wyświetlana jest sieć w postaci grafu.
+Dla polepszenia czytelności graf nałożony będzie na mapę Polski, przez co łatwo będzie identyfikowac połączenia.
+Dodatkowo umieszczone sa w nim pola narzędzi administracyjnych.
+Logika biznesowa odpowiedzialna będzie za obliczanie zmian w strukturze sieci na żądanie użytkownika.
 
 #### Dane
-<!-- CO JEST W MODELU SIECI, NIE GDZIE A CO-->
 Danymi w projekcie są:
 * Zrzut z bazy T-Mobile zawierający koordynaty punktów rozdzielczych, istniejące połączenia i kanały
 * wewnętrzna reprezentacja grafowa sieci
