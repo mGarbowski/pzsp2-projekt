@@ -22,8 +22,7 @@
 
 * Użytkownik powinien mieć możliwość przesłania pliku w formacie `.csv` zawierającego reprezentację sieci.
 * Aplikacja powinna udostępnić użytkownikowi graficzną reprezentację sieci w postaci grafu.
-* Użytkownik powinien móc dodać do grafu nowy wierzchołek, wybierając jego położenie na istniejącej wizualizacji.
-* Użytkownik powinien móc dodać do grafu nowy wierzchołek, wpisując jego współrzędne geograficzne.
+* System powinien udostępniać możliwość ręcznego zdefiniowania nowego węzła w sieci
 * Użytkownik powinien mieć możliwość zdefiniowania nowego kanału w sieci łączącej zadane dwa wierzchołki, określając jego przepustowość.
 * Użytkownik powinien mieć możliwość wyświetlania grafu zrzutowanego na mapę geograficzną obszaru na podstawie współrzędnych poszczególnych węzłów.
 * Aplikacja powinna dynamicznie zmieniać kolor krawędzi grafu w zależności od poziomu zajętości slice'ów tej krawędzi.
