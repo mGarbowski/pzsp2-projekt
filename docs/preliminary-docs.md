@@ -31,6 +31,7 @@
 * Ułożenie nowych kanałów określane będzie przy pomocy algorytmu optymalizacyjnego.
 * Aplikacja umożliwia optymalizację ułożenia nowego kanału za pomocą algorytmu Dijkstry.
 * Aplikacja umożliwia optymalizację ułożenia nowego kanału przy użyciu modelu całkowitoliczbowego.
+* Użytkownik powinien mieć możliwość zmiany parametrów algorytmu optymalizacyjnego.
 
 * Aplikacja umożliwi wyeksportowanie reprezentacji sieci w pliku CSV w następującym formacie:
   * Wierszowi odpowiada pojedynczy kanał
@@ -42,6 +43,8 @@
 #### Wymagania niefunkcjonalne
 
 * Aplikacja powinna obsługiwać nie mniej niż 5 użytkowników jednocześnie.
+* Aplikacja powinna dostarczać wynik optymalizacji ułożenia kanału w czasie nie dłuższym niż 5 minut dla
+sieci złożonej z nie więcej niż 300 kanałów.
 
 ### 3.3 Przypadki użycia
 
