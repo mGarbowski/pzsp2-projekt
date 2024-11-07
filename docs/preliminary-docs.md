@@ -42,7 +42,6 @@
 
 #### Wymagania niefunkcjonalne
 
-* Aplikacja powinna obsługiwać nie mniej niż 5 użytkowników jednocześnie.
 * Aplikacja powinna dostarczać wynik optymalizacji ułożenia kanału w czasie nie dłuższym niż 5 minut dla
 sieci złożonej z nie więcej niż 300 kanałów.
 
