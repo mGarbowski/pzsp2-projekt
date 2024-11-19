@@ -1,6 +1,8 @@
 <!-- 
 pandoc architecture.md -o architecture-draft.pdf \
     --pdf-engine=xelatex \
+    --toc \
+    --number-sections \
     -V geometry:margin=0.5in \
     -V lang=polish \
     -V babel-lang=polish
