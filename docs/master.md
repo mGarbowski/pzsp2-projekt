@@ -35,6 +35,8 @@ titlepage-rule-height: 2
 
 **Właściciel tematu: dr. inż. Stanisław Kozdrowski**
 
+\newpage
+
 ## Cel projektu
 Celem jest stworzenie aplikacji wspomagającej optymalizację bieżącego ruchu w realistycznej sieci 
 teleinformatycznej. Podstawowym zadaniem jest odzwierciedlenie aktualnej zajętości pasma w sieci 
@@ -51,8 +53,8 @@ taką siecią.
 * czytelna reprezentacja sieci w postaci grafu
 * możliwość zestawienia nowych kanałów i automatyczny dobór optymalnych tras zapewniających 
 równomierne obciążenie sieci
-* udostępnienie narzędzi do dodawania nowych połączeń, miast i kanałów do sieci
 * generowanie raportów zajętości slice'ów w postaci plików csv
+* zaproponowanie modelu w postaci matematycznej, zawierającego funkcję celu (kosztu) oraz zbioru ograniczeń, optymalizujacego pasmo oraz ruting nowo-zestawianych kanałów (ścieżek) optycznych w sieci
 
 **Słowik pojęć**
 
@@ -117,35 +119,29 @@ Aktorzy: osoba zarządzająca rozkładem połączeń w sieci
 **Wymagania użytkowe**
 
 1. Użytkownik powinien mieć możliwość zdefiniowania sieci poprzez przesłanie pliku zawierającego jej reprezentację
-2. Użytkownik powinien mieć możliwość ręcznego zdefiniowania nowego węzła
-3. Użytkownik powinien mieć możliwość ręcznego zdefiniowania nowego kanału
-4. Użytkownik powinien mieć możliwość ręcznego zdefiniowania nowej krawędzi (fizycznego połączenia)
-5. Użytkownik powinien mieć możliwość wizualnego podglądu zajętości slice’ów poszczególnych krawędzi w sieci
-6. Użytkownik powinien mieć możliwość zdefiniowania nowego kanału w sieci o określonej przepustowości łączącego zadane dwa wierzchołki
-7. Użytkownik powinien otrzymać optymalne ułożenie nowego kanału w sieci
-8. Użytkownik powinien mieć możliwość pobrać plik reprezentujący zajętość pasma na każdym ze zdefiniowanych kanałów w sieci
-9. Dane użytkownika nie powinny być dostępne dla innych użytkowników systemu
-10. Użytkownik powinien mieć możliwość zmiany parametrów algorytmu optymalizacyjnego.
+2. Użytkownik powinien mieć możliwość wizualnego podglądu zajętości slice’ów poszczególnych krawędzi w sieci
+3. Użytkownik powinien mieć możliwość zdefiniowania nowego kanału w sieci o określonej przepustowości łączącego zadane dwa wierzchołki
+4. Użytkownik powinien otrzymać optymalne ułożenie nowego kanału w sieci
+5. Użytkownik powinien mieć możliwość pobrać plik reprezentujący zajętość pasma na każdym ze zdefiniowanych kanałów w sieci
+6. Dane użytkownika nie powinny być dostępne dla innych użytkowników systemu
+7. Użytkownik powinien mieć możliwość zmiany parametrów algorytmu optymalizacyjnego.
 
 **Wymagania systemowe**
 
 1. System powinien udostępnić użytkownikowi graficzną reprezentację sieci w formie grafu
-2. System powinien udostępniać możliwość ręcznego zdefiniowania nowego węzła w sieci
-3. System powinien udostępniać możliwość ręcznego zdefiniowania nowego kanału w sieci
-4. System powinien udostępniać możliwość ręcznego zdefiniowania nowej krawędzi w sieci (fizycznego połączenia)
-5. System powinien móc wyświetlać graf rzutowany na mapę geograficzną obszaru na podstawie koordynatów poszczególnych węzłów
-6. System powinien wyświetlać zajętość slice'ów danej krawędzi po najechaniu na nią myszką
-7. System powinien wyświetlać krawędzie w różnych kolorach reprezentujących zajętość pasma
-8. System powinien ustalać optymalne ułożenie nowo zdefiniowanego kanału
-9. System powinien udostępniać optymalizację ułożenia dodawanego kanału przy pomocy algorytmu Dijkstry
-10. System powinien udostępniać optymalizację ułożenia dodawanego kanału przy pomocy modelu całkowitoliczbowego
-11. System powinien umożliwić wyeksportowanie reprezentacji sieci w pliku CSV w następującym formacie:
+2. System powinien móc wyświetlać graf rzutowany na mapę geograficzną obszaru na podstawie koordynatów poszczególnych węzłów
+3. System powinien wyświetlać zajętość slice'ów danej krawędzi po najechaniu na nią myszką
+4. System powinien wyświetlać krawędzie w różnych kolorach reprezentujących zajętość pasma
+5. System powinien ustalać optymalne ułożenie nowo zdefiniowanego kanału
+6. System powinien udostępniać optymalizację ułożenia dodawanego kanału przy pomocy algorytmu Dijkstry
+7. System powinien udostępniać optymalizację ułożenia dodawanego kanału przy pomocy modelu całkowitoliczbowego
+8. System powinien umożliwić wyeksportowanie reprezentacji sieci w pliku CSV w następującym formacie:
     * Wierszowi tabeli odpowiada pojedynczy kanał
     * Kolumnie tabeli odpowiada pojedynczy slice
     * Zawartością komórki tabeli jest binarna informacja o zajętości kanału w danej ścieżce
-12. Reprezentacja sieci w sesji danego użytkownika powinna być widoczna tylko dla niego
-13. System powinien umożliwić zapisanie stanu sieci
-14. System powinien umożliwić odtworzenie sieci z wcześniej zapisanego stanu
+9. Reprezentacja sieci w sesji danego użytkownika powinna być widoczna tylko dla niego
+10. System powinien umożliwić zapisanie stanu sieci
+11. System powinien umożliwić odtworzenie sieci z wcześniej zapisanego stanu
 
 ## Wymagania funkcjonalne i niefunkcjonalne
 
@@ -153,15 +149,14 @@ Aktorzy: osoba zarządzająca rozkładem połączeń w sieci
 
 1. Użytkownik powinien mieć możliwość przesłania pliku w formacie `.csv` zawierającego reprezentację sieci.
 2. Aplikacja powinna udostępnić użytkownikowi graficzną reprezentację sieci w postaci grafu.
-3. System powinien udostępniać możliwość ręcznego zdefiniowania nowego węzła w sieci
-4. Użytkownik powinien mieć możliwość zdefiniowania nowego kanału w sieci łączącej zadane dwa wierzchołki, określając jego przepustowość.
-5. Użytkownik powinien mieć możliwość wyświetlania grafu zrzutowanego na mapę geograficzną obszaru na podstawie współrzędnych poszczególnych węzłów.
-6. Aplikacja powinna dynamicznie zmieniać kolor krawędzi grafu w zależności od poziomu zajętości slice'ów tej krawędzi.
-7. Użytkownik powinien mieć możliwość podglądu szczegółowych danych dotyczących zajętości slice'ów określonej krawędzi poprzez najechanie na nią kursorem.
-8. Ułożenie nowych kanałów określane będzie przy pomocy algorytmu optymalizacyjnego.
-9. Aplikacja umożliwia optymalizację ułożenia nowego kanału za pomocą algorytmu Dijkstry.
-10. Aplikacja umożliwia optymalizację ułożenia nowego kanału przy użyciu modelu całkowitoliczbowego.
-11. Użytkownik powinien mieć możliwość zmiany parametrów algorytmu optymalizacyjnego.
+3. Użytkownik powinien mieć możliwość zdefiniowania nowego kanału w sieci łączącej zadane dwa wierzchołki, określając jego przepustowość.
+4. Użytkownik powinien mieć możliwość wyświetlania grafu zrzutowanego na mapę geograficzną obszaru na podstawie współrzędnych poszczególnych węzłów.
+5. Aplikacja powinna dynamicznie zmieniać kolor krawędzi grafu w zależności od poziomu zajętości slice'ów tej krawędzi.
+6. Użytkownik powinien mieć możliwość podglądu szczegółowych danych dotyczących zajętości slice'ów określonej krawędzi poprzez najechanie na nią kursorem.
+7. Ułożenie nowych kanałów określane będzie przy pomocy algorytmu optymalizacyjnego.
+8. Aplikacja umożliwia optymalizację ułożenia nowego kanału za pomocą algorytmu Dijkstry.
+9. Aplikacja umożliwia optymalizację ułożenia nowego kanału przy użyciu modelu całkowitoliczbowego.
+10. Użytkownik powinien mieć możliwość zmiany parametrów algorytmu optymalizacyjnego.
 
 **Wymagania niefunkcjonalne**
 
@@ -221,16 +216,7 @@ Aktorzy: użytkownik.
 
 Scenariusz główny:
 
-1. Użytkownik otwiera widok wprowadzania danych **[wybór operacji]**
-
-### FU2 Załadowanie danych z pliku
-
-Rozszerza funkcję FU1 po kroku 1. (wybór operacji).
-
-Aktorzy: użytkownik.
-
-Scenariusz główny:
-
+1. Użytkownik otwiera widok wprowadzania danych.
 1. Użytkownik wybiera plik z opisem sieci (RB1).
 2. Użytkownik potwierdza, że chce nadpisać aktualnie załadowaną w systemie sieć.
 3. System informuje użytkownika o poprawnym załadowaniu pliku.
@@ -243,30 +229,7 @@ Scenariusz alternatywny - nieprawidłowy plik:
 3. System wyświetla informację o akceptowanych formatach (RB1).
 4. System umożliwia ponowny wybór pliku - powrót do kroku 1.
 
-### FU3 Ręczne wprowadzenie danych
-
-Rozszerza funkcję FU1 po kroku 1. (wybór operacji).
-
-Aktorzy: użytkownik.
-
-Scenariusz główny:
-
-1. System prezentuje aktualny stan sieci.
-2. Użytkownik wybiera rodzaj elementu, który chce dodać (węzeł, krawędź).
-3. Użytkownik wprowadza parametry elementu (RB2, RB3).
-4. Użytkownik potwierdza dodanie elementu.
-5. System wyświetla wizualizację sieci z dodanym elementem.
-
-Scenariusz alternatywny - nieprawidłowe parametry elementu:
-
-1. Jak w scenariuszu głównym.
-2. Jak w scenariuszu głównym.
-3. Jak w scenariuszu głównym.
-4. Jak w scenariuszu głównym.
-5. System informuje o nieprawidłowych wartościach parametrów (RB2, RB3).
-6. Użytkownik modyfikuje parametry - powrót do kroku 4.
-
-### FU4 Przeglądanie prezentacji sieci
+### FU2 Przeglądanie prezentacji sieci
 
 Wspiera procedurę PB1 - Przeglądanie prezentacji sieci.
 
@@ -283,7 +246,7 @@ Scenariusz główny:
 5. Użytkownik wybiera element sieci (węzeł, krawędź, kanał).
 6. System wyświetla parametry elementu (RB2, RB3, RB5).
 
-### FU5 Wygenerowanie zestawienia zajętości pasma przez kanały
+### FU3 Wygenerowanie zestawienia zajętości pasma przez kanały
 
 Wspiera procedurę PB2 - Wygenerowanie zestawienia zajętości pasma przez kanały.
 
@@ -298,7 +261,7 @@ Scenariusz główny:
 3. System generuje plik w ustalonym formacie (RB6).
 4. Użytkownik pobiera plik.
 
-### FU6 Wyznaczenie nowego kanału
+### FU4 Wyznaczenie nowego kanału
 
 Wspiera procedurę PB3 - Wyznaczenie nowego kanału.
 
