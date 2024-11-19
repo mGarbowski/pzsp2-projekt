@@ -1,3 +1,5 @@
+<!-- pandoc architecture.md -o architecture-draft.pdf --toc -V geometry:margin=0.5in -V graphics:maxheight=2in -->
+
 # Opis architektury
 Opis architektury projektu w modelu 4+1
 
@@ -22,9 +24,9 @@ Przypadki użycia opisane w punkcie 3.3.
     * oparty o model programowania całkowitoliczbowego
 * Pojęcia użyta w modelu sieci są objasnione w punkcie 1.1
 
-## Widok proceesu
+## Widok procesu
 
-![Diagram aktywności 1 dla widoku procesu](./diagrams/process-view.drawio.png)
+![Diagram aktywności dla widoku procesu](./diagrams/process-view.drawio.png)
 
 Diagram przedstawia typowe użycie systemu
 
