@@ -1,10 +1,16 @@
-<!-- pandoc architecture.md -o architecture-draft.pdf --toc -V geometry:margin=0.5in -V graphics:maxheight=2in -->
+<!-- 
+pandoc architecture.md -o architecture-draft.pdf \
+    --pdf-engine=xelatex \
+    -V geometry:margin=0.5in \
+    -V lang=polish \
+    -V babel-lang=polish
+-->
 
 # Opis architektury
 Opis architektury projektu w modelu 4+1
 
 ## Scenariusze
-Przypadki użycia opisane w punkcie 3.3.
+Przypadki użycia opisane w punkcie 3.3 dokumentacji.
 
 ![Diagram biznesowych przypadków użycia](./diagrams/business-use-cases.drawio.png)
 
@@ -22,7 +28,7 @@ Przypadki użycia opisane w punkcie 3.3.
 * System dostarcza 2 modeli optymalizacyjnych
     * oparty o algorytm Dijkstry
     * oparty o model programowania całkowitoliczbowego
-* Pojęcia użyta w modelu sieci są objasnione w punkcie 1.1
+* Pojęcia użyta w modelu sieci są objasnione w punkcie 1.1 dokumentacji
 
 ## Widok procesu
 
@@ -37,7 +43,7 @@ Diagram przedstawia typowe użycie systemu
 
 ## Widok implementacji
 
-![Development view component diagram](./diagrams/development-view.drawio.png)
+![Diagram komponentów dla widoku implementacji](./diagrams/development-view.drawio.png)
 
 * Aplikacja webowa dostarcza widoków użytkownika do
     * importu opisu sieci z plików .csv
