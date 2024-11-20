@@ -39,9 +39,10 @@ Przypadki użycia opisane w punkcie 3.3 dokumentacji.
 Diagram \ref{fig:process-view} przedstawia typowe użycie systemu
 
 * Użytkownik zaczyna od wprowadzenia opisu sieci
-* Użytkownik ustala parametry pożądanego kanału i modelu optymalizacyjnego
-* Użytkownik czeka na wynik modelu
-* Użytkownik może przeglądać prezentację sieci z nowym kanałem lub wygenerować raport
+* Dla załadowanej sieci użytkownik może
+    * obejrzeć jej wizualizację i przeglądać parametry jej elementów
+    * wygenerować raport na podstawie aktualnie załadowanej sieci
+    * zestawić nowy kanał w sieci wykorzystując model optymalizacyjny 
 
 ## Widok implementacji
 
