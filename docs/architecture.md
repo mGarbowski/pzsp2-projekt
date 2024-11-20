@@ -70,13 +70,13 @@ Alternatywnie możemy wykorzystać oprogramowanie AMPL, w środowisku chmurowym 
     * przyjmujemy roboczo, że będzie to Raspberry Pi
 * Aplikacja jest uruchamiana w środowisku Docker
 * Kontener `backend`
-    * artefakty stanowi kod źródłowy aplikacji wykorzystującej framework FastAPI i implementacji modeli optymalizacyjnych
+    * artefakty obejmują kod źródłowy aplikacji wykorzystującej framework FastAPI oraz implementację modeli optymalizacyjnych.
     * realizuje funkcje podsystemu `Optimisation Backend`
 * Kontener `web-server`
     * serwer HTTP Nginx
     * serwuje aplikację webową realizującą funkcje podsystemu `WebApp`
     * służy jako reverse proxy dla klientów komunikujących się z podsystemem `Optimisation Backend`
-    * artefakty stanowi kod zbudowanej aplikacji webowej oraz pliki konfiguracyjne serwera Nginx
+    * artefakty to kod zbudowanej aplikacji webowej oraz pliki konfiguracyjne serwera Nginx
 * Kontenery będą połączone w jednym *docker network*
 * Schemat komunikacji klient-serwer
     * klient wysyła żądanie użycia modelu optymalizacyjnego z danymi wejściowymi (opis sieci, opis żądanego kanału)
