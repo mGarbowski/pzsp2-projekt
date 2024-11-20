@@ -34,9 +34,9 @@ Przypadki użycia opisane w punkcie 3.3 dokumentacji.
 
 ## Widok procesu
 
-![Diagram aktywności dla widoku procesu](./diagrams/process-view.drawio.png)
+![Diagram aktywności dla widoku procesu](./diagrams/process-view.drawio.png){#fig:process-view}
 
-Diagram przedstawia typowe użycie systemu
+Diagram \ref{fig:process-view} przedstawia typowe użycie systemu
 
 * Użytkownik zaczyna od wprowadzenia opisu sieci
 * Użytkownik ustala parametry pożądanego kanału i modelu optymalizacyjnego
@@ -57,7 +57,10 @@ Diagram przedstawia typowe użycie systemu
 
 W implementacji podsystemu `WebApp` planujemy wykorzystać framework React (Typescript) i bibliotekę do wizualizacji grafów (do ustalenia).
 
-W implementacji podsystemu `OptimisationBackend` planujemy wykorzystać framework FastAPI (Python), bibliotekę Pyomo oraz solwer dla modeli programowania całkowitoliczbowego (do ustalenia).
+W implementacji podsystemu `OptimisationBackend` planujemy wykorzystać framework FastAPI (Python), bibliotekę Pyomo oraz solwer dla modeli programowania całkowitoliczbowego (do ustalenia). 
+
+Do zweryfikowania pozostaje kwestia, czy istnieje solwer na licencji Open Source, który obsłuży nasz model całkowitoliczbowy i zbiór danych.
+Alternatywnie możemy wykorzystać oprogramowanie AMPL, w środowisku chmurowym dostępnym dla PW, na który licencję może udostępnić nam właściciel tematu.
 
 ## Widok fizyczny
 
@@ -83,4 +86,5 @@ W implementacji podsystemu `OptimisationBackend` planujemy wykorzystać framewor
 
 Ze względu na długi czas przetwarzania po stronie serwera, chcemy zastosować protokół WebSockets, który umożliwi dwustronną komunikację, w której serwer odeśle wynik, kiedy będzie gotowy. W ten sposób unikniemy cyklicznego odpytywania serwera przez klienta (polling).
 
+Powyższy plan wymagałby zmiany jeśli skorzystamy z licencji na program AMPL w środowisku OpenStack Zakładu Sztucznej Inteligencji Instytutu Informatyki (planujemy jednak, o ile to możliwe, wykorzystać rozwiązania Open Source).
 
