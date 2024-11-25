@@ -18,3 +18,9 @@ pip install -r requirements.txt
 ```bash
 uvicorn app.main:app --reload
 ```
+
+**Alternatively**
+
+```bash
+fastapi run main.py
+```
