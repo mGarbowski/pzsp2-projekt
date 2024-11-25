@@ -15,9 +15,11 @@ Użytkownik aplikacji - analityk sieci teleinformatycznej w dużej firme telekom
 
 5. Jako analityk sieci teleinformatycznej, chcę optymalnie wykorzystywać przepustowość sieci, aby zminimalizować koszty ponoszone przez moją firmę i zapewnić, że sieć będzie gotowa na dalsze rozszerzenia.
 
-# **Biznesowe przypadki użycia**
+# Przypadki użycia
 
-![Diagram UML przypadków użycia](./diagrams/business-use-cases.drawio.png)
+## Biznesowe przypadki użycia
+
+![Diagram UML przypadków użycia](../diagrams/business-use-cases.drawio.png)
 
 ### PB1 Przeglądanie prezentacji sieci
 
@@ -56,9 +58,9 @@ Scenariusz alternatywny - system nie może wyznaczyć żądanego kanału:
 2. System informuje użytkownika o niepowodzeniu wyznaczania nowego kanału.
 3. System umozliwia ponowne wprowadzenie parametrów - powrót do kroku 1.
 
-**Systemowe przypadki użycia**
+## Systemowe przypadki użycia
 
-![Diagram UML przypadków użycia](./diagrams/system-use-cases.drawio.png)
+![Diagram UML przypadków użycia](../diagrams/system-use-cases.drawio.png)
 
 ### FU1 Wprowadzenie opisu sieci do systemu
 
@@ -143,16 +145,40 @@ Scenariusz alternatywny - system nie może wyznaczyć żądanego kanału:
 
 ### RB2 Parametry węzła sieci
 
+* długość i szerokość geograficzna
+TODO
+
 ### RB3 Parametry krawędzi sieci
+
+* łączone węzły
+TODO
 
 ### RB4 Zbiorcze statystyki sieci
 
+TODO
+
 ### RB5 Parametry kanału
+
+TODO
 
 ### RB6 Format pliku z zestawieniem zajmowanych slice'ów przez kanały
 
+TODO
+
 ### RB7 Dostępne modele optymalizacyjne i ich parametry
 
-# Makieta interfejsu użytkownika
+TODO
 
-###
+# Makiety interfejsu użytkownika
+
+### Widok 1 - ekran startowy (przed zamieszczeniem pliku)
+
+![widok 1]( ./exported/start-screen.png )
+
+### Widok 2 - dodawanie kanału sieci
+
+![widok 2]( ./exported/add-channel.png )
+
+### Widok 3 - statystyki sieci
+
+![widok 3]( ./exported/general-info.png)
