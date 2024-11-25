@@ -1,18 +1,19 @@
 
-# Aktorzy:
+# Aktorzy
+
 Użytkownik aplikacji - analityk sieci teleinformatycznej w dużej firme telekomunikacyjnej
 
-# Historyjki użytkownika:
+# Historyjki użytkownika
+
 1. Jako analityk sieci teleinformatycznej chcę wizualizować istniejący graf połączeń i ich zajętości w sieci, aby łatwo zrozumieć strukturę połączeń i zidentyfikować potencjalne problemy
 
 2. Jako analityk sieci teleinformatycznej chcę, aby optymalne ścieżki nowych kanałów były automatycznie wyznaczane aby uniknąć ręcznej analizy i zapewnić efektywne wykorzystanie pasma
 
 3. Jako analityk sieci teleinformatycznej chcę łatwo wygenerować raporty o zajętości kanałów w istniejącej sieci aby monitorować obciążenie sieci i zapobiegać ewentualnym przeciążeniom
 
-4. Jako analityk sieci teleinformatycznej, chcę mieć łatwy i intuicyjny dostęp do danych o obciążeniu dowolnego elementu w sieci, aby zidentyfikować słabe punkty i wąskie gardła systemu. 
+4. Jako analityk sieci teleinformatycznej, chcę mieć łatwy i intuicyjny dostęp do danych o obciążeniu dowolnego elementu w sieci, aby zidentyfikować słabe punkty i wąskie gardła systemu.
 
 5. Jako analityk sieci teleinformatycznej, chcę optymalnie wykorzystywać przepustowość sieci, aby zminimalizować koszty ponoszone przez moją firmę i zapewnić, że sieć będzie gotowa na dalsze rozszerzenia.
-
 
 # **Biznesowe przypadki użycia**
 
@@ -54,7 +55,6 @@ Scenariusz alternatywny - system nie może wyznaczyć żądanego kanału:
 1. Użytkownik wprowadza parametry dla pożądanego kanału.
 2. System informuje użytkownika o niepowodzeniu wyznaczania nowego kanału.
 3. System umozliwia ponowne wprowadzenie parametrów - powrót do kroku 1.
-
 
 **Systemowe przypadki użycia**
 
@@ -153,5 +153,6 @@ Scenariusz alternatywny - system nie może wyznaczyć żądanego kanału:
 
 ### RB7 Dostępne modele optymalizacyjne i ich parametry
 
-# Projekt w figmie
-TODO
+# Makieta interfejsu użytkownika
+
+###
