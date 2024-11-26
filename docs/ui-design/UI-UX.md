@@ -1,4 +1,13 @@
-
+<!--
+pandoc UI-UX.md -o UI-UX.pdf \
+    --pdf-engine=xelatex \
+    --toc \
+    --toc-depth=2 \
+    --number-sections \
+    -V geometry:margin=0.5in \
+    -V lang=polish \
+    -V babel-lang=polish
+ -->
 # Aktorzy
 
 Użytkownik aplikacji - analityk sieci teleinformatycznej w dużej firme telekomunikacyjnej
