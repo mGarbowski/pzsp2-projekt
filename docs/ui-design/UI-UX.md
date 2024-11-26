@@ -143,31 +143,43 @@ Scenariusz alternatywny - system nie może wyznaczyć żądanego kanału:
 
 ### RB1 Format pliku opisującego sieć teletransmisyjną
 
+Dane nie zostały jeszcze przedstawione przez klienta projektu - wymaga późniejszego
+wypełnienia.
+
 ### RB2 Parametry węzła sieci
 
 * długość i szerokość geograficzna
-TODO
+* liczba wychodzących ścieżek
 
 ### RB3 Parametry krawędzi sieci
 
 * łączone węzły
-TODO
+* całkowite pasmo
+* zajętość pasma
 
 ### RB4 Zbiorcze statystyki sieci
 
-TODO
+* sumaryczna zajętość pasma
+* najwęższe wolne pasmo
+* najbardziej obciążona krawędź
+* najmniej obciążona krawędź
 
 ### RB5 Parametry kanału
 
-TODO
+* identyfikator
+* całkowite dostępne pasmo
+* zajęte pasmo
 
 ### RB6 Format pliku z zestawieniem zajmowanych slice'ów przez kanały
 
-TODO
+* Wierszowi tabeli odpowiada pojedynczy kanał
+* Kolumnie tabeli odpowiada pojedynczy slice
+* Zawartością komórki tabeli jest binarna informacja o zajętości kanału w danej ścieżce
 
 ### RB7 Dostępne modele optymalizacyjne i ich parametry
 
-TODO
+* algorytm Dijkstry, brak nastrajalnych parametrów
+* model całkowitoliczbowy, przewidywane sparametryzowane wagi składowych funkcji celu
 
 # Makiety interfejsu użytkownika
 
