@@ -192,14 +192,4 @@ wypełnienia.
 
 # Makiety interfejsu użytkownika
 
-### Widok 1 - ekran startowy (przed zamieszczeniem pliku)
-
-![widok 1]( ./exported/start-screen.png )
-
-### Widok 2 - dodawanie kanału sieci
-
-![widok 2]( ./exported/add-channel.png )
-
-### Widok 3 - statystyki sieci
-
-![widok 3]( ./exported/general-info.png)
+Makiety trzech proponowanych widoków dostępne są do podglądu pod [tym URL](https://www.figma.com/design/LSVdFyCmJqtZo8UsO2cd5q/PZPS2_2024?node-id=0-1&t=1bl4m1dv9aWKn0LJ-1)
