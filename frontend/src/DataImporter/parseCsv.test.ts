@@ -40,13 +40,13 @@ describe('CSV Parsers', () => {
         "1,12,195.450000,37.5,1533.86,CH-10\n" +
         "2,13,195.650000,59.000,1532.29,CH-6\n" +
         "2,,,,,\n" +
-        "2,14,195.250000,37.5,1535.43,CH-14\n";
+        "2,14,195.250000,37.5,,\n";
 
       const expected = [
-        {edgeId: '1', channelId: '11', frequency: 195.85, channelWidth: 112.5, channelLabel: 'CH-2'},
-        {edgeId: '1', channelId: '12', frequency: 195.45, channelWidth: 50.0, channelLabel: 'CH-10'},
-        {edgeId: '2', channelId: '13', frequency: 195.65, channelWidth: 75.0, channelLabel: 'CH-6'},
-        {edgeId: '2', channelId: '14', frequency: 195.25, channelWidth: 50.0, channelLabel: 'CH-14'},
+        {edgeId: '1', channelId: '11', frequency: 195.85, channelWidth: 112.5},
+        {edgeId: '1', channelId: '12', frequency: 195.45, channelWidth: 50.0},
+        {edgeId: '2', channelId: '13', frequency: 195.65, channelWidth: 75.0},
+        {edgeId: '2', channelId: '14', frequency: 195.25, channelWidth: 50.0},
       ];
 
       expect(parseEdgeSpectrum(csvData)).toEqual(expected);
