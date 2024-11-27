@@ -1,10 +1,10 @@
-interface Node {
+export interface NodeDataRow {
   id: string;
   latitude: number;
   longitude: number;
 }
 
-interface Edge {
+export interface EdgeDataRow {
   id: string;
   node1: string;
   node2: string;
@@ -15,11 +15,11 @@ interface Edge {
   provisionedCapacity: number;
 }
 
-const isNodeValid = (node: Node): boolean => {
+const isNodeValid = (node: NodeDataRow): boolean => {
   return node.id !== '' && !isNaN(node.latitude) && !isNaN(node.longitude);
 }
 
-const isEdgeValid = (edge: Edge): boolean => {
+const isEdgeValid = (edge: EdgeDataRow): boolean => {
   return edge.id !== '' && edge.node1 !== '' && edge.node2 !== '' && !isNaN(edge.provisionedCapacity);
 }
 
@@ -30,7 +30,7 @@ const parseCsv = (data: string): string[][] => {
     .slice(1); // skip header
 }
 
-export const parseNodes = (data: string): Node[] => {
+export const parseNodes = (data: string): NodeDataRow[] => {
   const lines = parseCsv(data);
 
   return lines.map(([id, latitude, longitude]) => {
@@ -43,7 +43,7 @@ export const parseNodes = (data: string): Node[] => {
 
 }
 
-export const parseEdges = (data: string): Edge[] => {
+export const parseEdges = (data: string): EdgeDataRow[] => {
   const lines = parseCsv(data);
   return lines.map(([id, node1, node2, totalCapacity, provisionedCapacity]) => {
     const edge = {id, node1, node2, totalCapacity, provisionedCapacity: parseFloat(provisionedCapacity)};

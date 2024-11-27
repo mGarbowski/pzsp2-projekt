@@ -1,32 +1,25 @@
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {CsvUpload} from "./CsvUpload.tsx";
 import {parseEdges, parseNodes} from "./parseCsv.ts";
+import {buildNetwork} from "./buildNetwork.ts";
 
 export const DataImporter = () => {
 
-  const [nodesData, setNodesData] = useState<string | null>(null);
-  const [edgesData, setEdgesData] = useState<string | null>(null);
+  const [nodesCsv, setNodesCsv] = useState<string | null>(null);
+  const [edgesCsv, setEdgesCsv] = useState<string | null>(null);
 
-
-  useEffect(() => {
-    if (!nodesData) {
-      return;
-    }
-    console.info(parseNodes(nodesData));
-  }, [nodesData]);
-
-  useEffect(() => {
-    if (!edgesData) {
-      return;
-    }
-    console.info(parseEdges(edgesData));
-  }, [edgesData]);
+  if (nodesCsv && edgesCsv) {
+    const nodesData = parseNodes(nodesCsv);
+    const edgesData = parseEdges(edgesCsv);
+    const network = buildNetwork(nodesData, edgesData);
+    console.log("Network", network);
+  }
 
   return <div>
     <p>Węzły</p>
-    <CsvUpload onUpload={(data) => setNodesData(data)}/>
+    <CsvUpload onUpload={(data) => setNodesCsv(data)}/>
     <p>Zajętość</p>
-    <CsvUpload onUpload={(data) => setEdgesData(data)}/>
+    <CsvUpload onUpload={(data) => setEdgesCsv(data)}/>
   </div>
 
 }
