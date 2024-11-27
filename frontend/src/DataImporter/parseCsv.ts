@@ -62,12 +62,31 @@ export const parseEdges = (data: string): EdgeDataRow[] => {
   });
 }
 
+const remapChannelWidth = (frequency: number): number => {
+  if (frequency == 37.5) {
+    return 50.0;
+  } else if (frequency == 59.0) {
+    return 75.0;
+  } else if (frequency == 101.8) {
+    return 112.5;
+  }
+
+  return frequency;
+}
+
 export const parseEdgeSpectrum = (data: string): EdgeSpectrumDataRow[] => {
   const lines = parseCsv(data);
-  return lines.map(([edgeId, channelId, frequency, channelWidth, _,  channelLabel]) => {
+  return lines.map(([edgeId, channelId, frequency, channelWidth, _, channelLabel]) => {
     if (edgeId === '' || channelId === '' || frequency === '' || channelWidth === '' || channelLabel === '') {
       return null;
     }
-    return {edgeId, channelId, frequency: parseFloat(frequency), channelWidth: parseFloat(channelWidth), channelLabel};
+
+    return {
+      edgeId,
+      channelId,
+      frequency: parseFloat(frequency),
+      channelWidth: remapChannelWidth(parseFloat(channelWidth)),
+      channelLabel
+    };
   }).filter(row => row !== null) as EdgeSpectrumDataRow[];
 }
