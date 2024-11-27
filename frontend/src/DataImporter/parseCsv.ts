@@ -15,6 +15,14 @@ export interface EdgeDataRow {
   provisionedCapacity: number;
 }
 
+export interface EdgeSpectrumDataRow {
+  edgeId: string;
+  channelId: string;
+  frequency: number;
+  channelWidth: number;
+  channelLabel: string;
+}
+
 const isNodeValid = (node: NodeDataRow): boolean => {
   return node.id !== '' && !isNaN(node.latitude) && !isNaN(node.longitude);
 }
@@ -52,4 +60,14 @@ export const parseEdges = (data: string): EdgeDataRow[] => {
     }
     return edge;
   });
+}
+
+export const parseEdgeSpectrum = (data: string): EdgeSpectrumDataRow[] => {
+  const lines = parseCsv(data);
+  return lines.map(([edgeId, channelId, frequency, channelWidth, _,  channelLabel]) => {
+    if (edgeId === '' || channelId === '' || frequency === '' || channelWidth === '' || channelLabel === '') {
+      return null;
+    }
+    return {edgeId, channelId, frequency: parseFloat(frequency), channelWidth: parseFloat(channelWidth), channelLabel};
+  }).filter(row => row !== null) as EdgeSpectrumDataRow[];
 }
