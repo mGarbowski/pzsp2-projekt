@@ -24,6 +24,7 @@ export default tseslint.config(
                 {allowConstantExport: true},
             ],
             'indent': ['error', 2],
+            '@typescript-eslint/no-unused-vars': ["error", { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }],
         },
     },
 )
