@@ -4,20 +4,52 @@ interface Node {
   longitude: number;
 }
 
-const verifyNode = (node: Node): boolean => {
+interface Edge {
+  id: string;
+  node1: string;
+  node2: string;
+  totalCapacity: string;
+  /**
+   * Percentage of total capacity
+   */
+  provisionedCapacity: number;
+}
+
+const isNodeValid = (node: Node): boolean => {
   return node.id !== '' && !isNaN(node.latitude) && !isNaN(node.longitude);
 }
 
-export const parseNodes = (data: string): Node[] => {
-  const lines = data.split('\n');
-  const nodes: Node[] = [];
+const isEdgeValid = (edge: Edge): boolean => {
+  return edge.id !== '' && edge.node1 !== '' && edge.node2 !== '' && !isNaN(edge.provisionedCapacity);
+}
 
-  for (const line of lines.slice(1)) {
-    const [id, latitude, longitude] = line.split(',');
-    const node = { id, latitude: parseFloat(latitude), longitude: parseFloat(longitude) };
-    if (verifyNode(node)) {
-      nodes.push(node);
+const parseCsv = (data: string): string[][] => {
+  return data.split('\n')
+    .map(line => line.split(','))
+    .filter(line => line.length > 1)
+    .slice(1); // skip header
+}
+
+export const parseNodes = (data: string): Node[] => {
+  const lines = parseCsv(data);
+
+  return lines.map(([id, latitude, longitude]) => {
+    const node = {id, latitude: parseFloat(latitude), longitude: parseFloat(longitude)};
+    if (!isNodeValid(node)) {
+      throw new Error(`Invalid node: ${JSON.stringify(node)}`);
     }
-  }
-  return nodes;
+    return node;
+  });
+
+}
+
+export const parseEdges = (data: string): Edge[] => {
+  const lines = parseCsv(data);
+  return lines.map(([id, node1, node2, totalCapacity, provisionedCapacity]) => {
+    const edge = {id, node1, node2, totalCapacity, provisionedCapacity: parseFloat(provisionedCapacity)};
+    if (!isEdgeValid(edge)) {
+      throw new Error(`Invalid edge: ${JSON.stringify(edge)}`);
+    }
+    return edge;
+  });
 }

@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {CsvUpload} from "./CsvUpload.tsx";
-import {parseNodes} from "./parseCsv.ts";
+import {parseEdges, parseNodes} from "./parseCsv.ts";
 
 export const DataImporter = () => {
 
@@ -14,6 +14,13 @@ export const DataImporter = () => {
     }
     console.info(parseNodes(nodesData));
   }, [nodesData]);
+
+  useEffect(() => {
+    if (!edgesData) {
+      return;
+    }
+    console.info(parseEdges(edgesData));
+  }, [edgesData]);
 
   return <div>
     <p>Węzły</p>
