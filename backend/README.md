@@ -2,6 +2,14 @@
 
 ## Installation
 
+### Install pdm
+
+```bash
+curl -sSL https://pdm-project.org/install-pdm.py | python3 -
+```
+
+Other installation methods are listed [here](https://pdm-project.org/latest/#installation)
+
 ### Setup venv
 
 ```bash
