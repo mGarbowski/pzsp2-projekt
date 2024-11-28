@@ -30,7 +30,7 @@ lint = [
 ]
 
 [tool.pdm.scripts]
-start = {shell = "uvicorn src.pzsp_backend.app:app"}
+start = {shell = "uvicorn src.pzsp_backend.app:app --host 0.0.0.0 --port 8000"}
 lint = {shell = "flake8 src tests && black --check src tests && isort --check-only src tests"}
 format = {shell = "black src tests && isort src tests"}
 test = {shell = "pytest"}
