@@ -1,26 +1,37 @@
 # Backend API
 
-## Create virtual env
+## Installation
+
+### Setup venv
 
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
+pdm venv create     # create venv
+pdm venv activate   # activate it
 ```
 
-## Install dependencies
+### Install dependencies
 
 ```bash
-pip install -r requirements.txt
+pdm install         # install developer dependencies
+pdm install --prod  # install production dependencies
 ```
 
-## Run app in development mode
+## Run
 
 ```bash
-uvicorn app.main:app --reload
+pdm start       # start the server
 ```
 
-**Alternatively**
+## Test
 
 ```bash
-fastapi run main.py
+pdm test
+```
+
+## Other utilities
+
+```bash
+pdm lint    # runs flake8, black and isort with --check flags
+pdm format  # formats in place using black and isort
+pdm cov     # generates coverage report
 ```
