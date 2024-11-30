@@ -1,5 +1,5 @@
 <!-- 
-pandoc master.md -o documentation.pdf \
+pandoc master.md -o master.pdf \
     --pdf-engine=xelatex \
     --toc \
     --toc-depth=2 \
@@ -12,13 +12,15 @@ pandoc master.md -o documentation.pdf \
 ---
 title: "Sieć"
 subtitle: "Dokumentacja projektowa PZSP2"
-date: "2024-11-19"
+date: "2024-11-30"
 titlepage: true
 titlepage-color: "FFFFFF"
 titlepage-text-color: "000000"
 titlepage-rule-color: "000000"
 titlepage-rule-height: 2
 ---
+
+\newpage
 
 # Wprowadzenie
 
@@ -35,9 +37,7 @@ titlepage-rule-height: 2
 
 **Właściciel tematu: dr. inż. Stanisław Kozdrowski**
 
-\newpage
-
-## Cel projektu
+## Cel projektu {#project-goal}
 Celem jest stworzenie aplikacji wspomagającej optymalizację bieżącego ruchu w realistycznej sieci 
 teleinformatycznej. Podstawowym zadaniem jest odzwierciedlenie aktualnej zajętości pasma w sieci 
 optycznej na podstawie plików z baz danych: w postaci arkusza kalkulacyjnego, jak i w postaci graficznej 
@@ -99,6 +99,8 @@ Role w zespole według podziału Belbina
 * Maksym Bieńkowski - Implementer, Resource Investgator, Team Worker
 * Michał Luszczek - Coordinator, Implementer, Team Worker
 * Krzysztof Sokół - Implementator, Evaluator
+
+\newpage
 
 # Analiza wymagań
 
@@ -162,7 +164,7 @@ Aktorzy: osoba zarządzająca rozkładem połączeń w sieci
 
 1. Aplikacja powinna dostarczać wynik optymalizacji ułożenia kanału w czasie nie dłuższym niż 5 minut dla sieci złożonej z nie więcej niż 300 kanałów.
 
-## Przypadki użycia
+## Przypadki użycia {#use-cases}
 
 **Biznesowe przypadki użycia**
 
@@ -309,3 +311,92 @@ TODO: Do uzupełnienia kiedy dostaniemy przykładowy zbiór od właściciela pro
 ## Potwierdzenie zgodności wymagań
 
 ![Zrzut ekranu z akceptacją wymagań przez właściciela i mentora](./images/acceptance.png)
+
+\newpage
+
+# Definicja architektury
+
+Opis architektury projektu w modelu 4+1
+
+## Scenariusze
+Przypadki użycia opisane w punkcie \ref{use-cases} dokumentacji.
+
+## Widok logiczny
+
+![Diagram klas dla widoku logicznego](./diagrams/logical-view.drawio.png)
+
+* Użytkownik (analityk) korzysta z interfejsów do
+    * wprowadzania opisu sieci do systemu
+    * przeglądania prezentacji sieci
+    * generowania raportu zajętości pasma przez kanały
+    * wyznaczanie nowego kanału z użyciem modelu optymalizacyjnego
+* System dostarcza 2 modeli optymalizacyjnych
+    * oparty o algorytm Dijkstry
+    * oparty o model programowania całkowitoliczbowego
+* Pojęcia użyte w modelu sieci są objaśnione w punkcie \ref{project-goal} dokumentacji
+
+## Widok procesu
+
+![Diagram aktywności dla widoku procesu](./diagrams/process-view.drawio.png){#fig:process-view}
+
+Diagram \ref{fig:process-view} przedstawia typowe użycie systemu
+
+* Użytkownik zaczyna od wprowadzenia opisu sieci
+* Dla załadowanej sieci użytkownik może
+    * obejrzeć jej wizualizację i przeglądać parametry jej elementów
+    * wygenerować raport na podstawie aktualnie załadowanej sieci
+    * zestawić nowy kanał w sieci wykorzystując model optymalizacyjny 
+
+## Widok implementacji
+
+![Diagram komponentów dla widoku implementacji](./diagrams/development-view.drawio.png)
+
+* Aplikacja webowa dostarcza widoków użytkownika do
+    * importu opisu sieci z plików .csv
+    * przeglądania graficznej prezentacji sieci (wizualizacja sieci i podgląd statystyk wybranych elementów)
+    * generowania raportów w formacie .csv
+    * korzystania z modeli optymalizacyjnych
+* Modele optymalizacyjne są zaimplementowane po stronie serwera
+    * API Controller przyjmuje żądania, zleca przeprowadzenie optymalizacji i odsyła wynik
+
+W implementacji podsystemu `WebApp` planujemy wykorzystać framework React (Typescript) i bibliotekę 
+do wizualizacji grafów (do ustalenia).
+
+W implementacji podsystemu `OptimisationBackend` planujemy wykorzystać framework FastAPI (Python), 
+bibliotekę Pyomo oraz solwer dla modeli programowania całkowitoliczbowego (do ustalenia). 
+
+Do zweryfikowania pozostaje kwestia, czy istnieje solwer na licencji Open Source, który obsłuży 
+nasz model całkowitoliczbowy i zbiór danych.
+Alternatywnie możemy wykorzystać oprogramowanie AMPL, w środowisku chmurowym dostępnym dla PW, 
+na który licencję może udostępnić nam właściciel tematu.
+
+## Widok fizyczny
+
+![Diagram wdrożenia dla widoku fizycznego](./diagrams/physical-view.drawio.png)
+
+* Aplikacja będzie wdrożona na jednym serwerze
+    * przyjmujemy roboczo, że będzie to Raspberry Pi
+* Aplikacja jest uruchamiana w środowisku Docker
+* Kontener `backend`
+    * artefakty obejmują kod źródłowy aplikacji wykorzystującej framework FastAPI oraz implementację modeli optymalizacyjnych.
+    * realizuje funkcje podsystemu `Optimisation Backend`
+* Kontener `web-server`
+    * serwer HTTP Nginx
+    * serwuje aplikację webową realizującą funkcje podsystemu `WebApp`
+    * służy jako reverse proxy dla klientów komunikujących się z podsystemem `Optimisation Backend`
+    * artefakty to kod zbudowanej aplikacji webowej oraz pliki konfiguracyjne serwera Nginx
+* Kontenery będą połączone w jednym *docker network*
+* Schemat komunikacji klient-serwer
+    * klient wysyła żądanie użycia modelu optymalizacyjnego z danymi wejściowymi (opis sieci, opis żądanego kanału)
+    * serwer odpowiada, że przyjął żądanie
+    * serwer uruchamia model optymalizacyjny (czas przetwarzania rzędu kilku minut)
+    * serwer odsyła klientowi wynik optymalizacji (parametry nowego kanału)
+
+Ze względu na długi czas przetwarzania po stronie serwera, chcemy zastosować protokół WebSockets, 
+który umożliwi dwustronną komunikację, w której serwer odeśle wynik, kiedy będzie gotowy. 
+W ten sposób unikniemy cyklicznego odpytywania serwera przez klienta (polling).
+
+Powyższy plan wymagałby zmiany, jeśli skorzystamy z licencji na program AMPL w środowisku 
+OpenStack Zakładu Sztucznej Inteligencji Instytutu Informatyki (planujemy jednak, o ile to możliwe, 
+wykorzystać rozwiązania Open Source).
+
