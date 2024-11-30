@@ -413,3 +413,24 @@ a następnie usuwa te dane, wracając do stanu początkowego.
 
 Formaty plików wejściowych są opisane w punkcie \ref{requirements-analysis}.
 
+\newpage
+
+# Specyfikacja analityczna i projektowa
+
+## Repozytorium kodu źródłowego
+[https://github.com/mGarbowski/pzsp2-projekt](https://github.com/mGarbowski/pzsp2-projekt)
+
+## Wykorzystane technologie
+* React (Typescript)
+* FastAPI (Python)
+* Pyomo (Python)
+* Docker
+* Nginx
+* WebSockets
+
+## Diagram klas
+Dotyczy kolejnych etapów projektu.
+
+## Statystyki
+Dotyczy kolejnych etapów projektu.
+
