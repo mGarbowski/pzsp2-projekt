@@ -1,5 +1,5 @@
 <!-- 
-pandoc master.md -o documentation.pdf \
+pandoc master.md -o master.pdf \
     --pdf-engine=xelatex \
     --toc \
     --toc-depth=2 \
@@ -12,7 +12,7 @@ pandoc master.md -o documentation.pdf \
 ---
 title: "Sieć"
 subtitle: "Dokumentacja projektowa PZSP2"
-date: "2024-11-19"
+date: "2024-11-30"
 titlepage: true
 titlepage-color: "FFFFFF"
 titlepage-text-color: "000000"
@@ -20,9 +20,11 @@ titlepage-rule-color: "000000"
 titlepage-rule-height: 2
 ---
 
+\newpage
+
 # Wprowadzenie
 
-**Wersja 1.1**
+**Wersja 1.2**
 
 **Zespół nr 2 w składzie**
 
@@ -35,12 +37,10 @@ titlepage-rule-height: 2
 
 **Właściciel tematu: dr. inż. Stanisław Kozdrowski**
 
-\newpage
-
-## Cel projektu
+## Cel projektu {#project-goal}
 Celem jest stworzenie aplikacji wspomagającej optymalizację bieżącego ruchu w realistycznej sieci 
 teleinformatycznej. Podstawowym zadaniem jest odzwierciedlenie aktualnej zajętości pasma w sieci 
-optycznej na podstawie plików z baz danych: w postaci arkusza kalkulacyjnego jak i w postaci graficznej 
+optycznej na podstawie plików z baz danych: w postaci arkusza kalkulacyjnego, jak i w postaci graficznej 
 na modelu topologicznym sieci (mapa zajętości). W przeciwieństwie do technologii fixed grid, która 
 zakłada równomierny podział pasma między kanały, stosowany model flex grid umożliwia zmienny 
 przydział jednostek nazywanych slice'ami. Pozwala to na minimalizację marnowanego pasma, co 
@@ -54,7 +54,7 @@ taką siecią.
 * możliwość zestawienia nowych kanałów i automatyczny dobór optymalnych tras zapewniających 
 równomierne obciążenie sieci
 * generowanie raportów zajętości slice'ów w postaci plików csv
-* zaproponowanie modelu w postaci matematycznej, zawierającego funkcję celu (kosztu) oraz zbioru ograniczeń, optymalizujacego pasmo oraz ruting nowo-zestawianych kanałów (ścieżek) optycznych w sieci
+* zaproponowanie modelu w postaci matematycznej, zawierającego funkcję celu (kosztu) oraz zbioru ograniczeń, optymalizującego pasmo oraz ruting nowo-zestawianych kanałów (ścieżek) optycznych w sieci
 
 **Słowik pojęć**
 
@@ -71,7 +71,7 @@ Projekt realizowany jako aplikacja sieciowa.
 
 **Tryb Działania**
 
-* Użytkownik ma do dyspozycji interfejs na którym wyświetlana jest sieć w postaci grafu.
+* Użytkownik ma do dyspozycji interfejs, na którym wyświetlana jest sieć w postaci grafu.
 * Dla polepszenia czytelności graf nałożony będzie na mapę, przez co łatwo będzie identyfikować połączenia.
 * Interfejs użytkownika udostępnia narzędzia do modyfikacji modelu sieci i parametrów modeli optymalizacyjnych.
 * System dostarcza modeli optymalizacyjnych do wyznaczania nowych kanałów w sieci.
@@ -86,6 +86,8 @@ Danymi w projekcie są:
 
 System nie będzie trwale przechowywać danych.
 
+\newpage
+
 # Metodologia wytwarzania
 
 * Praca, poza określonymi w harmonogramie konsultacjami, organizowana jest w formie zwinnej.
@@ -95,12 +97,14 @@ System nie będzie trwale przechowywać danych.
 
 Role w zespole według podziału Belbina
 
-* Mikołaj Grabowski  - Shaper, Implementer, Team worker
-* Maksym Bieńkowski - Implementer, Resource Investgator, Team Worker
-* Michał Luszczek - Coordinator, Implementer, Team Worker
-* Krzysztof Sokół - Implementator, Evaluator
+* Mikołaj Grabowski - Shaper, Implementer, Team worker
+* Maksym Bieńkowski - Implementer, Resource Investigator, Team Worker
+* Michał Łuszczek - Coordinator, Implementer, Team Worker
+* Krzysztof Sokół - Implementer, Evaluator
 
-# Analiza wymagań
+\newpage
+
+# Analiza wymagań {#requirements-analysis}
 
 ## Wymagania użytkownika i biznesowe
 
@@ -129,7 +133,7 @@ Aktorzy: osoba zarządzająca rozkładem połączeń w sieci
 **Wymagania systemowe**
 
 1. System powinien udostępnić użytkownikowi graficzną reprezentację sieci w formie grafu
-2. System powinien móc wyświetlać graf rzutowany na mapę geograficzną obszaru na podstawie koordynatów poszczególnych węzłów
+2. System powinien móc wyświetlać graf rzutowany na mapę geograficzną obszaru na podstawie współrzędnych poszczególnych węzłów
 3. System powinien wyświetlać zajętość slice'ów danej krawędzi po najechaniu na nią myszką
 4. System powinien wyświetlać krawędzie w różnych kolorach reprezentujących zajętość pasma
 5. System powinien ustalać optymalne ułożenie nowo zdefiniowanego kanału
@@ -162,7 +166,7 @@ Aktorzy: osoba zarządzająca rozkładem połączeń w sieci
 
 1. Aplikacja powinna dostarczać wynik optymalizacji ułożenia kanału w czasie nie dłuższym niż 5 minut dla sieci złożonej z nie więcej niż 300 kanałów.
 
-## Przypadki użycia
+## Przypadki użycia {#use-cases}
 
 **Biznesowe przypadki użycia**
 
@@ -203,7 +207,7 @@ Scenariusz alternatywny - system nie może wyznaczyć żądanego kanału:
 
 1. Użytkownik wprowadza parametry dla pożądanego kanału.
 2. System informuje użytkownika o niepowodzeniu wyznaczania nowego kanału.
-3. System umozliwia ponowne wprowadzenie parametrów - powrót do kroku 1.
+3. System umożliwia ponowne wprowadzenie parametrów - powrót do kroku 1.
 
 
 **Systemowe przypadki użycia**
@@ -217,10 +221,10 @@ Aktorzy: użytkownik.
 Scenariusz główny:
 
 1. Użytkownik otwiera widok wprowadzania danych.
-1. Użytkownik wybiera plik z opisem sieci (RB1).
-2. Użytkownik potwierdza, że chce nadpisać aktualnie załadowaną w systemie sieć.
-3. System informuje użytkownika o poprawnym załadowaniu pliku.
-4. System wyświetla widok prezentacji załadowanej sieci.
+2. Użytkownik wybiera plik z opisem sieci (RB1).
+3. Użytkownik potwierdza, że chce nadpisać aktualnie załadowaną w systemie sieć.
+4. System informuje użytkownika o poprawnym załadowaniu pliku.
+5. System wyświetla widok prezentacji załadowanej sieci.
 
 Scenariusz alternatywny - nieprawidłowy plik:
 
@@ -290,7 +294,7 @@ Scenariusz alternatywny - system nie może wyznaczyć żądanego kanału:
 6. System umożliwia zmianę parametrów i podobną próbę - powrót do kroku 4.
 
 ### Reguły biznesowe
-TODO: Do uzupełnienia kiedy dostaniemy przykładowy zbiór od właściciela projektu
+TODO: Do uzupełnienia, kiedy dostaniemy przykładowy zbiór od właściciela projektu
 
 ### RB1 Format pliku opisującego sieć teletransmisyjną
 
@@ -308,4 +312,153 @@ TODO: Do uzupełnienia kiedy dostaniemy przykładowy zbiór od właściciela pro
 
 ## Potwierdzenie zgodności wymagań
 
-![Zrzut ekranu z akceptacją wymagań przez właściciela i mentora](./acceptance.png)
+![Zrzut ekranu z akceptacją wymagań przez właściciela i mentora](./images/acceptance.png)
+
+\newpage
+
+# Definicja architektury
+
+Opis architektury projektu w modelu 4+1
+
+## Scenariusze
+Przypadki użycia opisane w punkcie \ref{use-cases} dokumentacji.
+
+## Widok logiczny
+
+* Rysunek \ref{fig:logical-view} przedstawia diagram klas
+* Użytkownik (analityk) korzysta z interfejsów do
+    * wprowadzania opisu sieci do systemu
+    * przeglądania prezentacji sieci
+    * generowania raportu zajętości pasma przez kanały
+    * wyznaczanie nowego kanału z użyciem modelu optymalizacyjnego
+* System dostarcza 2 modeli optymalizacyjnych
+    * oparty o algorytm Dijkstry
+    * oparty o model programowania całkowitoliczbowego
+* Pojęcia użyte w modelu sieci są objaśnione w punkcie \ref{project-goal} dokumentacji
+
+## Widok procesu
+
+* Diagram \ref{fig:process-view} przedstawia typowe użycie systemu
+* Użytkownik zaczyna od wprowadzenia opisu sieci
+* Dla załadowanej sieci użytkownik może
+    * obejrzeć jej wizualizację i przeglądać parametry jej elementów
+    * wygenerować raport na podstawie aktualnie załadowanej sieci
+    * zestawić nowy kanał w sieci wykorzystując model optymalizacyjny 
+
+## Widok implementacji
+
+* Rysunek \ref{fig:development-view} przedstawia diagram komponentów
+* Aplikacja webowa dostarcza widoków użytkownika do
+    * importu opisu sieci z plików .csv
+    * przeglądania graficznej prezentacji sieci (wizualizacja sieci i podgląd statystyk wybranych elementów)
+    * generowania raportów w formacie .csv
+    * korzystania z modeli optymalizacyjnych
+* Modele optymalizacyjne są zaimplementowane po stronie serwera
+    * API Controller przyjmuje żądania, zleca przeprowadzenie optymalizacji i odsyła wynik
+
+W implementacji podsystemu `WebApp` planujemy wykorzystać framework React (Typescript) i bibliotekę 
+do wizualizacji grafów (do ustalenia).
+
+W implementacji podsystemu `OptimisationBackend` planujemy wykorzystać framework FastAPI (Python), 
+bibliotekę Pyomo oraz solwer dla modeli programowania całkowitoliczbowego (do ustalenia). 
+
+Do zweryfikowania pozostaje kwestia, czy istnieje solwer na licencji Open Source, który obsłuży 
+nasz model całkowitoliczbowy i zbiór danych.
+Alternatywnie możemy wykorzystać oprogramowanie AMPL, w środowisku chmurowym dostępnym dla PW, 
+na który licencję może udostępnić nam właściciel tematu.
+
+## Widok fizyczny
+
+* Rysunek \ref{fig:physical-view} przedstawia diagram wdrożenia
+* Aplikacja będzie wdrożona na jednym serwerze
+    * przyjmujemy roboczo, że będzie to Raspberry Pi
+* Aplikacja jest uruchamiana w środowisku Docker
+* Kontener `backend`
+    * artefakty obejmują kod źródłowy aplikacji wykorzystującej framework FastAPI oraz implementację modeli optymalizacyjnych.
+    * realizuje funkcje podsystemu `Optimisation Backend`
+* Kontener `web-server`
+    * serwer HTTP Nginx
+    * serwuje aplikację webową realizującą funkcje podsystemu `WebApp`
+    * służy jako reverse proxy dla klientów komunikujących się z podsystemem `Optimisation Backend`
+    * artefakty to kod zbudowanej aplikacji webowej oraz pliki konfiguracyjne serwera Nginx
+* Kontenery będą połączone w jednym *docker network*
+* Schemat komunikacji klient-serwer
+    * klient wysyła żądanie użycia modelu optymalizacyjnego z danymi wejściowymi (opis sieci, opis żądanego kanału)
+    * serwer odpowiada, że przyjął żądanie
+    * serwer uruchamia model optymalizacyjny (czas przetwarzania rzędu kilku minut)
+    * serwer odsyła klientowi wynik optymalizacji (parametry nowego kanału)
+
+Ze względu na długi czas przetwarzania po stronie serwera, chcemy zastosować protokół WebSockets, 
+który umożliwi dwustronną komunikację, w której serwer odeśle wynik, kiedy będzie gotowy. 
+W ten sposób unikniemy cyklicznego odpytywania serwera przez klienta (polling).
+
+Powyższy plan wymagałby zmiany, jeśli skorzystamy z licencji na program AMPL w środowisku 
+OpenStack Zakładu Sztucznej Inteligencji Instytutu Informatyki (planujemy jednak, o ile to możliwe, 
+wykorzystać rozwiązania Open Source).
+
+![Diagram klas dla widoku logicznego](./diagrams/logical-view.drawio.png){#fig:logical-view}
+
+![Diagram aktywności dla widoku procesu](./diagrams/process-view.drawio.png){#fig:process-view}
+
+![Diagram komponentów dla widoku implementacji](./diagrams/development-view.drawio.png){#fig:development-view}
+
+![Diagram wdrożenia dla widoku fizycznego](./diagrams/physical-view.drawio.png){#fig:physical-view}
+
+\newpage
+
+# Dane trwałe
+W naszym projekcie nie przewidujemy użycia bazy danych.
+
+Model sieci teleinformatycznej (wraz ze wszystkimi zmianami) będzie przechowywany po stronie aplikacji przeglądarkowej 
+do momentu zamknięcia lub odświeżania strony. Po tym okresie konieczne będzie ponowne wgranie opisu. 
+Po stronie serwera nie są przechowywane stale żadne dane. Działa on jak funkcja, która otrzymuje model sieci 
+i parametry optymalizatora, oblicza optymalną trasę kanału, zwraca ją aplikacji przeglądarkowej, 
+a następnie usuwa te dane, wracając do stanu początkowego.
+
+Formaty plików wejściowych są opisane w punkcie \ref{requirements-analysis}.
+
+\newpage
+
+# Specyfikacja analityczna i projektowa
+
+## Repozytorium kodu źródłowego
+[https://github.com/mGarbowski/pzsp2-projekt](https://github.com/mGarbowski/pzsp2-projekt)
+
+## Wykorzystane technologie
+* React (Typescript)
+* FastAPI (Python)
+* Pyomo (Python)
+* Docker
+* Nginx
+* WebSockets
+
+## Diagram klas
+Dotyczy kolejnych etapów projektu.
+
+## Statystyki
+Dotyczy kolejnych etapów projektu.
+
+\newpage
+
+# Projekt standardu interfejsu użytkownika
+
+## Aktorzy
+
+Użytkownik aplikacji - analityk sieci teleinformatycznej w dużej firmie telekomunikacyjnej
+
+## Historyjki użytkownika
+
+1. Jako analityk sieci teleinformatycznej chcę wizualizować istniejący graf połączeń i ich zajętości w sieci, aby łatwo zrozumieć strukturę połączeń i zidentyfikować potencjalne problemy
+2. Jako analityk sieci teleinformatycznej chcę, aby optymalne ścieżki nowych kanałów były automatycznie wyznaczane, aby uniknąć ręcznej analizy i zapewnić efektywne wykorzystanie pasma
+3. Jako analityk sieci teleinformatycznej chcę łatwo wygenerować raporty o zajętości kanałów w istniejącej sieci, aby monitorować obciążenie sieci i zapobiegać ewentualnym przeciążeniom
+4. Jako analityk sieci teleinformatycznej, chcę mieć łatwy i intuicyjny dostęp do danych o obciążeniu dowolnego elementu w sieci, aby zidentyfikować słabe punkty i wąskie gardła systemu.
+5. Jako analityk sieci teleinformatycznej, chcę optymalnie wykorzystywać przepustowość sieci, aby zminimalizować koszty ponoszone przez moją firmę i zapewnić, że sieć będzie gotowa na dalsze rozszerzenia.
+
+## Makiety interfejsu użytkownika
+Makiety trzech proponowanych widoków w programie Figma dostępne są do podglądu pod [(tym URL)](https://www.figma.com/design/LSVdFyCmJqtZo8UsO2cd5q/PZPS2_2024?node-id=0-1&t=1bl4m1dv9aWKn0LJ-1)
+
+![Widok importera danych](./images/figma/start-screen.png)
+
+![Widok prezentacji sieci](./images/figma/general-info.png)
+
+![Widok dodawania kanału (użycie modelu optymalizacyjnego)](./images/figma/add-channel.png)
