@@ -102,7 +102,7 @@ Role w zespole według podziału Belbina
 
 \newpage
 
-# Analiza wymagań
+# Analiza wymagań {#requirements-analysis}
 
 ## Wymagania użytkownika i biznesowe
 
@@ -399,4 +399,17 @@ W ten sposób unikniemy cyklicznego odpytywania serwera przez klienta (polling).
 Powyższy plan wymagałby zmiany, jeśli skorzystamy z licencji na program AMPL w środowisku 
 OpenStack Zakładu Sztucznej Inteligencji Instytutu Informatyki (planujemy jednak, o ile to możliwe, 
 wykorzystać rozwiązania Open Source).
+
+\newpage
+
+# Dane trwałe
+W naszym projekcie nie przewidujemy użycia bazy danych.
+
+Model sieci teleinformatycznej (wraz ze wszystkimi zmianami) będzie przechowywany po stronie aplikacji przeglądarkowej 
+do momentu zamknięcia lub odświeżania strony. Po tym okresie konieczne będzie ponowne wgranie opisu. 
+Po stronie serwera nie są przechowywane stale żadne dane. Działa on jak funkcja, która otrzymuje model sieci 
+i parametry optymalizatora, oblicza optymalną trasę kanału, zwraca ją aplikacji przeglądarkowej, 
+a następnie usuwa te dane, wracając do stanu początkowego.
+
+Formaty plików wejściowych są opisane w punkcie \ref{requirements-analysis}.
 
