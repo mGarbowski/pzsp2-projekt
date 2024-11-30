@@ -71,7 +71,7 @@ Projekt realizowany jako aplikacja sieciowa.
 
 **Tryb Działania**
 
-* Użytkownik ma do dyspozycji interfejs na którym wyświetlana jest sieć w postaci grafu.
+* Użytkownik ma do dyspozycji interfejs, na którym wyświetlana jest sieć w postaci grafu.
 * Dla polepszenia czytelności graf nałożony będzie na mapę, przez co łatwo będzie identyfikować połączenia.
 * Interfejs użytkownika udostępnia narzędzia do modyfikacji modelu sieci i parametrów modeli optymalizacyjnych.
 * System dostarcza modeli optymalizacyjnych do wyznaczania nowych kanałów w sieci.
@@ -95,10 +95,10 @@ System nie będzie trwale przechowywać danych.
 
 Role w zespole według podziału Belbina
 
-* Mikołaj Grabowski  - Shaper, Implementer, Team worker
-* Maksym Bieńkowski - Implementer, Resource Investgator, Team Worker
-* Michał Luszczek - Coordinator, Implementer, Team Worker
-* Krzysztof Sokół - Implementator, Evaluator
+* Mikołaj Grabowski - Shaper, Implementer, Team worker
+* Maksym Bieńkowski - Implementer, Resource Investigator, Team Worker
+* Michał Łuszczek - Coordinator, Implementer, Team Worker
+* Krzysztof Sokół - Implementer, Evaluator
 
 \newpage
 
@@ -131,7 +131,7 @@ Aktorzy: osoba zarządzająca rozkładem połączeń w sieci
 **Wymagania systemowe**
 
 1. System powinien udostępnić użytkownikowi graficzną reprezentację sieci w formie grafu
-2. System powinien móc wyświetlać graf rzutowany na mapę geograficzną obszaru na podstawie koordynatów poszczególnych węzłów
+2. System powinien móc wyświetlać graf rzutowany na mapę geograficzną obszaru na podstawie współrzędnych poszczególnych węzłów
 3. System powinien wyświetlać zajętość slice'ów danej krawędzi po najechaniu na nią myszką
 4. System powinien wyświetlać krawędzie w różnych kolorach reprezentujących zajętość pasma
 5. System powinien ustalać optymalne ułożenie nowo zdefiniowanego kanału
@@ -292,7 +292,7 @@ Scenariusz alternatywny - system nie może wyznaczyć żądanego kanału:
 6. System umożliwia zmianę parametrów i podobną próbę - powrót do kroku 4.
 
 ### Reguły biznesowe
-TODO: Do uzupełnienia kiedy dostaniemy przykładowy zbiór od właściciela projektu
+TODO: Do uzupełnienia, kiedy dostaniemy przykładowy zbiór od właściciela projektu
 
 ### RB1 Format pliku opisującego sieć teletransmisyjną
 
@@ -445,8 +445,8 @@ Użytkownik aplikacji - analityk sieci teleinformatycznej w dużej firmie teleko
 ## Historyjki użytkownika
 
 1. Jako analityk sieci teleinformatycznej chcę wizualizować istniejący graf połączeń i ich zajętości w sieci, aby łatwo zrozumieć strukturę połączeń i zidentyfikować potencjalne problemy
-2. Jako analityk sieci teleinformatycznej chcę, aby optymalne ścieżki nowych kanałów były automatycznie wyznaczane aby uniknąć ręcznej analizy i zapewnić efektywne wykorzystanie pasma
-3. Jako analityk sieci teleinformatycznej chcę łatwo wygenerować raporty o zajętości kanałów w istniejącej sieci aby monitorować obciążenie sieci i zapobiegać ewentualnym przeciążeniom
+2. Jako analityk sieci teleinformatycznej chcę, aby optymalne ścieżki nowych kanałów były automatycznie wyznaczane, aby uniknąć ręcznej analizy i zapewnić efektywne wykorzystanie pasma
+3. Jako analityk sieci teleinformatycznej chcę łatwo wygenerować raporty o zajętości kanałów w istniejącej sieci, aby monitorować obciążenie sieci i zapobiegać ewentualnym przeciążeniom
 4. Jako analityk sieci teleinformatycznej, chcę mieć łatwy i intuicyjny dostęp do danych o obciążeniu dowolnego elementu w sieci, aby zidentyfikować słabe punkty i wąskie gardła systemu.
 5. Jako analityk sieci teleinformatycznej, chcę optymalnie wykorzystywać przepustowość sieci, aby zminimalizować koszty ponoszone przez moją firmę i zapewnić, że sieć będzie gotowa na dalsze rozszerzenia.
 
