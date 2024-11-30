@@ -308,4 +308,4 @@ TODO: Do uzupełnienia kiedy dostaniemy przykładowy zbiór od właściciela pro
 
 ## Potwierdzenie zgodności wymagań
 
-![Zrzut ekranu z akceptacją wymagań przez właściciela i mentora](./acceptance.png)
+![Zrzut ekranu z akceptacją wymagań przez właściciela i mentora](./images/acceptance.png)
