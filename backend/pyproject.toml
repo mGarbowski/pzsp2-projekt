@@ -1,0 +1,57 @@
+[project]
+name = "pzsp-backend"
+version = "0.1.0"
+description = "Default template for PDM package"
+authors = [
+    {name = "Maksym", email = "bienkowski.maksym@gmail.com"},
+]
+dependencies = [
+    "fastapi[standard]>=0.115.5",
+    "pydantic>=2.10.2",
+    "uvicorn>=0.32.1",
+]
+requires-python = "==3.12.*"
+readme = "README.md"
+license = {text = "MIT"}
+
+
+[tool.pdm]
+distribution = false
+
+[tool.pdm.dev-dependencies]
+test = [
+    "pytest>=8.3.3",
+    "pytest-cov>=6.0.0",
+]
+lint = [
+    "black>=24.10.0",
+    "isort>=5.13.2",
+    "flake8>=7.1.1",
+]
+
+[tool.pdm.scripts]
+start = {shell = "uvicorn src.pzsp_backend.app:app --host 0.0.0.0 --port 8000"}
+lint = {shell = "flake8 src tests && black --check src tests && isort --check-only src tests"}
+format = {shell = "black src tests && isort src tests"}
+test = {shell = "pytest"}
+cov = {shell = "pytest --cov=src"}
+
+[tool.coverage.run]
+branch = true
+source = ["src"]
+
+[tool.coverage.report] # TODO: does not display lines for some reason
+show_missing = true
+
+[tool.black]
+line-length = 88
+target-version = ['py39']
+
+[tool.isort]
+profile = "black"
+
+[tool.flake8]
+max-line-length = 88
+extend-ignore = "E203, W503"
+
+

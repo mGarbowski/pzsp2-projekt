@@ -1,26 +1,45 @@
 # Backend API
 
-## Create virtual env
+## Installation
+
+### Install pdm
 
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
+curl -sSL https://pdm-project.org/install-pdm.py | python3 -
 ```
 
-## Install dependencies
+Other installation methods are listed [here](https://pdm-project.org/latest/#installation)
+
+### Setup venv
 
 ```bash
-pip install -r requirements.txt
+pdm venv create     # create venv
+pdm venv activate   # activate it
 ```
 
-## Run app in development mode
+### Install dependencies
 
 ```bash
-uvicorn app.main:app --reload
+pdm install         # install developer dependencies
+pdm install --prod  # install production dependencies
 ```
 
-**Alternatively**
+## Run
 
 ```bash
-fastapi run main.py
+pdm start       # start the server
+```
+
+## Test
+
+```bash
+pdm test
+```
+
+## Other utilities
+
+```bash
+pdm lint    # runs flake8, black and isort with --check flags
+pdm format  # formats in place using black and isort
+pdm cov     # generates coverage report
 ```

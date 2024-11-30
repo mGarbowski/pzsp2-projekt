@@ -7,16 +7,15 @@ services:
       - "8000:8000"
     networks:
       - app-network
-
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile.dev
     ports:
-      - "80:80"
+      - "2137:2137"
     networks:
       - app-network
-
 networks:
   app-network:
     driver: bridge
+

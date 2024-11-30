@@ -1,11 +1,29 @@
-FROM python:3.12-slim
+# Use an official Python runtime as a parent image
+FROM python:3.12-slim as base
 
-WORKDIR /app
+# Set environment variables
+ENV PYTHONUNBUFFERED=1
 
-COPY requirements.txt .
+# Set the working directory to /psi_backend
+WORKDIR /pzsp_backend
 
-RUN pip install --no-cache-dir -r requirements.txt
+# Copy project files
+COPY pyproject.toml pdm.lock ./
 
-COPY . .
+# Install PDM
+RUN pip install --no-cache-dir pdm
 
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Copy the application code
+COPY src ./src
+
+# Production target
+FROM base as prod
+
+# Install production dependencies
+RUN pdm install --prod --no-editable --no-lock
+
+# Expose port 8000
+EXPOSE 8000
+
+# Run the application
+CMD ["pdm", "start"]
