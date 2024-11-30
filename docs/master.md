@@ -434,3 +434,27 @@ Dotyczy kolejnych etapów projektu.
 ## Statystyki
 Dotyczy kolejnych etapów projektu.
 
+\newpage
+
+# Projekt standardu interfejsu użytkownika
+
+## Aktorzy
+
+Użytkownik aplikacji - analityk sieci teleinformatycznej w dużej firmie telekomunikacyjnej
+
+## Historyjki użytkownika
+
+1. Jako analityk sieci teleinformatycznej chcę wizualizować istniejący graf połączeń i ich zajętości w sieci, aby łatwo zrozumieć strukturę połączeń i zidentyfikować potencjalne problemy
+2. Jako analityk sieci teleinformatycznej chcę, aby optymalne ścieżki nowych kanałów były automatycznie wyznaczane aby uniknąć ręcznej analizy i zapewnić efektywne wykorzystanie pasma
+3. Jako analityk sieci teleinformatycznej chcę łatwo wygenerować raporty o zajętości kanałów w istniejącej sieci aby monitorować obciążenie sieci i zapobiegać ewentualnym przeciążeniom
+4. Jako analityk sieci teleinformatycznej, chcę mieć łatwy i intuicyjny dostęp do danych o obciążeniu dowolnego elementu w sieci, aby zidentyfikować słabe punkty i wąskie gardła systemu.
+5. Jako analityk sieci teleinformatycznej, chcę optymalnie wykorzystywać przepustowość sieci, aby zminimalizować koszty ponoszone przez moją firmę i zapewnić, że sieć będzie gotowa na dalsze rozszerzenia.
+
+## Makiety interfejsu użytkownika
+Makiety trzech proponowanych widoków w programie Figma dostępne są do podglądu pod [(tym URL)](https://www.figma.com/design/LSVdFyCmJqtZo8UsO2cd5q/PZPS2_2024?node-id=0-1&t=1bl4m1dv9aWKn0LJ-1)
+
+![Widok importera danych](./images/figma/start-screen.png)
+
+![Widok prezentacji sieci](./images/figma/general-info.png)
+
+![Widok dodawania kanału (użycie modelu optymalizacyjnego)](./images/figma/add-channel.png)
