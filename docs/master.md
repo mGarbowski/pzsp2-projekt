@@ -24,7 +24,7 @@ titlepage-rule-height: 2
 
 # Wprowadzenie
 
-**Wersja 1.1**
+**Wersja 1.2**
 
 **Zespół nr 2 w składzie**
 
@@ -85,6 +85,8 @@ Danymi w projekcie są:
 * wygenerowany raport w formacie csv z informacjami o zajętości slice'ów - informacje o połączeniu, slice i czy jest obecnie używany
 
 System nie będzie trwale przechowywać danych.
+
+\newpage
 
 # Metodologia wytwarzania
 
