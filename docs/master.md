@@ -40,7 +40,7 @@ titlepage-rule-height: 2
 ## Cel projektu
 Celem jest stworzenie aplikacji wspomagającej optymalizację bieżącego ruchu w realistycznej sieci 
 teleinformatycznej. Podstawowym zadaniem jest odzwierciedlenie aktualnej zajętości pasma w sieci 
-optycznej na podstawie plików z baz danych: w postaci arkusza kalkulacyjnego jak i w postaci graficznej 
+optycznej na podstawie plików z baz danych: w postaci arkusza kalkulacyjnego, jak i w postaci graficznej 
 na modelu topologicznym sieci (mapa zajętości). W przeciwieństwie do technologii fixed grid, która 
 zakłada równomierny podział pasma między kanały, stosowany model flex grid umożliwia zmienny 
 przydział jednostek nazywanych slice'ami. Pozwala to na minimalizację marnowanego pasma, co 
@@ -54,7 +54,7 @@ taką siecią.
 * możliwość zestawienia nowych kanałów i automatyczny dobór optymalnych tras zapewniających 
 równomierne obciążenie sieci
 * generowanie raportów zajętości slice'ów w postaci plików csv
-* zaproponowanie modelu w postaci matematycznej, zawierającego funkcję celu (kosztu) oraz zbioru ograniczeń, optymalizujacego pasmo oraz ruting nowo-zestawianych kanałów (ścieżek) optycznych w sieci
+* zaproponowanie modelu w postaci matematycznej, zawierającego funkcję celu (kosztu) oraz zbioru ograniczeń, optymalizującego pasmo oraz ruting nowo-zestawianych kanałów (ścieżek) optycznych w sieci
 
 **Słowik pojęć**
 
@@ -203,7 +203,7 @@ Scenariusz alternatywny - system nie może wyznaczyć żądanego kanału:
 
 1. Użytkownik wprowadza parametry dla pożądanego kanału.
 2. System informuje użytkownika o niepowodzeniu wyznaczania nowego kanału.
-3. System umozliwia ponowne wprowadzenie parametrów - powrót do kroku 1.
+3. System umożliwia ponowne wprowadzenie parametrów - powrót do kroku 1.
 
 
 **Systemowe przypadki użycia**
@@ -217,10 +217,10 @@ Aktorzy: użytkownik.
 Scenariusz główny:
 
 1. Użytkownik otwiera widok wprowadzania danych.
-1. Użytkownik wybiera plik z opisem sieci (RB1).
-2. Użytkownik potwierdza, że chce nadpisać aktualnie załadowaną w systemie sieć.
-3. System informuje użytkownika o poprawnym załadowaniu pliku.
-4. System wyświetla widok prezentacji załadowanej sieci.
+2. Użytkownik wybiera plik z opisem sieci (RB1).
+3. Użytkownik potwierdza, że chce nadpisać aktualnie załadowaną w systemie sieć.
+4. System informuje użytkownika o poprawnym załadowaniu pliku.
+5. System wyświetla widok prezentacji załadowanej sieci.
 
 Scenariusz alternatywny - nieprawidłowy plik:
 
