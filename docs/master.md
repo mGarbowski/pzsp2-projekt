@@ -325,8 +325,7 @@ Przypadki użycia opisane w punkcie \ref{use-cases} dokumentacji.
 
 ## Widok logiczny
 
-![Diagram klas dla widoku logicznego](./diagrams/logical-view.drawio.png)
-
+* Rysunek \ref{fig:logical-view} przedstawia diagram klas
 * Użytkownik (analityk) korzysta z interfejsów do
     * wprowadzania opisu sieci do systemu
     * przeglądania prezentacji sieci
@@ -339,10 +338,7 @@ Przypadki użycia opisane w punkcie \ref{use-cases} dokumentacji.
 
 ## Widok procesu
 
-![Diagram aktywności dla widoku procesu](./diagrams/process-view.drawio.png){#fig:process-view}
-
-Diagram \ref{fig:process-view} przedstawia typowe użycie systemu
-
+* Diagram \ref{fig:process-view} przedstawia typowe użycie systemu
 * Użytkownik zaczyna od wprowadzenia opisu sieci
 * Dla załadowanej sieci użytkownik może
     * obejrzeć jej wizualizację i przeglądać parametry jej elementów
@@ -351,8 +347,7 @@ Diagram \ref{fig:process-view} przedstawia typowe użycie systemu
 
 ## Widok implementacji
 
-![Diagram komponentów dla widoku implementacji](./diagrams/development-view.drawio.png)
-
+* Rysunek \ref{fig:development-view} przedstawia diagram komponentów
 * Aplikacja webowa dostarcza widoków użytkownika do
     * importu opisu sieci z plików .csv
     * przeglądania graficznej prezentacji sieci (wizualizacja sieci i podgląd statystyk wybranych elementów)
@@ -374,8 +369,7 @@ na który licencję może udostępnić nam właściciel tematu.
 
 ## Widok fizyczny
 
-![Diagram wdrożenia dla widoku fizycznego](./diagrams/physical-view.drawio.png)
-
+* Rysunek \ref{fig:physical-view} przedstawia diagram wdrożenia
 * Aplikacja będzie wdrożona na jednym serwerze
     * przyjmujemy roboczo, że będzie to Raspberry Pi
 * Aplikacja jest uruchamiana w środowisku Docker
@@ -401,6 +395,14 @@ W ten sposób unikniemy cyklicznego odpytywania serwera przez klienta (polling).
 Powyższy plan wymagałby zmiany, jeśli skorzystamy z licencji na program AMPL w środowisku 
 OpenStack Zakładu Sztucznej Inteligencji Instytutu Informatyki (planujemy jednak, o ile to możliwe, 
 wykorzystać rozwiązania Open Source).
+
+![Diagram klas dla widoku logicznego](./diagrams/logical-view.drawio.png){#fig:logical-view}
+
+![Diagram aktywności dla widoku procesu](./diagrams/process-view.drawio.png){#fig:process-view}
+
+![Diagram komponentów dla widoku implementacji](./diagrams/development-view.drawio.png){#fig:development-view}
+
+![Diagram wdrożenia dla widoku fizycznego](./diagrams/physical-view.drawio.png){#fig:physical-view}
 
 \newpage
 
