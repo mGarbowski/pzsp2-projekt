@@ -5,6 +5,12 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from starlette.websockets import WebSocket, WebSocketDisconnect, WebSocketState
 
+from pzsp_backend.optimization.integer.model_demo import (
+    ModelParams,
+    solve_instance,
+)
+
+
 app = FastAPI()
 
 app.add_middleware(
@@ -44,3 +50,8 @@ async def websocket_endpoint(websocket: WebSocket):
         if websocket.client_state != WebSocketState.DISCONNECTED:
             await websocket.close()
         print("Finished")
+
+
+@app.post("/integer-model-demo")
+def integer_model_demo(pp: ModelParams):
+    return {"result": solve_instance(pp)}

@@ -5,7 +5,7 @@
 groups = ["default", "lint", "test"]
 strategy = ["inherit_metadata"]
 lock_version = "4.5.0"
-content_hash = "sha256:74c7a2c53ff105327af4c9ae4997e947fe8faeeb08c2b99b3f7f433dc054dc69"
+content_hash = "sha256:306cdc317609e4b127a772b56de465436de79ffa752a4528cd494280018408b3"
 
 [[metadata.targets]]
 requires_python = "==3.12.*"
@@ -495,6 +495,16 @@ files = [
 ]
 
 [[package]]
+name = "ply"
+version = "3.11"
+summary = "Python Lex & Yacc"
+groups = ["default"]
+files = [
+    {file = "ply-3.11-py2.py3-none-any.whl", hash = "sha256:096f9b8350b65ebd2fd1346b12452efe5b9607f7482813ffca50c22722a807ce"},
+    {file = "ply-3.11.tar.gz", hash = "sha256:00c7c1aaa88358b9c765b6d3000c6eec0ba42abca5351b095321aef446081da3"},
+]
+
+[[package]]
 name = "pycodestyle"
 version = "2.12.1"
 requires_python = ">=3.8"
@@ -568,6 +578,24 @@ groups = ["default"]
 files = [
     {file = "pygments-2.18.0-py3-none-any.whl", hash = "sha256:b8e6aca0523f3ab76fee51799c488e38782ac06eafcf95e7ba832985c8e7b13a"},
     {file = "pygments-2.18.0.tar.gz", hash = "sha256:786ff802f32e91311bff3889f6e9a86e81505fe99f2735bb6d60ae0c5004f199"},
+]
+
+[[package]]
+name = "pyomo"
+version = "6.8.2"
+requires_python = ">=3.8"
+summary = "Pyomo: Python Optimization Modeling Objects"
+groups = ["default"]
+dependencies = [
+    "ply",
+]
+files = [
+    {file = "Pyomo-6.8.2-cp312-cp312-macosx_10_13_x86_64.whl", hash = "sha256:cd6dba83c33eb77320caaf6379b5e3149e670120b352d114a4c8508981f4eddf"},
+    {file = "Pyomo-6.8.2-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:c91aa84c46deb1af8b802dfb35e4de0b8bb322e7bf0daf7c82b8430d512cbc98"},
+    {file = "Pyomo-6.8.2-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:bad42b369b08c0181af54e57db74e23f9e58e18be23aa0881fac5be8e2149e32"},
+    {file = "Pyomo-6.8.2-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:35a6956b6128106366fd8f0ed86987289d962eaf084517e25419f1c6dec4f8a5"},
+    {file = "Pyomo-6.8.2-py3-none-any.whl", hash = "sha256:7ea0790289da22964d1c2b37ca9eafda55373c84755db4c52c08fad5cde4ccd8"},
+    {file = "Pyomo-6.8.2.tar.gz", hash = "sha256:40d8f7b216ad1602bb254f4296591608dd94fe2c961dc1e63ca6b84fb397bed6"},
 ]
 
 [[package]]
