@@ -35,4 +35,5 @@ def get_message_length(msg: Message):
 
 @app.post("/integer-model-demo")
 def integer_model_demo(pp: ModelParams):
-    return {"result": solve_instance(pp)}
+    x, y = solve_instance(pp)
+    return {"x": x, "y": y}
