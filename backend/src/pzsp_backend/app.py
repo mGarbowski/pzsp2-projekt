@@ -2,6 +2,12 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
+from pzsp_backend.optimization.integer.model_demo import (
+    ModelParams,
+    solve_instance,
+)
+
+
 app = FastAPI()
 
 app.add_middleware(
@@ -25,3 +31,8 @@ def read_root():
 @app.post("/message-length")
 def get_message_length(msg: Message):
     return {"length": len(msg.message)}
+
+
+@app.post("/integer-model-demo")
+def integer_model_demo(pp: ModelParams):
+    return {"result": solve_instance(pp)}
