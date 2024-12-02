@@ -4,13 +4,17 @@ import './App.css';
 function App() {
   const [message, setMessage] = useState('');
   const [length, setLength] = useState<number | null>(null);
+  const [a, setA] = useState<number>(0);
+  const [b, setB] = useState<number>(0);
+  const [x, setX] = useState<number | null>(null);
+  const [y, setY] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const mode = import.meta.env.MODE;
   const modeName = mode === 'development' ? 'Development' : 'Production';
   const backendBaseUrl = import.meta.env.VITE_BACKEND_URL as string;
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleLengthSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     setLength(null);
@@ -35,12 +39,40 @@ function App() {
     }
   };
 
+  const handleIntegerModelSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+
+    try {
+      const response = await fetch(`${backendBaseUrl}/integer-model-demo`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ a, b }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+      setX(data.x);
+      setY(data.y);
+      console.log(data);
+
+    } catch (error) {
+      setError('Failed to fetch x and y');
+    }
+  }
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', margin: '0 auto', placeItems: 'center' }}>
       <h1>PZSP2 Projekt</h1>
       <p>Build: {modeName}</p>
       <p>Backend base URL: {backendBaseUrl}</p>
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+
+      <form onSubmit={handleLengthSubmit} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <input
           type="text"
           value={message}
@@ -49,11 +81,35 @@ function App() {
           required
           style={{ marginBottom: '10px', padding: '5px' }}
         />
-        <button type="submit" style={{ padding: '5px 10px' }}>Get Message Length</button>
+        <button type="submit" style={{ padding: '5px 10px', margin: '0px 0px 20px 0px' }}>Get Message Length</button>
       </form>
-      {length !== null && <p>Message Length: {length}</p>}
+      {length !== 0 && <p>Length: {length}</p>}
+
+      <div>
+        <p>Minimize ax+yb, where 3x+2y &ge; 1 </p>
+        <form onSubmit={handleIntegerModelSubmit} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <input
+            type="text"
+            value={a}
+            onChange={(e) => setA(parseInt(e.target.value))}
+            placeholder="Enter the a parameter"
+            required
+            style={{ marginBottom: '10px', padding: '5px' }}
+          />
+          <input
+            type="text"
+            value={b}
+            onChange={(e) => setB(parseInt(e.target.value))}
+            placeholder="Enter the b parameter"
+            required
+            style={{ marginBottom: '10px', padding: '5px' }}
+          />
+          <button type="submit" style={{ padding: '5px 10px' }}>Get x and y values</button>
+        </form>
+        {x !== null && y !== null && <p>x: {x}, y: {y}</p>}
+      </div>
       {error && <p style={{ color: 'red' }}>{error}</p>}
-    </div>
+    </div >
   );
 }
 
