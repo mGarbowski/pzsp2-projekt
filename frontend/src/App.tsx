@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
+import {Optimizer} from "./Optimizer/Optimizer.tsx";
 
 function App() {
   const [message, setMessage] = useState('');
@@ -53,6 +54,7 @@ function App() {
       </form>
       {length !== null && <p>Message Length: {length}</p>}
       {error && <p style={{ color: 'red' }}>{error}</p>}
+      <Optimizer/>
     </div>
   );
 }
