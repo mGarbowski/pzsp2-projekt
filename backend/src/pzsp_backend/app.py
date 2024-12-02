@@ -3,7 +3,7 @@ import asyncio
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from starlette.websockets import WebSocket
+from starlette.websockets import WebSocket, WebSocketDisconnect, WebSocketState
 
 app = FastAPI()
 
@@ -33,9 +33,14 @@ def get_message_length(msg: Message):
 @app.websocket("/ws/optimizer")
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
-    data = await websocket.receive_text()
-    await websocket.send_text(f"Message text was: {data}, processing")
-    await asyncio.sleep(10)
-    await websocket.send_text("Finished processing")
-    await websocket.close()
-    print("Finished")
+    try:
+        data = await websocket.receive_text()
+        await websocket.send_text(f"Message text was: {data}, processing")
+        await asyncio.sleep(3)
+        await websocket.send_text("Finished processing")
+    except WebSocketDisconnect:
+        print("Client disconnected")
+    finally:
+        if websocket.client_state != WebSocketState.DISCONNECTED:
+            await websocket.close()
+        print("Finished")
