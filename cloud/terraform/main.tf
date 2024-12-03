@@ -32,7 +32,7 @@ data "azuread_user" "user_3" {
 
 # Assign a role to a user
 resource "azurerm_role_assignment" "user_1_role" {
-  scope                = azurerm_resource_group.rg.id
+  scope                = "3848dd04-0cf0-4754-8e77-735b566a9100"
   role_definition_name = "Contributor" # The role you want to assign (e.g., Contributor, Reader)
   principal_id         = data.azuread_user.user_1.id # The user to assign the role to
 }
