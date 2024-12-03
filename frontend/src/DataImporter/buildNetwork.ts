@@ -18,6 +18,15 @@ export interface Node {
   }[];
 }
 
+export interface Chanel {
+  id: string;
+  chanel_name: string;
+  nodes: Node[];
+  frequency: number;
+  width: number;
+  wavelength: number;
+}
+
 export interface Network {
   nodes: Node[];
   edges: Edge[];
