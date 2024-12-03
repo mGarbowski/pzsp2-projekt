@@ -38,3 +38,19 @@ variable "backend_private_ip" {
   type        = string
   default     = "10.0.1.8"
 }
+
+variable "user_1_email" {
+  description = "Email of user 1"
+  type        = string
+  default     = "mikolaj.garbowski.stud@pw.edu.pl"
+}
+variable "user_2_email" {
+  description = "Email of user 2"
+  type        = string
+  default     = "maksym.bienkowski.stud@pw.edu.pl"
+}
+variable "user_3_email" {
+  description = "Email of user 3"
+  type        = string
+  default     = "michal.luszczek.stud@pw.edu.pl"
+}

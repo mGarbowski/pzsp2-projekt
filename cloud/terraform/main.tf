@@ -18,6 +18,37 @@ resource "azurerm_resource_group" "rg" {
   location = "westeurope"
 }
 
+data "azuread_user" "user_1" {
+  user_principal_name = var.user_1_email
+}
+
+data "azuread_user" "user_2" {
+  user_principal_name = var.user_2_email
+}
+
+data "azuread_user" "user_3" {
+  user_principal_name = var.user_3_email
+}
+
+# Assign a role to a user
+resource "azurerm_role_assignment" "user_1_role" {
+  scope                = azurerm_resource_group.rg.id
+  role_definition_name = "Contributor" # The role you want to assign (e.g., Contributor, Reader)
+  principal_id         = data.azuread_user.user_1.id # The user to assign the role to
+}
+
+resource "azurerm_role_assignment" "user_2_role" {
+  scope                = azurerm_resource_group.rg.id
+  role_definition_name = "Contributor" # The role you want to assign (e.g., Contributor, Reader)
+  principal_id         = data.azuread_user.user_2.id # The user to assign the role to
+}
+
+resource "azurerm_role_assignment" "user_3_role" {
+  scope                = azurerm_resource_group.rg.id
+  role_definition_name = "Contributor" # The role you want to assign (e.g., Contributor, Reader)
+  principal_id         = data.azuread_user.user_3.id # The user to assign the role to
+}
+
 resource "azurerm_public_ip" "lab2_ip" {
   name                = "lab2-ip"
   location            = azurerm_resource_group.rg.location
@@ -190,6 +221,7 @@ resource "azurerm_dev_test_global_vm_shutdown_schedule" "frontend_auto_shutdown"
     enabled = false
   }
 }
+
 resource "azurerm_dev_test_global_vm_shutdown_schedule" "backend_auto_shutdown" {
   virtual_machine_id = azurerm_linux_virtual_machine.backend_vm.id
   location           = azurerm_resource_group.rg.location
