@@ -20,6 +20,7 @@ export interface EdgeSpectrumDataRow {
   channelId: string;
   frequency: number;
   channelWidth: number;
+  chanel_label: string;
 }
 
 const isNodeValid = (node: NodeDataRow): boolean => {
@@ -84,7 +85,8 @@ export const parseEdgeSpectrum = (data: string): EdgeSpectrumDataRow[] => {
       edgeId,
       channelId,
       frequency: parseFloat(frequency),
-      channelWidth: remapChannelWidth(parseFloat(channelWidth))
+      channelWidth: remapChannelWidth(parseFloat(channelWidth)),
+      chanel_label: _channelLabel
     };
   }).filter(row => row !== null) as EdgeSpectrumDataRow[];
 }
