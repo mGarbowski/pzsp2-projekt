@@ -177,3 +177,28 @@ resource "azurerm_network_interface_security_group_association" "backend_nsg_ass
   network_interface_id      = azurerm_network_interface.backend_nic.id
   network_security_group_id = azurerm_network_security_group.lab2_nsg.id
 }
+
+resource "azurerm_dev_test_global_vm_shutdown_schedule" "example" {
+  virtual_machine_id = azurerm_linux_virtual_machine.frontend_vm.id
+  location           = azurerm_resource_group.rg.location
+  enabled            = true
+
+  daily_recurrence_time = "1100"
+  timezone              = "Pacific Standard Time"
+
+  notification_settings {
+    enabled = false
+  }
+}
+resource "azurerm_dev_test_global_vm_shutdown_schedule" "example" {
+  virtual_machine_id = azurerm_linux_virtual_machine.backend_vm.id
+  location           = azurerm_resource_group.rg.location
+  enabled            = true
+
+  daily_recurrence_time = "1100"
+  timezone              = "Pacific Standard Time"
+
+  notification_settings {
+    enabled = false
+  }
+}
