@@ -178,7 +178,7 @@ resource "azurerm_network_interface_security_group_association" "backend_nsg_ass
   network_security_group_id = azurerm_network_security_group.lab2_nsg.id
 }
 
-resource "azurerm_dev_test_global_vm_shutdown_schedule" "example" {
+resource "azurerm_dev_test_global_vm_shutdown_schedule" "frontend_auto_shutdown" {
   virtual_machine_id = azurerm_linux_virtual_machine.frontend_vm.id
   location           = azurerm_resource_group.rg.location
   enabled            = true
@@ -190,7 +190,7 @@ resource "azurerm_dev_test_global_vm_shutdown_schedule" "example" {
     enabled = false
   }
 }
-resource "azurerm_dev_test_global_vm_shutdown_schedule" "example" {
+resource "azurerm_dev_test_global_vm_shutdown_schedule" "backend_auto_shutdown" {
   virtual_machine_id = azurerm_linux_virtual_machine.backend_vm.id
   location           = azurerm_resource_group.rg.location
   enabled            = true
