@@ -7,4 +7,4 @@ public_ssh_key_file = "~/.ssh/id_rsa.pub"
 user_1_email = "01178523@pw.edu.pl" # Mikolaj
 user_2_email = "01178595@pw.edu.pl" # Krzysiek
 user_3_email = "01178557@pw.edu.pl" # Michal
-user_4_email = "01178595@pw.edu.pl" # Krzysiek
+user_4_email = "01178511@pw.edu.pl" # Maksym
