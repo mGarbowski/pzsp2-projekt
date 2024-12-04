@@ -8,12 +8,7 @@ describe('Nodes', () =>{
       const csvData = 'LOCATION,LATITUDE,LONGITUDE\n1,34.05,-118.25\n';
       const parsed  = parseNodes(csvData);
       const expected: Node[] = [
-        {
-        id: '1',
-        latitude: 34.05,
-        longitude: -118.25,
-        neighbors:  [],
-        }
+        { id: '1', latitude: 34.05, longitude: -118.25, neighbors:  [],}
     ]
 
       expect(handleNode(parsed)).toEqual(expected)
@@ -23,18 +18,8 @@ describe('Nodes', () =>{
       const csvData = 'LOCATION,LATITUDE,LONGITUDE\n1,34.05,-118.25\n2,40.71,-74.01\n';
       const parsed  = parseNodes(csvData);
       const expected: Node[] = [
-        {
-        id: '1',
-        latitude: 34.05,
-        longitude: -118.25,
-        neighbors:  [],
-        },
-        {
-          id: '2',
-          latitude: 40.71,
-          longitude: -74.01,
-          neighbors:  [],
-        }
+        { id: '1', latitude: 34.05, longitude: -118.25, neighbors:  [],},
+        { id: '2', latitude: 40.71, longitude: -74.01, neighbors:  [],}
     ]
     expect(handleNode(parsed)).toEqual(expected)
     })
@@ -51,32 +36,14 @@ describe("Edges", () =>{
       const csvData_e = 'id,Endpoint 1,Endpoint 2,Total capacity,Provisioned capacity (%)\n1,1,2,4.8 THz,50';
       const parsed_e = parseEdges(csvData_e)
 
-      const edge_e: Edge = {
-        id: '1',
-        node1Id: '1',
-        node2Id:'2',
-        totalCapacity: '4.8 THz',
-        provisionedCapacity: 50,
-      }
-      const node_1_e: Node = {
-        id: '1',
-        latitude: 34.05,
-        longitude: -118.25,
-        neighbors:  [],
-      }
+      const edge_e: Edge = { id: '1', node1Id: '1', node2Id:'2', totalCapacity: '4.8 THz', provisionedCapacity: 50,}
+      const node_1_e: Node = { id: '1', latitude: 34.05, longitude: -118.25, neighbors:  [],}
+      const node_2_e: Node = { id: '2', latitude: 40.71, longitude: -74.01, neighbors:  [],}
 
-      const node_2_e: Node = {
-        id: '2',
-        latitude: 40.71,
-        longitude: -74.01,
-        neighbors:  [],
-      }
       node_1_e.neighbors.push({node: node_2_e, edge: edge_e})
       node_2_e.neighbors.push({node: node_1_e, edge: edge_e})
-      const expexted_nodes: Node[] = [
-        node_1_e,
-        node_2_e,
-      ]
+
+      const expexted_nodes: Node[] = [ node_1_e, node_2_e,]
 
       expect(handleEdge(parsed_e[0], nodes)).toEqual(edge_e)
       expect(nodes).toEqual(expexted_nodes)
@@ -131,9 +98,6 @@ describe("Edges", () =>{
   })
 });
 
-
-
-
 describe('GroupChannels', () => {
     describe('getChannel', () => {
       it('should convert edge first into channel first', () => {
@@ -141,13 +105,7 @@ describe('GroupChannels', () => {
         "-2242719450019019377,6007100605839137070,191.900000,37.5,1562.23,CH-81\n";
         const chanelDtata = parseEdgeSpectrum(EdgeSpectrum);
         const expected: ChanelEdge[] = [
-            {
-                id: '6007100605839137070',
-                chanel_label: "CH-81",
-                frequency: 191.900000,
-                width: 50.0,
-                edges: ["-2242719450019019377"],
-            }
+            { id: '6007100605839137070', chanel_label: "CH-81", frequency: 191.900000, width: 50.0, edges: ["-2242719450019019377"],}
         ]
         expect(groupByChanel(chanelDtata)).toEqual(expected);
       });
@@ -158,13 +116,7 @@ describe('GroupChannels', () => {
         "-1111111111111111111,6007100605839137070,191.900000,37.5,1562.23,CH-81\n";
         const chanelDtata = parseEdgeSpectrum(EdgeSpectrum);
         const expected: ChanelEdge[] = [
-            {
-                id: '6007100605839137070',
-                chanel_label: "CH-81",
-                frequency: 191.900000,
-                width: 50.0,
-                edges: ["-2242719450019019377", "-1111111111111111111"],
-            }
+            { id: '6007100605839137070', chanel_label: "CH-81", frequency: 191.900000, width: 50.0, edges: ["-2242719450019019377", "-1111111111111111111"],}
         ]
         expect(groupByChanel(chanelDtata)).toEqual(expected);
       });
@@ -177,20 +129,8 @@ describe('GroupChannels', () => {
         "-1111111111111111111,1111111111111111111,191.900000,37.5,1562.23,CH-82\n";
         const chanelDtata = parseEdgeSpectrum(EdgeSpectrum);
         const expected: ChanelEdge[] = [
-            {
-                id: '6007100605839137070',
-                chanel_label: "CH-81",
-                frequency: 191.900000,
-                width: 50.0,
-                edges: ["-2242719450019019377", "-1111111111111111111"],
-            },
-            {
-                id: '1111111111111111111',
-                chanel_label: "CH-82",
-                frequency: 191.900000,
-                width: 50.0,
-                edges: ["-2242719450019019377", "-1111111111111111111"],
-            },
+            { id: '6007100605839137070', chanel_label: "CH-81", frequency: 191.900000, width: 50.0, edges: ["-2242719450019019377", "-1111111111111111111"],},
+            { id: '1111111111111111111', chanel_label: "CH-82", frequency: 191.900000, width: 50.0, edges: ["-2242719450019019377", "-1111111111111111111"],},
         ]
         expect(groupByChanel(chanelDtata)).toEqual(expected);
       });
