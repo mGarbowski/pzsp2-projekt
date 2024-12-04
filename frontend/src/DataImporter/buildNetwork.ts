@@ -40,7 +40,7 @@ export interface Network {
   edges: Edge[];
 }
 
-const handleEdge = (edgeData: EdgeDataRow, nodes: Node[]): Edge => {
+export const handleEdge = (edgeData: EdgeDataRow, nodes: Node[]): Edge => {
   const node1 = nodes.find(node => node.id === edgeData.node1);
   const node2 = nodes.find(node => node.id === edgeData.node2);
 
@@ -60,6 +60,15 @@ const handleEdge = (edgeData: EdgeDataRow, nodes: Node[]): Edge => {
   node2.neighbors.push({node: node1, edge});
 
   return edge;
+}
+
+export const handleNode = (nodesData: NodeDataRow[]): Node[] =>{
+  return nodesData.map(nodeData => ({
+    id: nodeData.id,
+    latitude: nodeData.latitude,
+    longitude: nodeData.longitude,
+    neighbors: [],
+  }));
 }
 
 function getChanel(chanelData: EdgeSpectrumDataRow, chanels: ChanelEdge[]) {
@@ -96,12 +105,8 @@ export function groupByChanel(chanelData: EdgeSpectrumDataRow[]){
 }
 
 export const buildNetwork = (nodesData: NodeDataRow[], edgesData: EdgeDataRow[], chanelData: EdgeSpectrumDataRow[]): Network => {
-  const nodes: Node[] = nodesData.map(nodeData => ({
-    id: nodeData.id,
-    latitude: nodeData.latitude,
-    longitude: nodeData.longitude,
-    neighbors: [],
-  }));
+  // moved for easier testing
+  const nodes: Node[] =handleNode(nodesData)
 
   const edges = edgesData.map((edgeData) => handleEdge(edgeData, nodes));
 
