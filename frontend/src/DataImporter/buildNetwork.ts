@@ -57,6 +57,8 @@ export const handleEdge = (edgeData: EdgeDataRow, nodes: Node[]): Edge => {
     provisionedCapacity: edgeData.provisionedCapacity,
   };
 
+
+
   // pair edges before adding neighbours
   node1.neighbors.push({node: node2, edge});
   node2.neighbors.push({node: node1, edge});
@@ -64,12 +66,19 @@ export const handleEdge = (edgeData: EdgeDataRow, nodes: Node[]): Edge => {
   return edge;
 }
 
-export const mergeEdges = (edges: Edge[]): Edge[] =>{
-    let merged: Edge[] = []
+// export const addNeighbors = (edge: Edge, nodes: Node[]): Node[] => {
+//   const node1 = nodes.find(node => node.id === edgeData.node1);
+//   const node2 = nodes.find(node => node.id === edgeData.node2);
+
+//   return nodes;
+// }
+
+export const mergeEdges = (edges: EdgeDataRow[]): EdgeDataRow[] =>{
+    let merged: EdgeDataRow[] = []
     edges.map(
       edge => {
         // finding corresponding edge
-        const pair = edges.find(element => element.node1Id == edge.node2Id && element.node2Id == edge.node1Id)
+        const pair = edges.find(element => element.node1 == edge.node2 && element.node2 == edge.node1)
         // check if corresponding edge exists
         if(typeof pair !== 'undefined' ){
           // check if corresponding edge has been written in merged - push if not - ignore if yes
@@ -113,12 +122,6 @@ function getChanel(chanelData: EdgeSpectrumDataRow, chanels: ChanelEdge[]) {
   return chanels
 }
 
-// function getChanelNodes(chanel_e: ChanelEdge, edges: Edge[]){
-//   // iterate over edges in chanel
-//   // find node that does not exist in other edges
-//   // node 1  of starting edge is not node 2 of any other edge
-// }
-
 export function groupByChanel(chanelData: EdgeSpectrumDataRow[]){
   let chanel_edges: ChanelEdge[] = [];
   for(const element of chanelData){
@@ -132,7 +135,7 @@ export const buildNetwork = (nodesData: NodeDataRow[], edgesData: EdgeDataRow[],
   const nodes: Node[] =handleNode(nodesData)
 
 
-  // pair dierctional edges in hendle edge
+  // pair dierctional edges in handle edge
   const edges = edgesData.map((edgeData) => handleEdge(edgeData, nodes));
 
 // temp data - group information into chanels
