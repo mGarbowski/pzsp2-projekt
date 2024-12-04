@@ -145,6 +145,79 @@ describe("Edges", () =>{
 
       expect(() => mergeEdges(edges_2)).toThrow("Can't merge")
     })
+    it('should merge edges form more complicated input', () =>{
+      const edges: Edge[] = [
+        {
+          id: '-160181617838685002',
+          node1Id: '30990',
+          node2Id:'39925',
+          totalCapacity: '4.8 THz',
+          provisionedCapacity: 10,
+        },
+        {
+          id: '-1924338652343423293',
+          node1Id: '70080',
+          node2Id:'60168',
+          totalCapacity: '4.8 THz',
+          provisionedCapacity: 17,
+        },
+        {
+          id: '-2017457964338917446',
+          node1Id: '60168',
+          node2Id:'70080',
+          totalCapacity: '4.8 THz',
+          provisionedCapacity: 17,
+        },
+        {
+          id: '-2188716338357475633',
+          node1Id: '24246',
+          node2Id:'40990',
+          totalCapacity: '4.8 THz',
+          provisionedCapacity: 11,
+        },
+        {
+          id: '-8373146988370601128',
+          node1Id: '39925',
+          node2Id:'30990',
+          totalCapacity: '4.8 THz',
+          provisionedCapacity: 10,
+        },
+        {
+          id: '-4373598137077956487',
+          node1Id: '40990',
+          node2Id:'24246',
+          totalCapacity: '4.8 THz',
+          provisionedCapacity: 11,
+        },
+
+      ]
+
+      const expected: Edge[] = [
+        {
+          id: '-160181617838685002',
+          node1Id: '30990',
+          node2Id:'39925',
+          totalCapacity: '4.8 THz',
+          provisionedCapacity: 10,
+        },
+        {
+          id: '-1924338652343423293',
+          node1Id: '70080',
+          node2Id:'60168',
+          totalCapacity: '4.8 THz',
+          provisionedCapacity: 17,
+        },
+        {
+          id: '-2188716338357475633',
+          node1Id: '24246',
+          node2Id:'40990',
+          totalCapacity: '4.8 THz',
+          provisionedCapacity: 11,
+        },
+      ]
+
+      expect(mergeEdges(edges)).toEqual(expected)
+    })
   })
 });
 
