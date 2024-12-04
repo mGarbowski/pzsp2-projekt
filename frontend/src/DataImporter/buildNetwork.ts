@@ -65,7 +65,24 @@ export const handleEdge = (edgeData: EdgeDataRow, nodes: Node[]): Edge => {
 }
 
 export const mergeEdges = (edges: Edge[]): Edge[] =>{
-  return edges;
+    let merged: Edge[] = []
+    edges.map(
+      edge => {
+        // finding corresponding edge
+        const pair = edges.find(element => element.node1Id == edge.node2Id && element.node2Id == edge.node1Id)
+        // check if corresponding edge exists
+        if(typeof pair !== 'undefined' ){
+          // check if corresponding edge has been written in merged - push if not - ignore if yes
+          if(typeof merged.find(element => element.id == pair.id) === 'undefined'){
+            merged.push(edge)
+          }
+        }
+        else{
+          throw new Error(`Can't merge: ${JSON.stringify(edge)} has no pair`);
+        }
+      }
+    )
+    return merged;
 }
 
 export const handleNode = (nodesData: NodeDataRow[]): Node[] =>{
