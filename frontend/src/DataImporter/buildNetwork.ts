@@ -1,4 +1,4 @@
-import {EdgeDataRow, NodeDataRow} from "./parseCsv.ts";
+import {EdgeDataRow, NodeDataRow, EdgeSpectrumDataRow} from "./parseCsv.ts";
 
 export interface Edge {
   id: string;
@@ -20,11 +20,11 @@ export interface Node {
 
 export interface Chanel {
   id: string;
-  chanel_name: string;
+  chanel_label: string;
   nodes: Node[];
   frequency: number;
   width: number;
-  wavelength: number;
+  // wavelength: number;
 }
 
 export interface Network {
@@ -54,7 +54,7 @@ const handleEdge = (edgeData: EdgeDataRow, nodes: Node[]): Edge => {
   return edge;
 }
 
-export const buildNetwork = (nodesData: NodeDataRow[], edgesData: EdgeDataRow[]): Network => {
+export const buildNetwork = (nodesData: NodeDataRow[], edgesData: EdgeDataRow[], chanelData: EdgeSpectrumDataRow[]): Network => {
   const nodes: Node[] = nodesData.map(nodeData => ({
     id: nodeData.id,
     latitude: nodeData.latitude,
@@ -64,5 +64,13 @@ export const buildNetwork = (nodesData: NodeDataRow[], edgesData: EdgeDataRow[])
 
   const edges = edgesData.map((edgeData) => handleEdge(edgeData, nodes));
 
-  return {nodes, edges};
+  const chanels: Chanel[] = chanelData.map(chanelData => ({
+    id: chanelData.channelId,
+    chanel_label: chanelData.chanel_label,
+    frequency: chanelData.frequency,
+    width: chanelData.channelWidth,
+    nodes: []
+  }));
+
+  return {nodes, edges, chanels};
 }
