@@ -1,5 +1,90 @@
-import { Edge, Node, ChanelEdge, buildNetwork, groupByChanel } from "./buildNetwork";
-import { parseEdgeSpectrum } from "./parseCsv";
+import { Edge, Node, ChanelEdge, buildNetwork, groupByChanel, handleNode, handleEdge } from "./buildNetwork";
+import { parseEdges, parseEdgeSpectrum , parseNodes} from "./parseCsv";
+
+
+describe('Nodes', () =>{
+  describe('create node', () =>{
+    it('should create 1 node', () => {
+      const csvData = 'LOCATION,LATITUDE,LONGITUDE\n1,34.05,-118.25\n';
+      const parsed  = parseNodes(csvData);
+      const expected: Node[] = [
+        {
+        id: '1',
+        latitude: 34.05,
+        longitude: -118.25,
+        neighbors:  [],
+        }
+    ]
+
+      expect(handleNode(parsed)).toEqual(expected)
+    })
+
+    it('should create 2 nodes', () => {
+      const csvData = 'LOCATION,LATITUDE,LONGITUDE\n1,34.05,-118.25\n2,40.71,-74.01\n';
+      const parsed  = parseNodes(csvData);
+      const expected: Node[] = [
+        {
+        id: '1',
+        latitude: 34.05,
+        longitude: -118.25,
+        neighbors:  [],
+        },
+        {
+          id: '2',
+          latitude: 40.71,
+          longitude: -74.01,
+          neighbors:  [],
+        }
+    ]
+    expect(handleNode(parsed)).toEqual(expected)
+    })
+  })
+});
+
+describe("Edges", () =>{
+  describe("handle edge", () =>{
+    it("should create edge and update neighbours", ()=>{
+      const csvData = 'LOCATION,LATITUDE,LONGITUDE\n1,34.05,-118.25\n2,40.71,-74.01\n';
+      const parsed  = parseNodes(csvData);
+      const nodes = handleNode(parsed)
+
+      const csvData_e = 'id,Endpoint 1,Endpoint 2,Total capacity,Provisioned capacity (%)\n1,1,2,4.8 THz,50';
+      const parsed_e = parseEdges(csvData_e)
+
+      const edge_e: Edge = {
+        id: '1',
+        node1Id: '1',
+        node2Id:'2',
+        totalCapacity: '4.8 THz',
+        provisionedCapacity: 50,
+      }
+      const node_1_e: Node = {
+        id: '1',
+        latitude: 34.05,
+        longitude: -118.25,
+        neighbors:  [],
+      }
+
+      const node_2_e: Node = {
+        id: '2',
+        latitude: 40.71,
+        longitude: -74.01,
+        neighbors:  [],
+      }
+      node_1_e.neighbors.push({node: node_2_e, edge: edge_e})
+      node_2_e.neighbors.push({node: node_1_e, edge: edge_e})
+      const expexted_nodes: Node[] = [
+        node_1_e,
+        node_2_e,
+      ]
+
+      expect(handleEdge(parsed_e[0], nodes)).toEqual(edge_e)
+      expect(nodes).toEqual(expexted_nodes)
+    })
+  })
+});
+
+
 
 
 describe('GroupChannels', () => {
