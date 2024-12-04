@@ -48,6 +48,7 @@ export const handleEdge = (edgeData: EdgeDataRow, nodes: Node[]): Edge => {
     throw new Error(`Edge ${edgeData.id} references non-existing nodes`);
   }
 
+
   const edge: Edge = {
     id: edgeData.id,
     node1Id: node1.id,
@@ -56,10 +57,15 @@ export const handleEdge = (edgeData: EdgeDataRow, nodes: Node[]): Edge => {
     provisionedCapacity: edgeData.provisionedCapacity,
   };
 
+  // pair edges before adding neighbours
   node1.neighbors.push({node: node2, edge});
   node2.neighbors.push({node: node1, edge});
 
   return edge;
+}
+
+export const mergeEdges = (edges: Edge[]): Edge[] =>{
+  return edges;
 }
 
 export const handleNode = (nodesData: NodeDataRow[]): Node[] =>{
@@ -108,6 +114,8 @@ export const buildNetwork = (nodesData: NodeDataRow[], edgesData: EdgeDataRow[],
   // moved for easier testing
   const nodes: Node[] =handleNode(nodesData)
 
+
+  // pair dierctional edges in hendle edge
   const edges = edgesData.map((edgeData) => handleEdge(edgeData, nodes));
 
 // temp data - group information into chanels

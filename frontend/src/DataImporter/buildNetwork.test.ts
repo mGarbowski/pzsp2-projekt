@@ -1,4 +1,4 @@
-import { Edge, Node, ChanelEdge, buildNetwork, groupByChanel, handleNode, handleEdge } from "./buildNetwork";
+import { Edge, Node, ChanelEdge, buildNetwork, groupByChanel, handleNode, handleEdge, mergeEdges } from "./buildNetwork";
 import { parseEdges, parseEdgeSpectrum , parseNodes} from "./parseCsv";
 
 
@@ -80,6 +80,70 @@ describe("Edges", () =>{
 
       expect(handleEdge(parsed_e[0], nodes)).toEqual(edge_e)
       expect(nodes).toEqual(expexted_nodes)
+    })
+  })
+  describe("handle edges", () =>{
+    it('should merge edges with same nodes', () =>{
+      const edges: Edge[] = [
+        {
+          id: '1',
+          node1Id: '1',
+          node2Id:'2',
+          totalCapacity: '4.8 THz',
+          provisionedCapacity: 50,
+        },
+        {
+          id: '2',
+          node1Id: '2',
+          node2Id:'1',
+          totalCapacity: '4.8 THz',
+          provisionedCapacity: 50,
+        }
+      ]
+
+      const expected: Edge[] = [
+        {
+          id: '1',
+          node1Id: '1',
+          node2Id:'2',
+          totalCapacity: '4.8 THz',
+          provisionedCapacity: 50,
+        }
+      ]
+
+      expect(mergeEdges(edges)).toEqual(expected)
+    })
+    it("should throw an exception when edge can't be merged", () =>{
+      const edges: Edge[] = [
+        {
+          id: '1',
+          node1Id: '1',
+          node2Id:'2',
+          totalCapacity: '4.8 THz',
+          provisionedCapacity: 50,
+        }
+      ]
+
+      expect(() => mergeEdges(edges)).toThrow("Can't merge")
+
+      const edges_2 : Edge[] = [
+        {
+          id: '1',
+          node1Id: '1',
+          node2Id:'2',
+          totalCapacity: '4.8 THz',
+          provisionedCapacity: 50,
+        },
+        {
+          id: '2',
+          node1Id: '3',
+          node2Id:'1',
+          totalCapacity: '4.8 THz',
+          provisionedCapacity: 50,
+        }
+      ]
+
+      expect(() => mergeEdges(edges_2)).toThrow("Can't merge")
     })
   })
 });
