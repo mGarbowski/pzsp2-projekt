@@ -17,37 +17,37 @@ resource "azurerm_resource_group" "rg" {
   name     = var.resource_group_name
   location = "westeurope"
 }
-
-data "azuread_user" "user_1" {
-  user_principal_name = var.user_1_email
-}
-
-data "azuread_user" "user_2" {
-  user_principal_name = var.user_2_email
-}
-
-data "azuread_user" "user_3" {
-  user_principal_name = var.user_3_email
-}
-
-# Assign a role to a user
-resource "azurerm_role_assignment" "user_1_role" {
-  scope                = "3848dd04-0cf0-4754-8e77-735b566a9100"
-  role_definition_name = "Contributor" # The role you want to assign (e.g., Contributor, Reader)
-  principal_id         = data.azuread_user.user_1.id # The user to assign the role to
-}
-
-resource "azurerm_role_assignment" "user_2_role" {
-  scope                = azurerm_resource_group.rg.id
-  role_definition_name = "Contributor" # The role you want to assign (e.g., Contributor, Reader)
-  principal_id         = data.azuread_user.user_2.id # The user to assign the role to
-}
-
-resource "azurerm_role_assignment" "user_3_role" {
-  scope                = azurerm_resource_group.rg.id
-  role_definition_name = "Contributor" # The role you want to assign (e.g., Contributor, Reader)
-  principal_id         = data.azuread_user.user_3.id # The user to assign the role to
-}
+#
+#data "azuread_user" "user_1" {
+#  user_principal_name = var.user_1_email
+#}
+#
+#data "azuread_user" "user_2" {
+#  user_principal_name = var.user_2_email
+#}
+#
+#data "azuread_user" "user_3" {
+#  user_principal_name = var.user_3_email
+#}
+#
+## Assign a role to a user
+#resource "azurerm_role_assignment" "user_1_role" {
+#  scope                = "3848dd04-0cf0-4754-8e77-735b566a9100"
+#  role_definition_name = "Contributor" # The role you want to assign (e.g., Contributor, Reader)
+#  principal_id         = data.azuread_user.user_1.id # The user to assign the role to
+#}
+#
+#resource "azurerm_role_assignment" "user_2_role" {
+#  scope                = azurerm_resource_group.rg.id
+#  role_definition_name = "Contributor" # The role you want to assign (e.g., Contributor, Reader)
+#  principal_id         = data.azuread_user.user_2.id # The user to assign the role to
+#}
+#
+#resource "azurerm_role_assignment" "user_3_role" {
+#  scope                = azurerm_resource_group.rg.id
+#  role_definition_name = "Contributor" # The role you want to assign (e.g., Contributor, Reader)
+#  principal_id         = data.azuread_user.user_3.id # The user to assign the role to
+#}
 
 resource "azurerm_public_ip" "lab2_ip" {
   name                = "lab2-ip"
