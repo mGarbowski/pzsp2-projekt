@@ -31,5 +31,5 @@
   tasks:
     - name: copy directory
       copy:
-        src: ../../docker-compose.local.yml
+        src: ../../docker-compose.prod.yml
         dest: /home/azureuser/
