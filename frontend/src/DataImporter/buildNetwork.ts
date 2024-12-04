@@ -135,11 +135,14 @@ export const buildNetwork = (nodesData: NodeDataRow[], edgesData: EdgeDataRow[],
   const nodes: Node[] =handleNode(nodesData)
 
 
+
   // pair dierctional edges in handle edge
-  const edges = edgesData.map((edgeData) => handleEdge(edgeData, nodes));
+  const edgesMerged = mergeEdges(edgesData);
+
+  const edges = edgesMerged.map((edgeData) => handleEdge(edgeData, nodes));
 
 // temp data - group information into chanels
-  let chanel_edges = groupByChanel(chanelData);
+  let chanelEdges = groupByChanel(chanelData);
 
   return {nodes, edges};
 }
