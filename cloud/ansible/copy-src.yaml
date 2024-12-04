@@ -1,0 +1,35 @@
+- name: Copy frontend sources
+  hosts: public-machine
+  become: no
+  tasks:
+    - name: copy directory
+      copy:
+        src: ../../frontend
+        dest: /home/azureuser/
+
+- name: Copy backend sources
+  hosts: public-machine
+  become: no
+  tasks:
+    - name: copy directory
+      copy:
+        src: ../../backend
+        dest: /home/azureuser/
+
+- name: Copy nginx sources
+  hosts: public-machine
+  become: no
+  tasks:
+    - name: copy directory
+      copy:
+        src: ../nginx
+        dest: /home/azureuser/
+
+- name: Copy docker compose
+  hosts: public-machine
+  become: no
+  tasks:
+    - name: copy directory
+      copy:
+        src: ../../docker-compose.local.yml
+        dest: /home/azureuser/
