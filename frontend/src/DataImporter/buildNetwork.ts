@@ -21,7 +21,7 @@ export interface Node {
 export interface Chanel {
   id: string;
   chanel_label: string;
-  nodes: Node[];
+  nodes: string[];
   frequency: number;
   width: number;
   // wavelength: number;
@@ -38,6 +38,7 @@ export interface ChanelEdge {
 export interface Network {
   nodes: Node[];
   edges: Edge[];
+  chanels: Chanel[];
 }
 
 export const handleEdge = (edgeData: EdgeDataRow, nodes: Node[]): Edge => {
@@ -57,21 +58,11 @@ export const handleEdge = (edgeData: EdgeDataRow, nodes: Node[]): Edge => {
     provisionedCapacity: edgeData.provisionedCapacity,
   };
 
-
-
-  // pair edges before adding neighbours
   node1.neighbors.push({node: node2, edge});
   node2.neighbors.push({node: node1, edge});
 
   return edge;
 }
-
-// export const addNeighbors = (edge: Edge, nodes: Node[]): Node[] => {
-//   const node1 = nodes.find(node => node.id === edgeData.node1);
-//   const node2 = nodes.find(node => node.id === edgeData.node2);
-
-//   return nodes;
-// }
 
 export const mergeEdges = (edges: EdgeDataRow[]): EdgeDataRow[] =>{
     let merged: EdgeDataRow[] = []
@@ -130,6 +121,35 @@ export function groupByChanel(chanelData: EdgeSpectrumDataRow[]){
   return chanel_edges
 }
 
+export const chanelNode = (chanelsEdge: ChanelEdge[], edges: Edge[]): Chanel[] => {
+  // forecah chanel
+  // look for node that does not appear in any other edge
+  // append it and second node to list
+  // pop edge from chanel list
+  // look for next node in remaining edges
+
+  const chanels: Chanel[] = chanelsEdge.map(chanelE =>{
+    const chanel: Chanel = {id: chanelE.id, width: chanelE.width, frequency: chanelE.frequency, chanel_label: chanelE.chanel_label, nodes: []}
+
+
+    return chanel
+  })
+
+  return chanels
+}
+
+export const mergeSpectrum = (chanelData: EdgeSpectrumDataRow[], edges: Edge[]):EdgeSpectrumDataRow[] =>{
+  const chanelMerged: EdgeSpectrumDataRow[] = []
+  const edgeIDs: string[] = edges.map(element => element.id)
+  for(const chanel of chanelData){
+    if(edgeIDs.includes(chanel.edgeId)){
+      chanelMerged.push(chanel)
+    }
+  }
+
+  return chanelMerged
+}
+
 export const buildNetwork = (nodesData: NodeDataRow[], edgesData: EdgeDataRow[], chanelData: EdgeSpectrumDataRow[]): Network => {
   // moved for easier testing
   const nodes: Node[] =handleNode(nodesData)
@@ -141,8 +161,12 @@ export const buildNetwork = (nodesData: NodeDataRow[], edgesData: EdgeDataRow[],
 
   const edges = edgesMerged.map((edgeData) => handleEdge(edgeData, nodes));
 
-// temp data - group information into chanels
-  let chanelEdges = groupByChanel(chanelData);
+  const chanelsMerged = mergeSpectrum(chanelData, edges)
 
-  return {nodes, edges};
+// temp data - group information into chanels
+  const chanelEdges = groupByChanel(chanelsMerged);
+
+  let chanels = chanelNode(chanelEdges, edges);
+
+  return {nodes, edges, chanels};
 }

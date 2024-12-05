@@ -1,4 +1,4 @@
-import { Edge, Node, ChanelEdge, buildNetwork, groupByChanel, handleNode, handleEdge, mergeEdges, Network } from "./buildNetwork";
+import { Edge, Node, ChanelEdge, buildNetwork, groupByChanel, handleNode, handleEdge, mergeEdges, Network, Chanel, mergeSpectrum } from "./buildNetwork";
 import { EdgeDataRow, NodeDataRow, EdgeSpectrumDataRow ,parseEdges, parseEdgeSpectrum , parseNodes} from "./parseCsv";
 
 
@@ -134,36 +134,97 @@ describe('GroupChannels', () => {
         expect(groupByChanel(chanelDtata)).toEqual(expected);
       });
     })
+    describe("mergeSpectrum", () => {
+      it('should merge edge spectrum rows', () =>{
+        const chanelData: EdgeSpectrumDataRow[] = [
+          {edgeId: '1', channelId: '1', frequency: 195, channelWidth: 50, chanel_label: "CH-1"},
+          {edgeId: '2', channelId: '1', frequency: 195, channelWidth: 50, chanel_label: "CH-1"}
+        ]
+        const edges: Edge[] =[
+          {id:'1', node1Id: '1', node2Id: '2', totalCapacity: '4.8 THz', provisionedCapacity: 10}
+        ]
+
+        const expected: EdgeSpectrumDataRow[] = [
+          {edgeId: '1', channelId: '1', frequency: 195, channelWidth: 50, chanel_label: "CH-1"}
+        ]
+
+        expect(mergeSpectrum(chanelData, edges)).toEqual(expected)
+      })
+      it('should not merge sepctrum form different chanels', () =>{
+        const chanelData: EdgeSpectrumDataRow[] = [
+          {edgeId: '1', channelId: '1', frequency: 195, channelWidth: 50, chanel_label: "CH-1"},
+          {edgeId: '1', channelId: '2', frequency: 195, channelWidth: 50, chanel_label: "CH-2"}
+        ]
+        const edges: Edge[] =[
+          {id:'1', node1Id: '1', node2Id: '2', totalCapacity: '4.8 THz', provisionedCapacity: 10}
+        ]
+
+        const expected: EdgeSpectrumDataRow[] = [
+          {edgeId: '1', channelId: '1', frequency: 195, channelWidth: 50, chanel_label: "CH-1"},
+          {edgeId: '1', channelId: '2', frequency: 195, channelWidth: 50, chanel_label: "CH-2"}
+        ]
+
+        expect(mergeSpectrum(chanelData, edges)).toEqual(expected)
+      })
+      it('should not merge sepctrum from different edges', () =>{
+        const chanelData: EdgeSpectrumDataRow[] = [
+          {edgeId: '1', channelId: '1', frequency: 195, channelWidth: 50, chanel_label: "CH-1"},
+          {edgeId: '2', channelId: '1', frequency: 195, channelWidth: 50, chanel_label: "CH-1"}
+        ]
+        const edges: Edge[] =[
+          {id:'1', node1Id: '1', node2Id: '2', totalCapacity: '4.8 THz', provisionedCapacity: 10},
+          {id:'2', node1Id: '1', node2Id: '3', totalCapacity: '4.8 THz', provisionedCapacity: 10}
+        ]
+
+        const expected: EdgeSpectrumDataRow[] = [
+          {edgeId: '1', channelId: '1', frequency: 195, channelWidth: 50, chanel_label: "CH-1"},
+          {edgeId: '2', channelId: '1', frequency: 195, channelWidth: 50, chanel_label: "CH-1"}
+        ]
+
+        expect(mergeSpectrum(chanelData, edges)).toEqual(expected)
+      })
+    })
 });
 
 describe("Build Network", () =>{
-  it("should merge edges before adding neighbors to nodes", () =>{
+  describe("Simple data", ()=>{
     const edges: EdgeDataRow[] = [
       { id: '1', node1: '1', node2:'2', totalCapacity: '4.8 THz', provisionedCapacity: 10,},
       { id: '2', node1: '2', node2:'1', totalCapacity: '4.8 THz', provisionedCapacity: 17,},
     ]
-
     const nodes: NodeDataRow[] = [
       {id: '1', latitude: 54.40027054, longitude: 18.58406944},
       {id: '2', latitude: 54.3593940734863,longitude: 18.645393371582},
     ]
-
-    const expectedEdges: Edge[] = [
-      { id: '1', node1Id: '1', node2Id:'2', totalCapacity: '4.8 THz', provisionedCapacity: 10,},
+    const chanels: EdgeSpectrumDataRow[] = [
+      { edgeId: '1', channelId: '2', chanel_label: 'CH-1', channelWidth: 50, frequency: 195,},
+      { edgeId: '2', channelId: '2', chanel_label: 'CH-1', channelWidth: 50, frequency: 195,}
     ]
+    it("should merge edges before adding neighbors to nodes", () =>{
+      const expectedEdges: Edge[] = [
+        { id: '1', node1Id: '1', node2Id:'2', totalCapacity: '4.8 THz', provisionedCapacity: 10,},
+      ]
 
-    const expectedNode1: Node =  {id: '1', latitude: 54.40027054, longitude: 18.58406944, neighbors: []}
-    const expectedNode2: Node = {id: '2', latitude: 54.3593940734863,longitude: 18.645393371582, neighbors: []}
-    expectedNode1.neighbors.push({node: expectedNode2, edge: expectedEdges[0]})
-    expectedNode2.neighbors.push({node: expectedNode1, edge: expectedEdges[0]})
-    const expectedNodes: Node[] = [expectedNode1, expectedNode2]
+      const expectedNode1: Node =  {id: '1', latitude: 54.40027054, longitude: 18.58406944, neighbors: []}
+      const expectedNode2: Node = {id: '2', latitude: 54.3593940734863,longitude: 18.645393371582, neighbors: []}
+      expectedNode1.neighbors.push({node: expectedNode2, edge: expectedEdges[0]})
+      expectedNode2.neighbors.push({node: expectedNode1, edge: expectedEdges[0]})
+      const expectedNodes: Node[] = [expectedNode1, expectedNode2]
 
-    const chanelData: EdgeSpectrumDataRow[] = []
+      const chanelData: EdgeSpectrumDataRow[] = []
 
-    const network: Network = buildNetwork(nodes, edges, chanelData)
-    expect(network.nodes).toEqual(expectedNodes)
-    expect(network.edges).toEqual(expectedEdges)
+      const network: Network = buildNetwork(nodes, edges, chanelData)
+      expect(network.nodes).toEqual(expectedNodes)
+      expect(network.edges).toEqual(expectedEdges)
 
+    })
+    // it("Should return list of chanels with nodes instead of edges", () =>{
+    //   const expectedChanel: Chanel[] = [
+    //     {id: '1', chanel_label: 'Ch-1', width:50, frequency:195, nodes: ['1', '2']}
+    //   ]
+
+    //   const network: Network = buildNetwork(nodes, edges, chanels)
+    //   expect(network.chanels).toEqual(expectedChanel)
+    // })
   })
-
 });
