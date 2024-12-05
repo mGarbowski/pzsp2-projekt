@@ -1,0 +1,32 @@
+- name: Create users and add SSH keys
+  hosts: public-machine
+  become: yes
+  vars:
+    users:
+      - username: mgarbowski
+        full_name: Mikołaj Garbowski
+      - username: mbienkowski
+        full_name: Maksym Bienkowski
+      - username: mluszczek
+        full_name: Michał Łuszczek
+  tasks:
+    - name: Ensure group pzsp exists
+      group:
+        name: pzsp
+        state: present
+
+    - name: Ensure users are created and added to groups
+      loop: "{{ users }}"
+      user:
+        name: "{{ item.username }}"
+        shell: /bin/bash
+        groups: docker,pzsp
+        append: yes
+        comment: "{{ item.full_name }}"
+
+    - name: Add SSH keys for users
+      loop: "{{ users }}"
+      ansible.posix.authorized_key:
+        user: "{{ item.username }}"
+        state: present
+        key: "{{ lookup('file', 'public_keys/' + item.username) }}"
