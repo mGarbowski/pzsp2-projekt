@@ -124,3 +124,4 @@
         project_src: /home/azureuser
         files:
           - docker-compose.prod.yml
+        build: always
