@@ -132,29 +132,57 @@ export function groupByChanel(chanelData: EdgeSpectrumDataRow[]){
 }
 
 export const chanelNode = (chanelsEdge: ChanelEdge[], edges: Edge[]): Chanel[] => {
-  // forecah chanel
-  // look for node that does not appear in any other edge
-  // append it and second node from that edge to list
-  // pop edge from chanel list
-  // look for next node in remaining edges
-
   const chanels: Chanel[] = chanelsEdge.map(chanelE =>
     {
       const chanel: Chanel = {id: chanelE.id, width: chanelE.width, frequency: chanelE.frequency, chanel_label: chanelE.chanel_label, nodes: []}
 
       let chanelEdgesRef: string[] = chanelE.edges.slice()
-      // look for node that does not appear in any other edge
+      // get list of edges
+
       const chanelEdgesObj = chanelEdgesRef.map(edgeID => edges.find(element => element.id == edgeID));
-      if(!chanelEdgesObj){
+      if(!chanelEdgesObj || !chanelEdgesObj[0]){
         throw new Error(`Edge does not exists: ${JSON.stringify(chanelE)} edge id does not apper in EdgeDataRow`);
       }
-      if(chanelE.edges.length < 2){
-        chanel.nodes.push(chanelEdgesObj[0].node1Id)
-        chanel.nodes.push(chanelEdgesObj[0].node2Id)
-      }
-      const nodes1 = chanelEdgesObj.map(element => element?.node1Id)
-      const nodes2 = chanelEdgesObj.map(element => element?.node2Id)
+      // add first node's edges and see if next edges connect
 
+      chanel.nodes.push(chanelEdgesObj[0]!.node1Id)
+      chanel.nodes.push(chanelEdgesObj[0]!.node2Id)
+
+      const max_attempts = chanelEdgesObj.length
+      let attempts = 0
+      chanelEdgesObj.shift()
+      for(const edge of chanelEdgesObj!){
+        if(!edge){
+          throw new Error(`Edge does not exists: ${JSON.stringify(chanelE)} edge id does not apper in EdgeDataRow`);
+        }
+        // check last node in path
+        if(edge!.node1Id == chanel.nodes.slice(-1)[0] ){
+          chanel.nodes.push(edge!.node2Id)
+          attempts = 0
+        }
+        else if(edge!.node2Id == chanel.nodes.slice(-1)[0]){
+          chanel.nodes.push(edge!.node1Id)
+          attempts = 0
+        }
+        else if(edge!.node1Id == chanel.nodes[0] ){
+          chanel.nodes.unshift(edge!.node2Id)
+          attempts = 0
+        }
+        else if(edge!.node2Id == chanel.nodes[0]){
+          chanel.nodes.unshift(edge!.node1Id)
+          attempts = 0
+        }
+        // if all misses try again
+        else{
+          attempts += 1
+          // if all edges cannot be organised into a path thow error
+          if(attempts > max_attempts){
+            throw new Error(`Disconnected edge: ${JSON.stringify(chanelE)} has a disconnected edge ${JSON.stringify(edge)}`)
+          }
+          //append to end of queue
+          chanelEdgesObj.push(edge)
+        }
+      }
       return chanel
   })
 
