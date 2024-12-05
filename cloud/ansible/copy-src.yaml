@@ -1,4 +1,4 @@
-- name: Copy frontend sources
+- name: Copy sources
   hosts: public-machine
   become: no
   tasks:

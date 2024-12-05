@@ -70,43 +70,24 @@
         state: present
         key: "{{ lookup('file', 'public_keys/' + item.username) }}"
 
-
-- name: Copy frontend sources
+- name: Copy sources
   hosts: public-machine
   become: no
   tasks:
-    - name: copy directory
-      copy:
+    - name: copy frontend src
+      ansible.posix.synchronize:
         src: ../../frontend
         dest: /home/azureuser/
 
-- name: Copy backend sources
-  hosts: public-machine
-  become: no
-  tasks:
-    - name: copy directory
-      copy:
+    - name: copy backend src
+      ansible.posix.synchronize:
         src: ../../backend
         dest: /home/azureuser/
 
-- name: Copy nginx sources
-  hosts: public-machine
-  become: no
-  tasks:
-    - name: copy directory
-      copy:
-        src: ../nginx
-        dest: /home/azureuser/
-
-- name: Copy docker compose
-  hosts: public-machine
-  become: no
-  tasks:
-    - name: copy directory
-      copy:
+    - name: copy docker compose
+      ansible.posix.synchronize:
         src: ../../docker-compose.prod.yml
         dest: /home/azureuser/
-
 
 - name: Redeploy docker compose
   hosts: public-machine
