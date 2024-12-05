@@ -13,7 +13,6 @@ services:
       dockerfile: Dockerfile.prod
     ports:
       - "2137:2137"
-      - "80:80"
     networks:
       - app-network
 networks:
