@@ -104,7 +104,7 @@ export const checkEdgeExists = (chanelData: EdgeSpectrumDataRow[], edges: EdgeDa
   return true
 }
 
-function getChanel(chanelData: EdgeSpectrumDataRow, chanels: ChanelEdge[]) {
+export const getChanel = (chanelData: EdgeSpectrumDataRow, chanels: ChanelEdge[]): ChanelEdge[] => {
   const cur_id = chanelData.channelId;
   const found = chanels.find((chanel) => chanel.id == cur_id)
   if(typeof found !== "undefined"){
@@ -123,7 +123,7 @@ function getChanel(chanelData: EdgeSpectrumDataRow, chanels: ChanelEdge[]) {
   return chanels
 }
 
-export function groupByChanel(chanelData: EdgeSpectrumDataRow[]){
+export const groupByChanel = (chanelData: EdgeSpectrumDataRow[]): ChanelEdge[] => {
   let chanel_edges: ChanelEdge[] = [];
   for(const element of chanelData){
     chanel_edges = getChanel(element, chanel_edges);
