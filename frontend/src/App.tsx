@@ -5,6 +5,10 @@ import { Optimizer } from "./Optimizer/Optimizer.tsx";
 function App() {
   const [message, setMessage] = useState('');
   const [length, setLength] = useState<number | null>(null);
+  const [a, setA] = useState<number>(0);
+  const [b, setB] = useState<number>(0);
+  const [x, setX] = useState<number | null>(null);
+  const [y, setY] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const mode = import.meta.env.MODE;
