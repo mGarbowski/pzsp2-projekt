@@ -94,6 +94,16 @@ export const handleNode = (nodesData: NodeDataRow[]): Node[] =>{
   }));
 }
 
+export const checkEdgeExists = (chanelData: EdgeSpectrumDataRow[], edges: EdgeDataRow[]): boolean =>{
+  const edgeIDs: string[] = edges.map(element => element.id)
+  chanelData.map(chanel => {
+    if(!edgeIDs.includes(chanel.edgeId)){
+      throw new Error(`Edge does not exists: ${JSON.stringify(chanel)} edge id does not apper in EdgeDataRow`);
+    }
+  })
+  return true
+}
+
 function getChanel(chanelData: EdgeSpectrumDataRow, chanels: ChanelEdge[]) {
   const cur_id = chanelData.channelId;
   const found = chanels.find((chanel) => chanel.id == cur_id)
@@ -146,7 +156,6 @@ export const mergeSpectrum = (chanelData: EdgeSpectrumDataRow[], edges: Edge[]):
       chanelMerged.push(chanel)
     }
   }
-
   return chanelMerged
 }
 
@@ -154,7 +163,8 @@ export const buildNetwork = (nodesData: NodeDataRow[], edgesData: EdgeDataRow[],
   // moved for easier testing
   const nodes: Node[] =handleNode(nodesData)
 
-
+  //check data integrity
+  checkEdgeExists(chanelData, edgesData)
 
   // pair dierctional edges in handle edge
   const edgesMerged = mergeEdges(edgesData);

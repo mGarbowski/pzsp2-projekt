@@ -1,4 +1,4 @@
-import { Edge, Node, ChanelEdge, buildNetwork, groupByChanel, handleNode, handleEdge, mergeEdges, Network, Chanel, mergeSpectrum } from "./buildNetwork";
+import { Edge, Node, ChanelEdge, buildNetwork, groupByChanel, handleNode, handleEdge, mergeEdges, Network, Chanel, mergeSpectrum, checkEdgeExists } from "./buildNetwork";
 import { EdgeDataRow, NodeDataRow, EdgeSpectrumDataRow ,parseEdges, parseEdgeSpectrum , parseNodes} from "./parseCsv";
 
 
@@ -97,7 +97,7 @@ describe("Edges", () =>{
   })
 });
 
-describe('GroupChannels', () => {
+describe('Chanels', () => {
     describe('getChannel', () => {
       it('should convert edge first into channel first', () => {
         const EdgeSpectrum = "REQUESTED_FRE_ID,PHOTONIC_SERVICE_ID,FREQUENCY,WIDTH,WAVELENGTH,CHANNEL\n"+
@@ -182,6 +182,31 @@ describe('GroupChannels', () => {
         ]
 
         expect(mergeSpectrum(chanelData, edges)).toEqual(expected)
+      })
+    })
+    describe("CheckEdgeExists", () =>{
+      it('should return true if all edges exist', ()=>{
+        const chanelData: EdgeSpectrumDataRow[] = [
+          {edgeId: '1', channelId: '1', frequency: 195, channelWidth: 50, chanel_label: "CH-1"},
+          {edgeId: '2', channelId: '1', frequency: 195, channelWidth: 50, chanel_label: "CH-1"}
+        ]
+        const edges: EdgeDataRow[] = [
+          {id:'1', node1: '1', node2: '2', totalCapacity: '4.8 THz', provisionedCapacity: 10},
+          {id:'2', node1: '2', node2: '1', totalCapacity: '4.8 THz', provisionedCapacity: 10}
+        ]
+
+        expect(checkEdgeExists(chanelData, edges)).toEqual(true)
+      })
+      it('should throw an exception if EdgeSpectrum refers to non existent edge', () =>{
+        const chanelData: EdgeSpectrumDataRow[] = [
+          {edgeId: '1', channelId: '1', frequency: 195, channelWidth: 50, chanel_label: "CH-1"},
+          {edgeId: '2', channelId: '1', frequency: 195, channelWidth: 50, chanel_label: "CH-1"}
+        ]
+        const edges: EdgeDataRow[] = [
+          {id:'1', node1: '1', node2: '2', totalCapacity: '4.8 THz', provisionedCapacity: 10},
+        ]
+
+        expect(() => checkEdgeExists(chanelData, edges)).toThrow("Edge does not exists")
       })
     })
 });
