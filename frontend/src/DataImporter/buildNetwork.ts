@@ -134,15 +134,28 @@ export function groupByChanel(chanelData: EdgeSpectrumDataRow[]){
 export const chanelNode = (chanelsEdge: ChanelEdge[], edges: Edge[]): Chanel[] => {
   // forecah chanel
   // look for node that does not appear in any other edge
-  // append it and second node to list
+  // append it and second node from that edge to list
   // pop edge from chanel list
   // look for next node in remaining edges
 
-  const chanels: Chanel[] = chanelsEdge.map(chanelE =>{
-    const chanel: Chanel = {id: chanelE.id, width: chanelE.width, frequency: chanelE.frequency, chanel_label: chanelE.chanel_label, nodes: []}
+  const chanels: Chanel[] = chanelsEdge.map(chanelE =>
+    {
+      const chanel: Chanel = {id: chanelE.id, width: chanelE.width, frequency: chanelE.frequency, chanel_label: chanelE.chanel_label, nodes: []}
 
+      let chanelEdgesRef: string[] = chanelE.edges.slice()
+      // look for node that does not appear in any other edge
+      const chanelEdgesObj = chanelEdgesRef.map(edgeID => edges.find(element => element.id == edgeID));
+      if(!chanelEdgesObj){
+        throw new Error(`Edge does not exists: ${JSON.stringify(chanelE)} edge id does not apper in EdgeDataRow`);
+      }
+      if(chanelE.edges.length < 2){
+        chanel.nodes.push(chanelEdgesObj[0].node1Id)
+        chanel.nodes.push(chanelEdgesObj[0].node2Id)
+      }
+      const nodes1 = chanelEdgesObj.map(element => element?.node1Id)
+      const nodes2 = chanelEdgesObj.map(element => element?.node2Id)
 
-    return chanel
+      return chanel
   })
 
   return chanels

@@ -243,13 +243,13 @@ describe("Build Network", () =>{
       expect(network.edges).toEqual(expectedEdges)
 
     })
-    // it("Should return list of chanels with nodes instead of edges", () =>{
-    //   const expectedChanel: Chanel[] = [
-    //     {id: '1', chanel_label: 'Ch-1', width:50, frequency:195, nodes: ['1', '2']}
-    //   ]
+    it("Should return list of chanels with nodes instead of edges", () =>{
+      const expectedChanel: Chanel[] = [
+        {id: '1', chanel_label: 'Ch-1', width:50, frequency:195, nodes: ['1', '2']}
+      ]
 
-    //   const network: Network = buildNetwork(nodes, edges, chanels)
-    //   expect(network.chanels).toEqual(expectedChanel)
-    // })
+      const network: Network = buildNetwork(nodes, edges, chanels)
+      expect(network.chanels).toEqual(expectedChanel)
+    })
   })
 });
