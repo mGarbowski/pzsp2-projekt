@@ -41,18 +41,17 @@ async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
     try:
         data = await websocket.receive_text()
-        await websocket.send_text(f"Message text was: {data}, processing")
+        params = ModelParams.model_validate_json(data)
+        print(f"Received params: {params}")
+        await websocket.send_text(f"Received params: {params}, processing...")
         await asyncio.sleep(3)
-        await websocket.send_text("Finished processing")
+        x, y = solve_instance(params)
+        await websocket.send_text(
+            f"Optimization finished. x: {round(x, 2)}, y: {round(y, 2)}"
+        )
     except WebSocketDisconnect:
         print("Client disconnected")
     finally:
         if websocket.client_state != WebSocketState.DISCONNECTED:
             await websocket.close()
         print("Finished")
-
-
-@app.post("/integer-model-demo")
-def integer_model_demo(pp: ModelParams):
-    x, y = solve_instance(pp)
-    return {"x": x, "y": y}

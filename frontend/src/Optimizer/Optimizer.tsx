@@ -1,16 +1,32 @@
-import {useState} from "react";
-import {useOptimizer} from "./useOptimizer.ts";
+import { useState } from "react";
+import { useOptimizer } from "./useOptimizer.ts";
 
 export const Optimizer = () => {
   const backendBaseUrl = import.meta.env.VITE_BACKEND_URL as string;
   const url = `${backendBaseUrl}/ws/optimizer`;
-  const [message, setMessage] = useState('');
-  const {sendQuery, lastMessage} = useOptimizer(url);
+  const [a, setA] = useState<number>(0);
+  const [b, setB] = useState<number>(0);
+
+  const { sendQuery, lastMessage } = useOptimizer(url);
 
   return <div>
-    <input type="text" placeholder="Enter your message"
-      onChange={(e) => setMessage(e.target.value)}/>
-    <button onClick={() => sendQuery(message)}>Optimize</button>
+    <input
+      type="text"
+      value={a}
+      onChange={(e) => setA(parseInt(e.target.value))}
+      placeholder="Enter the a parameter"
+      required
+      style={{ marginBottom: '10px', padding: '5px' }}
+    />
+    <input
+      type="text"
+      value={b}
+      onChange={(e) => setB(parseInt(e.target.value))}
+      placeholder="Enter the b parameter"
+      required
+      style={{ marginBottom: '10px', padding: '5px' }}
+    />
+    <button onClick={() => sendQuery(JSON.stringify({ a, b }))}>Optimize</button>
     <p>Message: {lastMessage}</p>
   </div>
 }
