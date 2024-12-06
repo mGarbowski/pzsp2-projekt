@@ -18,17 +18,17 @@ export interface Node {
   }[];
 }
 
-export interface Chanel {
+export interface Channel {
   id: string;
-  chanel_label: string;
+  channel_label: string;
   nodes: string[];
   frequency: number;
   width: number;
   // wavelength: number;
 }
-export interface ChanelEdge {
+export interface ChannelEdge {
   id: string;
-  chanel_label: string;
+  channel_label: string;
   edges: string[];
   frequency: number;
   width: number;
@@ -38,7 +38,7 @@ export interface ChanelEdge {
 export interface Network {
   nodes: Node[];
   edges: Edge[];
-  chanels: Chanel[];
+  channels: Channel[];
 }
 
 export const handleEdge = (edgeData: EdgeDataRow, nodes: Node[]): Edge => {
@@ -65,24 +65,24 @@ export const handleEdge = (edgeData: EdgeDataRow, nodes: Node[]): Edge => {
 }
 
 export const mergeEdges = (edges: EdgeDataRow[]): EdgeDataRow[] =>{
-    let merged: EdgeDataRow[] = []
-    edges.map(
-      edge => {
-        // finding corresponding edge
-        const pair = edges.find(element => element.node1 == edge.node2 && element.node2 == edge.node1)
-        // check if corresponding edge exists
-        if(typeof pair !== 'undefined' ){
-          // check if corresponding edge has been written in merged - push if not - ignore if yes
-          if(typeof merged.find(element => element.id == pair.id) === 'undefined'){
-            merged.push(edge)
-          }
-        }
-        else{
-          throw new Error(`Can't merge: ${JSON.stringify(edge)} has no pair`);
+  const merged: EdgeDataRow[] = []
+  edges.map(
+    edge => {
+      // finding corresponding edge
+      const pair = edges.find(element => element.node1 == edge.node2 && element.node2 == edge.node1)
+      // check if corresponding edge exists
+      if(typeof pair !== 'undefined' ){
+        // check if corresponding edge has been written in merged - push if not - ignore if yes
+        if(typeof merged.find(element => element.id == pair.id) === 'undefined'){
+          merged.push(edge)
         }
       }
-    )
-    return merged;
+      else{
+        throw new Error(`Can't merge: ${JSON.stringify(edge)} has no pair`);
+      }
+    }
+  )
+  return merged;
 }
 
 export const handleNode = (nodesData: NodeDataRow[]): Node[] =>{
@@ -94,130 +94,130 @@ export const handleNode = (nodesData: NodeDataRow[]): Node[] =>{
   }));
 }
 
-export const checkEdgeExists = (chanelData: EdgeSpectrumDataRow[], edges: EdgeDataRow[]): boolean =>{
+export const checkEdgeExists = (channelData: EdgeSpectrumDataRow[], edges: EdgeDataRow[]): boolean =>{
   const edgeIDs: string[] = edges.map(element => element.id)
-  chanelData.map(chanel => {
-    if(!edgeIDs.includes(chanel.edgeId)){
-      throw new Error(`Edge does not exists: ${JSON.stringify(chanel)} edge id does not apper in EdgeDataRow`);
+  channelData.map(channel => {
+    if(!edgeIDs.includes(channel.edgeId)){
+      throw new Error(`Edge does not exists: ${JSON.stringify(channel)} edge id does not apper in EdgeDataRow`);
     }
   })
   return true
 }
 
-export const getChanel = (chanelData: EdgeSpectrumDataRow, chanels: ChanelEdge[]): ChanelEdge[] => {
-  const cur_id = chanelData.channelId;
-  const found = chanels.find((chanel) => chanel.id == cur_id)
+export const getChannel = (channelData: EdgeSpectrumDataRow, channels: ChannelEdge[]): ChannelEdge[] => {
+  const cur_id = channelData.channelId;
+  const found = channels.find((channel) => channel.id == cur_id)
   if(typeof found !== "undefined"){
-    found.edges.push(chanelData.edgeId);
+    found.edges.push(channelData.edgeId);
   }
   else{
-      const chanel: ChanelEdge = {
-        id: chanelData.channelId,
-        chanel_label: chanelData.chanel_label,
-        edges: [chanelData.edgeId],
-        frequency: chanelData.frequency,
-        width: chanelData.channelWidth
-      }
-      chanels.push(chanel)
+    const channel: ChannelEdge = {
+      id: channelData.channelId,
+      channel_label: channelData.channel_label,
+      edges: [channelData.edgeId],
+      frequency: channelData.frequency,
+      width: channelData.channelWidth
+    }
+    channels.push(channel)
   }
-  return chanels
+  return channels
 }
 
-export const groupByChanel = (chanelData: EdgeSpectrumDataRow[]): ChanelEdge[] => {
-  let chanel_edges: ChanelEdge[] = [];
-  for(const element of chanelData){
-    chanel_edges = getChanel(element, chanel_edges);
+export const groupByChannel = (channelData: EdgeSpectrumDataRow[]): ChannelEdge[] => {
+  let channel_edges: ChannelEdge[] = [];
+  for(const element of channelData){
+    channel_edges = getChannel(element, channel_edges);
   }
-  return chanel_edges
+  return channel_edges
 }
 
-export const chanelNode = (chanelsEdge: ChanelEdge[], edges: Edge[]): Chanel[] => {
-  const chanels: Chanel[] = chanelsEdge.map(chanelE =>
-    {
-      const chanel: Chanel = {id: chanelE.id, width: chanelE.width, frequency: chanelE.frequency, chanel_label: chanelE.chanel_label, nodes: []}
+export const channelNode = (channelsEdge: ChannelEdge[], edges: Edge[]): Channel[] => {
+  const channels: Channel[] = channelsEdge.map(channelE =>
+  {
+    const channel: Channel = {id: channelE.id, width: channelE.width, frequency: channelE.frequency, channel_label: channelE.channel_label, nodes: []}
 
-      let chanelEdgesRef: string[] = chanelE.edges.slice()
-      // get list of edges
+    const channelEdgesRef: string[] = channelE.edges.slice()
+    // get list of edges
 
-      const chanelEdgesObj = chanelEdgesRef.map(edgeID => edges.find(element => element.id == edgeID));
-      if(!chanelEdgesObj || !chanelEdgesObj[0]){
-        throw new Error(`Edge does not exists: ${JSON.stringify(chanelE)} edge id does not apper in EdgeDataRow`);
+    const channelEdgesObj = channelEdgesRef.map(edgeID => edges.find(element => element.id == edgeID));
+    if(!channelEdgesObj || !channelEdgesObj[0]){
+      throw new Error(`Edge does not exists: ${JSON.stringify(channelE)} edge id does not apper in EdgeDataRow`);
+    }
+    // add first node's edges and see if next edges connect
+
+    channel.nodes.push(channelEdgesObj[0]!.node1Id)
+    channel.nodes.push(channelEdgesObj[0]!.node2Id)
+
+    const max_attempts = channelEdgesObj.length
+    let attempts = 0
+    channelEdgesObj.shift()
+    for(const edge of channelEdgesObj!){
+      if(!edge){
+        throw new Error(`Edge does not exists: ${JSON.stringify(channelE)} edge id does not apper in EdgeDataRow`);
       }
-      // add first node's edges and see if next edges connect
-
-      chanel.nodes.push(chanelEdgesObj[0]!.node1Id)
-      chanel.nodes.push(chanelEdgesObj[0]!.node2Id)
-
-      const max_attempts = chanelEdgesObj.length
-      let attempts = 0
-      chanelEdgesObj.shift()
-      for(const edge of chanelEdgesObj!){
-        if(!edge){
-          throw new Error(`Edge does not exists: ${JSON.stringify(chanelE)} edge id does not apper in EdgeDataRow`);
-        }
-        // check last node in path
-        if(edge!.node1Id == chanel.nodes.slice(-1)[0] ){
-          chanel.nodes.push(edge!.node2Id)
-          attempts = 0
-        }
-        else if(edge!.node2Id == chanel.nodes.slice(-1)[0]){
-          chanel.nodes.push(edge!.node1Id)
-          attempts = 0
-        }
-        else if(edge!.node1Id == chanel.nodes[0] ){
-          chanel.nodes.unshift(edge!.node2Id)
-          attempts = 0
-        }
-        else if(edge!.node2Id == chanel.nodes[0]){
-          chanel.nodes.unshift(edge!.node1Id)
-          attempts = 0
-        }
-        // if all misses try again
-        else{
-          attempts += 1
-          // if all edges cannot be organised into a path thow error
-          if(attempts > max_attempts){
-            throw new Error(`Disconnected edge: ${JSON.stringify(chanelE)} has a disconnected edge ${JSON.stringify(edge)}`)
-          }
-          //append to end of queue
-          chanelEdgesObj.push(edge)
-        }
+      // check last node in path
+      if(edge!.node1Id == channel.nodes.slice(-1)[0] ){
+        channel.nodes.push(edge!.node2Id)
+        attempts = 0
       }
-      return chanel
+      else if(edge!.node2Id == channel.nodes.slice(-1)[0]){
+        channel.nodes.push(edge!.node1Id)
+        attempts = 0
+      }
+      else if(edge!.node1Id == channel.nodes[0] ){
+        channel.nodes.unshift(edge!.node2Id)
+        attempts = 0
+      }
+      else if(edge!.node2Id == channel.nodes[0]){
+        channel.nodes.unshift(edge!.node1Id)
+        attempts = 0
+      }
+      // if all misses try again
+      else{
+        attempts += 1
+        // if all edges cannot be organised into a path thow error
+        if(attempts > max_attempts){
+          throw new Error(`Disconnected edge: ${JSON.stringify(channelE)} has a disconnected edge ${JSON.stringify(edge)}`)
+        }
+        //append to end of queue
+        channelEdgesObj.push(edge)
+      }
+    }
+    return channel
   })
 
-  return chanels
+  return channels
 }
 
-export const mergeSpectrum = (chanelData: EdgeSpectrumDataRow[], edges: Edge[]):EdgeSpectrumDataRow[] =>{
-  const chanelMerged: EdgeSpectrumDataRow[] = []
+export const mergeSpectrum = (channelData: EdgeSpectrumDataRow[], edges: Edge[]):EdgeSpectrumDataRow[] =>{
+  const channelMerged: EdgeSpectrumDataRow[] = []
   const edgeIDs: string[] = edges.map(element => element.id)
-  for(const chanel of chanelData){
-    if(edgeIDs.includes(chanel.edgeId)){
-      chanelMerged.push(chanel)
+  for(const channel of channelData){
+    if(edgeIDs.includes(channel.edgeId)){
+      channelMerged.push(channel)
     }
   }
-  return chanelMerged
+  return channelMerged
 }
 
-export const buildNetwork = (nodesData: NodeDataRow[], edgesData: EdgeDataRow[], chanelData: EdgeSpectrumDataRow[]): Network => {
+export const buildNetwork = (nodesData: NodeDataRow[], edgesData: EdgeDataRow[], channelData: EdgeSpectrumDataRow[]): Network => {
   // moved for easier testing
   const nodes: Node[] =handleNode(nodesData)
 
   //check data integrity
-  checkEdgeExists(chanelData, edgesData)
+  checkEdgeExists(channelData, edgesData)
 
   // pair dierctional edges in handle edge
   const edgesMerged = mergeEdges(edgesData);
 
   const edges = edgesMerged.map((edgeData) => handleEdge(edgeData, nodes));
 
-  const chanelsMerged = mergeSpectrum(chanelData, edges)
+  const channelsMerged = mergeSpectrum(channelData, edges)
 
-// temp data - group information into chanels
-  const chanelEdges = groupByChanel(chanelsMerged);
+  // temp data - group information into channels
+  const channelEdges = groupByChannel(channelsMerged);
 
-  let chanels = chanelNode(chanelEdges, edges);
+  const channels = channelNode(channelEdges, edges);
 
-  return {nodes, edges, chanels};
+  return {nodes, edges, channels};
 }
