@@ -11,7 +11,7 @@ export const OptimizerPage = () => {
 
   const {sendQuery, lastMessage} = useOptimizer(url, isDisconnectMessage);
 
-  return <div>
+  return <div style={{display: 'flex', flexDirection: 'column', margin: '0 auto', placeItems: 'center'}}>
     <h1>Optimizer</h1>
     <h2>Minimize ax+yb, where 3x+2y &ge; 1 </h2>
     <input
