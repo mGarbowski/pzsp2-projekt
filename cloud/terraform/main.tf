@@ -17,60 +17,29 @@ resource "azurerm_resource_group" "rg" {
   name     = var.resource_group_name
   location = "westeurope"
 }
-#
-#data "azuread_user" "user_1" {
-#  user_principal_name = var.user_1_email
-#}
-#
-#data "azuread_user" "user_2" {
-#  user_principal_name = var.user_2_email
-#}
-#
-#data "azuread_user" "user_3" {
-#  user_principal_name = var.user_3_email
-#}
-#
-## Assign a role to a user
-#resource "azurerm_role_assignment" "user_1_role" {
-#  scope                = "3848dd04-0cf0-4754-8e77-735b566a9100"
-#  role_definition_name = "Contributor" # The role you want to assign (e.g., Contributor, Reader)
-#  principal_id         = data.azuread_user.user_1.id # The user to assign the role to
-#}
-#
-#resource "azurerm_role_assignment" "user_2_role" {
-#  scope                = azurerm_resource_group.rg.id
-#  role_definition_name = "Contributor" # The role you want to assign (e.g., Contributor, Reader)
-#  principal_id         = data.azuread_user.user_2.id # The user to assign the role to
-#}
-#
-#resource "azurerm_role_assignment" "user_3_role" {
-#  scope                = azurerm_resource_group.rg.id
-#  role_definition_name = "Contributor" # The role you want to assign (e.g., Contributor, Reader)
-#  principal_id         = data.azuread_user.user_3.id # The user to assign the role to
-#}
 
-resource "azurerm_public_ip" "lab2_ip" {
-  name                = "lab2-ip"
+resource "azurerm_public_ip" "pzsp2_ip" {
+  name                = "pzsp2-ip"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   allocation_method   = "Static"
 }
 
-resource "azurerm_virtual_network" "lab2_vnet" {
-  name                = "lab2-vnet"
+resource "azurerm_virtual_network" "pzsp2_vnet" {
+  name                = "pzsp2-vnet"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   address_space       = ["10.0.0.0/16"]
 }
 
-resource "azurerm_network_security_group" "lab2_nsg" {
-  name                = "lab2-nsg"
+resource "azurerm_network_security_group" "pzsp2_nsg" {
+  name                = "pzsp2-nsg"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
 }
 
 resource "azurerm_network_security_rule" "ssh_rule" {
-  name                        = "lab2-nsg-rule-ssh"
+  name                        = "pzsp2-nsg-rule-ssh"
   priority                    = 1000
   direction                   = "Inbound"
   access                      = "Allow"
@@ -79,12 +48,12 @@ resource "azurerm_network_security_rule" "ssh_rule" {
   destination_port_range      = "22"
   source_address_prefix       = "*"
   destination_address_prefix  = "*"
-  network_security_group_name = azurerm_network_security_group.lab2_nsg.name
+  network_security_group_name = azurerm_network_security_group.pzsp2_nsg.name
   resource_group_name         = azurerm_resource_group.rg.name
 }
 
 resource "azurerm_network_security_rule" "http_rule" {
-  name                        = "pis-nsg-rule-http"
+  name                        = "pzsp2-nsg-rule-http"
   priority                    = 1020
   direction                   = "Inbound"
   access                      = "Allow"
@@ -93,12 +62,12 @@ resource "azurerm_network_security_rule" "http_rule" {
   destination_port_range      = "80"
   source_address_prefix       = "*"
   destination_address_prefix  = "*"
-  network_security_group_name = azurerm_network_security_group.lab2_nsg.name
+  network_security_group_name = azurerm_network_security_group.pzsp2_nsg.name
   resource_group_name         = azurerm_resource_group.rg.name
 }
 
 resource "azurerm_network_security_rule" "https_rule" {
-  name                        = "pis-nsg-rule-https"
+  name                        = "pzsp2-nsg-rule-https"
   priority                    = 1030
   direction                   = "Inbound"
   access                      = "Allow"
@@ -107,14 +76,14 @@ resource "azurerm_network_security_rule" "https_rule" {
   destination_port_range      = "443"
   source_address_prefix       = "*"
   destination_address_prefix  = "*"
-  network_security_group_name = azurerm_network_security_group.lab2_nsg.name
+  network_security_group_name = azurerm_network_security_group.pzsp2_nsg.name
   resource_group_name         = azurerm_resource_group.rg.name
 }
 
-resource "azurerm_subnet" "lab2_subnet" {
-  name                 = "lab2-subnet"
+resource "azurerm_subnet" "pzsp2_subnet" {
+  name                 = "pzsp2-subnet"
   resource_group_name  = azurerm_resource_group.rg.name
-  virtual_network_name = azurerm_virtual_network.lab2_vnet.name
+  virtual_network_name = azurerm_virtual_network.pzsp2_vnet.name
   address_prefixes     = ["10.0.1.0/24"]
 }
 
@@ -125,10 +94,10 @@ resource "azurerm_network_interface" "frontend_nic" {
 
   ip_configuration {
     name                          = "frontend-ip-config"
-    subnet_id                     = azurerm_subnet.lab2_subnet.id
+    subnet_id                     = azurerm_subnet.pzsp2_subnet.id
     private_ip_address_allocation = "Static"
     private_ip_address            = var.frontend_private_ip
-    public_ip_address_id          = azurerm_public_ip.lab2_ip.id
+    public_ip_address_id          = azurerm_public_ip.pzsp2_ip.id
   }
 }
 
@@ -139,7 +108,7 @@ resource "azurerm_network_interface" "backend_nic" {
 
   ip_configuration {
     name                          = "backend-ip-config"
-    subnet_id                     = azurerm_subnet.lab2_subnet.id
+    subnet_id                     = azurerm_subnet.pzsp2_subnet.id
     private_ip_address_allocation = "Static"
     private_ip_address            = var.backend_private_ip
   }
@@ -183,7 +152,7 @@ resource "azurerm_linux_virtual_machine" "backend_vm" {
 
   admin_ssh_key {
     username   = "azureuser"
-    public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDTyNTnRMC1hxLhsA7JI4ZsLdZTBqFxkJSp/fmOIt1B+uYokjPljgoNNuqahzuiZ/26Uw4dcDwfcv6h0xeHp1nXtCuSYWdbVDDxYojQRWsVXYr72kex44Tg0WF4g7A1ub/lB+2Ik0e96SFYY/vlsqji6ie1c2pdtS6yuJBtgipDp3WEmgDArWw9PkvGzlZG58eW4DQSeNf/WsGsamIKpqzQm3jKpDvUfpeIxK2z+Qv1w5YyzAEM2InzFleUafx7PSZ9/rdJKRBRmts52c7FA8Z7LiGcZYtBL1S37NDdMwNFZDWJ3M8sDRSSblgndm9dkQdsQu3zqYn1TBrJK/pnPwIULMHIlpiyZo109tbQwzDRRvm9Ns/JRjpusEOE8aZEIlVSgipMs9H/mIS6oriAoolgUTVcmrenKAIZjQNjWM/syx3MEdmdv8SbSYnixV4ZT0wGkgmShQxsv1SfeAkSqNOiO3+OjjRkSyAM2tBFn9Xy8Ll9bxorUYOX7qxWheWfoTs= olek.drwal@gmail.com"
+    public_key = file(var.public_ssh_key_file)
   }
 
   os_disk {
@@ -201,12 +170,12 @@ resource "azurerm_linux_virtual_machine" "backend_vm" {
 
 resource "azurerm_network_interface_security_group_association" "frontend_nsg_association" {
   network_interface_id      = azurerm_network_interface.frontend_nic.id
-  network_security_group_id = azurerm_network_security_group.lab2_nsg.id
+  network_security_group_id = azurerm_network_security_group.pzsp2_nsg.id
 }
 
 resource "azurerm_network_interface_security_group_association" "backend_nsg_association" {
   network_interface_id      = azurerm_network_interface.backend_nic.id
-  network_security_group_id = azurerm_network_security_group.lab2_nsg.id
+  network_security_group_id = azurerm_network_security_group.pzsp2_nsg.id
 }
 
 resource "azurerm_dev_test_global_vm_shutdown_schedule" "frontend_auto_shutdown" {
