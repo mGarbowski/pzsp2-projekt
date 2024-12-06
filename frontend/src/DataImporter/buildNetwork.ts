@@ -94,14 +94,13 @@ export const handleNode = (nodesData: NodeDataRow[]): Node[] =>{
   }));
 }
 
-export const checkEdgeExists = (channelData: EdgeSpectrumDataRow[], edges: EdgeDataRow[]): boolean =>{
+export const checkEdgeExists = (channelData: EdgeSpectrumDataRow[], edges: EdgeDataRow[]): void =>{
   const edgeIDs: string[] = edges.map(element => element.id)
   channelData.map(channel => {
     if(!edgeIDs.includes(channel.edgeId)){
       throw new Error(`Edge does not exists: ${JSON.stringify(channel)} edge id does not apper in EdgeDataRow`);
     }
   })
-  return true
 }
 
 export const getChannel = (channelData: EdgeSpectrumDataRow, channels: ChannelEdge[]): ChannelEdge[] => {

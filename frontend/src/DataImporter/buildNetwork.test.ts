@@ -195,7 +195,7 @@ describe('Channels', () => {
         {id:'2', node1: '2', node2: '1', totalCapacity: '4.8 THz', provisionedCapacity: 10}
       ]
 
-      expect(checkEdgeExists(channelData, edges)).toEqual(true)
+      expect(() => checkEdgeExists(channelData, edges)).not.toThrow()
     })
     it('should throw an exception if EdgeSpectrum refers to non existent edge', () =>{
       const channelData: EdgeSpectrumDataRow[] = [
