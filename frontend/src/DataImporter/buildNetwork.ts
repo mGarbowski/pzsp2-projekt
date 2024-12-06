@@ -130,7 +130,7 @@ export const groupByChannel = (channelData: EdgeSpectrumDataRow[]): ChannelEdge[
   return channel_edges
 }
 
-export const channelNode = (channelsEdge: ChannelEdge[], edges: Edge[]): Channel[] => {
+export const getChannelNodes = (channelsEdge: ChannelEdge[], edges: Edge[]): Channel[] => {
   const channels: Channel[] = channelsEdge.map(channelE =>
   {
     const channel: Channel = {id: channelE.id, width: channelE.width, frequency: channelE.frequency, channel_label: channelE.channel_label, nodes: []}
@@ -216,7 +216,7 @@ export const buildNetwork = (nodesData: NodeDataRow[], edgesData: EdgeDataRow[],
   // temp data - group information into channels
   const channelEdges = groupByChannel(channelsMerged);
 
-  const channels = channelNode(channelEdges, edges);
+  const channels = getChannelNodes(channelEdges, edges);
 
   return {nodes, edges, channels};
 }

@@ -1,4 +1,4 @@
-import { Edge, Node, ChannelEdge, buildNetwork, groupByChannel, handleNode, handleEdge, mergeEdges, Network, Channel, mergeSpectrum, checkEdgeExists, channelNode } from "./buildNetwork";
+import { Edge, Node, ChannelEdge, buildNetwork, groupByChannel, handleNode, handleEdge, mergeEdges, Network, Channel, mergeSpectrum, checkEdgeExists, getChannelNodes } from "./buildNetwork";
 import { EdgeDataRow, NodeDataRow, EdgeSpectrumDataRow ,parseEdges, parseEdgeSpectrum , parseNodes} from "./parseCsv";
 
 
@@ -209,7 +209,7 @@ describe('Channels', () => {
       expect(() => checkEdgeExists(channelData, edges)).toThrow("Edge does not exists")
     })
   })
-  describe("channelNode", ()=>{
+  describe("getChannelNodes", ()=>{
     it("Should return list of channels with nodes instead of edges", () =>{
       const edges: Edge[] = [
         { id: '1', node1Id: '1', node2Id:'2', totalCapacity: '4.8 THz', provisionedCapacity: 10,},
@@ -222,14 +222,14 @@ describe('Channels', () => {
       const expectedChannel: Channel[] = [
         {id: '1', channel_label: 'CH-1', width:50, frequency:195, nodes: ['1', '2', '3']}
       ]
-      expect(channelNode(channels, edges)).toEqual(expectedChannel)
+      expect(getChannelNodes(channels, edges)).toEqual(expectedChannel)
     })
     it("Should throw an error if cthere are no edges", () =>{
       const edges: Edge[] = []
       const channels: ChannelEdge[] = [
         { id: '1', channel_label: 'CH-1', width: 50, frequency: 195, edges: ['1','2']},
       ]
-      expect(() => channelNode(channels, edges)).toThrow("Edge does not exists")
+      expect(() => getChannelNodes(channels, edges)).toThrow("Edge does not exists")
     })
     it("should throw an error if channel has non existent edge", () => {
       const edges: Edge[] = [
@@ -238,7 +238,7 @@ describe('Channels', () => {
       const channels: ChannelEdge[] = [
         { id: '1', channel_label: 'CH-1', width: 50, frequency: 195, edges: ['1','2']},
       ]
-      expect(() => channelNode(channels, edges)).toThrow("Edge does not exists")
+      expect(() => getChannelNodes(channels, edges)).toThrow("Edge does not exists")
     })
     it("Should hanlde edges with out of order nodes", () =>{
       const edges: Edge[] = [
@@ -254,7 +254,7 @@ describe('Channels', () => {
       const expectedChannel: Channel[] = [
         {id: '1', channel_label: 'CH-1', width:50, frequency:195, nodes: ['1', '2', '3','4','5']}
       ]
-      expect(channelNode(channels, edges)).toEqual(expectedChannel)
+      expect(getChannelNodes(channels, edges)).toEqual(expectedChannel)
     })
     it("Should hanlde eout of order edges", () =>{
       const edges: Edge[] = [
@@ -269,7 +269,7 @@ describe('Channels', () => {
       const expectedChannel: Channel[] = [
         {id: '1', channel_label: 'CH-1', width:50, frequency:195, nodes: ['1', '2', '3','4','5']}
       ]
-      expect(channelNode(channels, edges)).toEqual(expectedChannel)
+      expect(getChannelNodes(channels, edges)).toEqual(expectedChannel)
     })
     it("Should thorw an exception if edge can't be connected", () =>{
       const edges: Edge[] = [
@@ -281,7 +281,7 @@ describe('Channels', () => {
       const channels: ChannelEdge[] = [
         { id: '1', channel_label: 'CH-1', width: 50, frequency: 195, edges: ['2','1','4','3']},
       ]
-      expect(() => channelNode(channels, edges)).toThrow("Disconnected edge")
+      expect(() => getChannelNodes(channels, edges)).toThrow("Disconnected edge")
     })
   })
 });
