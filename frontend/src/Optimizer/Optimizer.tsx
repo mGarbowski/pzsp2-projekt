@@ -7,7 +7,9 @@ export const Optimizer = () => {
   const [a, setA] = useState<number>(0);
   const [b, setB] = useState<number>(0);
 
-  const { sendQuery, lastMessage } = useOptimizer(url);
+  const isDisconnectMessage = (msg: string) => msg.startsWith("Optimization finished");
+
+  const { sendQuery, lastMessage } = useOptimizer(url, isDisconnectMessage);
 
   return <div>
     <input

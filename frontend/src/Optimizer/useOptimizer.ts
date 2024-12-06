@@ -1,7 +1,7 @@
 import { useState } from "react";
 import useWebSocket from "react-use-websocket";
 
-export const useOptimizer = (apiUrl: string) => {
+export const useOptimizer = (apiUrl: string, isDisconnetMessage: (msg: string) => boolean) => {
   const [lastMessage, setLastMessage] = useState<string | null>(null);
   const [socketUrl, setSocketUrl] = useState<string | null>(null);
 
@@ -13,7 +13,7 @@ export const useOptimizer = (apiUrl: string) => {
     const msg = message.data as string;
     setLastMessage(msg);
 
-    if (msg.startsWith("Optimization finished")) { // TODO parametrize disconnect rule
+    if (isDisconnetMessage(msg)) {
       setSocketUrl(null);
     }
   };
