@@ -9,6 +9,9 @@ dependencies = [
     "fastapi[standard]>=0.115.5",
     "pydantic>=2.10.2",
     "uvicorn>=0.32.1",
+    "websockets>=14.1",
+    "attrs>=24.2.0",
+    "pyomo>=6.8.2",
 ]
 requires-python = "==3.12.*"
 readme = "README.md"
@@ -30,7 +33,7 @@ lint = [
 ]
 
 [tool.pdm.scripts]
-start = {shell = "uvicorn src.pzsp_backend.app:app --host 0.0.0.0 --port 8000"}
+start = {shell = "fastapi run src/pzsp_backend/app.py"}
 lint = {shell = "flake8 src tests && black --check src tests && isort --check-only src tests"}
 format = {shell = "black src tests && isort src tests"}
 test = {shell = "pytest"}

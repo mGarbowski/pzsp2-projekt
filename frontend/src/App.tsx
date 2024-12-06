@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
+import { Optimizer } from "./Optimizer/Optimizer.tsx";
 
 function App() {
   const [message, setMessage] = useState('');
@@ -10,7 +11,7 @@ function App() {
   const modeName = mode === 'development' ? 'Development' : 'Production';
   const backendBaseUrl = import.meta.env.VITE_BACKEND_URL as string;
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleLengthSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     setLength(null);
@@ -35,12 +36,14 @@ function App() {
     }
   };
 
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', margin: '0 auto', placeItems: 'center' }}>
       <h1>PZSP2 Projekt</h1>
       <p>Build: {modeName}</p>
       <p>Backend base URL: {backendBaseUrl}</p>
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+
+      <form onSubmit={handleLengthSubmit} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <input
           type="text"
           value={message}
@@ -49,10 +52,11 @@ function App() {
           required
           style={{ marginBottom: '10px', padding: '5px' }}
         />
-        <button type="submit" style={{ padding: '5px 10px' }}>Get Message Length</button>
+        <button type="submit" style={{ padding: '5px 10px', margin: '0px 0px 20px 0px' }}>Get Message Length</button>
       </form>
-      {length !== null && <p>Message Length: {length}</p>}
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {length !== 0 && <p>Length: {length}</p>}
+      <p>Minimize ax+yb, where 3x+2y &ge; 1 </p>
+      <Optimizer />
     </div>
   );
 }
