@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
-import { Optimizer } from "./Optimizer/Optimizer.tsx";
+import { OptimizerPage } from "./Optimizer/OptimizerPage.tsx";
 
 function App() {
   const [message, setMessage] = useState('');
@@ -55,8 +55,8 @@ function App() {
         <button type="submit" style={{ padding: '5px 10px', margin: '0px 0px 20px 0px' }}>Get Message Length</button>
       </form>
       {length !== 0 && <p>Length: {length}</p>}
-      <p>Minimize ax+yb, where 3x+2y &ge; 1 </p>
-      <Optimizer />
+
+      <OptimizerPage />
     </div>
   );
 }
