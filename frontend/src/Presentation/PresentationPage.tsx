@@ -1,6 +1,9 @@
-import {GraphCanvas} from "reagraph";
+import {GraphCanvas, InternalGraphEdge, InternalGraphNode} from "reagraph";
+import {useState} from "react";
 
 export const PresentationPage = () => {
+  const [text, setText] = useState("");
+
   const nodes = [
     { id: '1', label: '1', x: 100, y: 100 },
     { id: '2', label: '2', x: 200, y: 100 },
@@ -18,13 +21,26 @@ export const PresentationPage = () => {
     { source: '5', target: '1', id: '5-1', label: '5-1' }
   ];
 
+  const handleNodeClick = (node: InternalGraphNode) => {
+    console.log(node);
+    setText("Node " + node.id + " clicked");
+  };
+
+  const handleEdgeClick = (edge: InternalGraphEdge) => {
+    console.log(edge);
+    setText("Edge " + edge.id + " clicked");
+  }
+
   return (
     <div style={{display: 'flex', flexDirection: 'column', margin: '0 auto', placeItems: 'center'}}>
       <h1>Presentation</h1>
-      <div style={{position: "fixed", top: "20%", width: '75%', height: '75%'}}>
+      <p>{text}</p>
+      <div style={{position: "fixed", top: "30%", width: '50%', height: '50%'}}>
         <GraphCanvas
           nodes={nodes}
           edges={edges}
+          onNodeClick={handleNodeClick}
+          onEdgeClick={handleEdgeClick}
         />
       </div>
     </div>
