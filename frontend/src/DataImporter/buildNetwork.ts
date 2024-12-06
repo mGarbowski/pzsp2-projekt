@@ -71,9 +71,9 @@ export const mergeEdges = (edges: EdgeDataRow[]): EdgeDataRow[] =>{
       // finding corresponding edge
       const pair = edges.find(element => element.node1 == edge.node2 && element.node2 == edge.node1)
       // check if corresponding edge exists
-      if(typeof pair !== 'undefined' ){
+      if(pair){
         // check if corresponding edge has been written in merged - push if not - ignore if yes
-        if(typeof merged.find(element => element.id == pair.id) === 'undefined'){
+        if(!merged.find(element => element.id == pair.id)){
           merged.push(edge)
         }
       }
@@ -107,7 +107,7 @@ export const checkEdgeExists = (channelData: EdgeSpectrumDataRow[], edges: EdgeD
 export const getChannel = (channelData: EdgeSpectrumDataRow, channels: ChannelEdge[]): ChannelEdge[] => {
   const cur_id = channelData.channelId;
   const found = channels.find((channel) => channel.id == cur_id)
-  if(typeof found !== "undefined"){
+  if(found){
     found.edges.push(channelData.edgeId);
   }
   else{
