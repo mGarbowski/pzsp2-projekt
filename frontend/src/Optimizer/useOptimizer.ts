@@ -13,7 +13,7 @@ export const useOptimizer = (apiUrl: string) => {
     const msg = message.data as string;
     setLastMessage(msg);
 
-    if (msg.startsWith("Finished")) {
+    if (msg.startsWith("Optimization finished")) { // TODO parametrize disconnect rule
       setSocketUrl(null);
     }
   };
