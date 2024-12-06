@@ -98,7 +98,7 @@ export const checkEdgeExists = (channelData: EdgeSpectrumDataRow[], edges: EdgeD
   const edgeIDs: string[] = edges.map(element => element.id)
   channelData.forEach(channel => {
     if(!edgeIDs.includes(channel.edgeId)){
-      throw new Error(`Edge does not exists: ${JSON.stringify(channel)} edge id does not apper in EdgeDataRow`);
+      throw new Error(`Edge does not exists: ${JSON.stringify(channel)} edge id does not appear in EdgeDataRow`);
     }
   })
 }
@@ -140,7 +140,7 @@ export const getChannelNodes = (channelsEdge: ChannelEdge[], edges: Edge[]): Cha
 
     const channelEdgesObj = channelEdgesRef.map(edgeID => edges.find(element => element.id == edgeID));
     if(!channelEdgesObj || !channelEdgesObj[0]){
-      throw new Error(`Edge does not exists: ${JSON.stringify(channelE)} edge id does not apper in EdgeDataRow`);
+      throw new Error(`Edge does not exists: ${JSON.stringify(channelE)} edge id does not appear in EdgeDataRow`);
     }
     // add first node's edges and see if next edges connect
 
@@ -152,7 +152,7 @@ export const getChannelNodes = (channelsEdge: ChannelEdge[], edges: Edge[]): Cha
     channelEdgesObj.shift()
     for(const edge of channelEdgesObj!){
       if(!edge){
-        throw new Error(`Edge does not exists: ${JSON.stringify(channelE)} edge id does not apper in EdgeDataRow`);
+        throw new Error(`Edge does not exists: ${JSON.stringify(channelE)} edge id does not appear in EdgeDataRow`);
       }
       // check last node in path
       if(edge!.node1Id == channel.nodes.slice(-1)[0] ){
@@ -174,7 +174,7 @@ export const getChannelNodes = (channelsEdge: ChannelEdge[], edges: Edge[]): Cha
       // if all misses try again
       else{
         attempts += 1
-        // if all edges cannot be organised into a path thow error
+        // if all edges cannot be organized into a path throw error
         if(attempts > max_attempts){
           throw new Error(`Disconnected edge: ${JSON.stringify(channelE)} has a disconnected edge ${JSON.stringify(edge)}`)
         }
@@ -206,7 +206,7 @@ export const buildNetwork = (nodesData: NodeDataRow[], edgesData: EdgeDataRow[],
   //check data integrity
   checkEdgeExists(channelData, edgesData)
 
-  // pair dierctional edges in handle edge
+  // pair directional edges in handle edge
   const edgesMerged = mergeEdges(edgesData);
 
   const edges = edgesMerged.map((edgeData) => handleEdge(edgeData, nodes));
