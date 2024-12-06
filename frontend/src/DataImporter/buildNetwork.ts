@@ -96,7 +96,7 @@ export const handleNode = (nodesData: NodeDataRow[]): Node[] =>{
 
 export const checkEdgeExists = (channelData: EdgeSpectrumDataRow[], edges: EdgeDataRow[]): void =>{
   const edgeIDs: string[] = edges.map(element => element.id)
-  channelData.map(channel => {
+  channelData.forEach(channel => {
     if(!edgeIDs.includes(channel.edgeId)){
       throw new Error(`Edge does not exists: ${JSON.stringify(channel)} edge id does not apper in EdgeDataRow`);
     }
