@@ -70,24 +70,18 @@
         state: present
         key: "{{ lookup('file', 'public_keys/' + item.username) }}"
 
-- name: Copy sources
+- name: Clone the project repository
   hosts: public-machine
-  become: no
+  become: yes
+  vars:
+    branch: main
   tasks:
-    - name: copy frontend src
-      ansible.posix.synchronize:
-        src: ../../frontend
-        dest: /home/azureuser/
-
-    - name: copy backend src
-      ansible.posix.synchronize:
-        src: ../../backend
-        dest: /home/azureuser/
-
-    - name: copy docker compose
-      ansible.posix.synchronize:
-        src: ../../docker-compose.prod.yml
-        dest: /home/azureuser/
+    - name: Clone the public repository
+      ansible.builtin.git:
+        repo: https://github.com/mGarbowski/pzsp2-projekt.git
+        dest: /home/azureuser/project-repo
+        version: "{{ branch }}"  # Specify branch, tag, or commit (optional)
+        force: no      # Do not re-clone if the destination exists
 
 - name: Redeploy docker compose
   hosts: public-machine
@@ -95,14 +89,14 @@
   tasks:
     - name: tear down Docker Compose stack
       community.docker.docker_compose_v2:
-        project_src: /home/azureuser
+        project_src: /home/azureuser/project-repo
         files:
           - docker-compose.prod.yml
         state: absent
 
     - name: deploy Docker Compose stack
       community.docker.docker_compose_v2:
-        project_src: /home/azureuser
+        project_src: /home/azureuser/project-repo
         files:
           - docker-compose.prod.yml
         build: always
