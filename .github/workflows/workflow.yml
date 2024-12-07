@@ -1,0 +1,65 @@
+                          name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  frontend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: frontend
+
+      - name: Run linter
+        run: npm run lint
+        working-directory: frontend
+
+      - name: Run tests
+        run: npm test
+        working-directory: frontend
+
+      - name: Run build
+        run: npm run build
+        working-directory: frontend
+
+  backend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - name: Install PDM
+        run: pip install --no-cache-dir pdm
+
+      - name: Install dependencies
+        run: pdm install
+        working-directory: backend
+
+      - name: Run linter
+        run: pdm lint
+        working-directory: backend
+
+      - name: Run tests
+        run: pdm test
+        working-directory: backend
