@@ -5,17 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from starlette.websockets import WebSocket, WebSocketDisconnect, WebSocketState
 
-from pzsp_backend.optimization.integer.model_demo import (
-    ModelParams,
-    solve_instance,
-)
-
-
-from pzsp_backend.optimization.integer.model_demo import (
-    ModelParams,
-    solve_instance,
-)
-
+from src.pzsp_backend.optimization.integer.model_demo import ModelParams, solve_instance
 
 app = FastAPI()
 
