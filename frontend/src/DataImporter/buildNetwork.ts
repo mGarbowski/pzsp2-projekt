@@ -24,7 +24,6 @@ export interface Channel {
   nodes: string[];
   frequency: number;
   width: number;
-  // wavelength: number;
 }
 export interface ChannelEdge {
   id: string;
@@ -32,7 +31,6 @@ export interface ChannelEdge {
   edges: string[];
   frequency: number;
   width: number;
-  // wavelength: number;
 }
 
 export interface Network {
