@@ -11,12 +11,6 @@ from src.pzsp_backend.optimization.integer.model_demo import (
 )
 
 
-from src.pzsp_backend.optimization.integer.model_demo import (
-    ModelParams,
-    solve_instance,
-)
-
-
 app = FastAPI()
 
 app.add_middleware(
