@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { useOptimizer } from "./useOptimizer.ts";
+import {useState} from "react";
+import {useOptimizer} from "./useOptimizer.ts";
 
-export const Optimizer = () => {
+export const OptimizerPage = () => {
   const backendBaseUrl = import.meta.env.VITE_BACKEND_URL as string;
   const url = `${backendBaseUrl}/ws/optimizer`;
   const [a, setA] = useState<number>(0);
@@ -9,16 +9,18 @@ export const Optimizer = () => {
 
   const isDisconnectMessage = (msg: string) => msg.startsWith("Optimization finished");
 
-  const { sendQuery, lastMessage } = useOptimizer(url, isDisconnectMessage);
+  const {sendQuery, lastMessage} = useOptimizer(url, isDisconnectMessage);
 
-  return <div>
+  return <div style={{display: 'flex', flexDirection: 'column', margin: '0 auto', placeItems: 'center'}}>
+    <h1>Optimizer</h1>
+    <h2>Minimize ax+yb, where 3x+2y &ge; 1 </h2>
     <input
       type="text"
       value={a}
       onChange={(e) => setA(parseInt(e.target.value))}
       placeholder="Enter the a parameter"
       required
-      style={{ marginBottom: '10px', padding: '5px' }}
+      style={{marginBottom: '10px', padding: '5px'}}
     />
     <input
       type="text"
@@ -26,9 +28,9 @@ export const Optimizer = () => {
       onChange={(e) => setB(parseInt(e.target.value))}
       placeholder="Enter the b parameter"
       required
-      style={{ marginBottom: '10px', padding: '5px' }}
+      style={{marginBottom: '10px', padding: '5px'}}
     />
-    <button onClick={() => sendQuery(JSON.stringify({ a, b }))}>Optimize</button>
+    <button onClick={() => sendQuery(JSON.stringify({a, b}))}>Optimize</button>
     <p>Message: {lastMessage}</p>
   </div>
 }
