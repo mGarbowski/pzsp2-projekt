@@ -3,16 +3,14 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    ports:
-      - "8000:8000"
     networks:
       - app-network
   frontend:
     build:
       context: ./frontend
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile.prod
     ports:
-      - "2137:2137"
+      - "80:80"
     networks:
       - app-network
 networks:

@@ -1,11 +1,32 @@
-FROM python:3.12-slim
+# Use an official Python runtime as a parent image
+FROM python:3.12-slim as base
 
-WORKDIR /app
+# Update apt repository
+RUN apt update
 
-COPY requirements.txt .
+# Set environment variables
+ENV PYTHONUNBUFFERED=1
 
-RUN pip install --no-cache-dir -r requirements.txt
+# Set the working directory to /psi_backend
+WORKDIR /pzsp_backend
 
-COPY . .
+# Copy project files
+COPY pyproject.toml pdm.lock ./
 
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Add cbc
+RUN apt-get install -y coinor-cbc coinor-libcbc-dev
+
+# Install PDM
+RUN pip install --no-cache-dir pdm
+
+# Copy the application code
+COPY src ./src
+
+# Install production dependencies
+RUN pdm install --prod --no-editable --no-lock
+
+# Expose port 8000
+EXPOSE 8000
+
+# Run the application
+CMD ["pdm", "start"]
