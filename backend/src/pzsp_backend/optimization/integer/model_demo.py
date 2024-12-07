@@ -1,5 +1,5 @@
-from pydantic import BaseModel
 import pyomo.environ as pyo
+from pydantic import BaseModel
 
 # A simple model minimizing the expression ax + by, where x and y >= 0 and 3x+2y >= 1
 model = pyo.AbstractModel()
