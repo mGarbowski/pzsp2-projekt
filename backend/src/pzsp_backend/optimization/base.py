@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from attrs import define
 
-from pzsp_backend.models import Network, Channel, ChannelDescription
+from src.pzsp_backend.models import Network, Channel, ChannelDescription
 
 
 @define
