@@ -1,0 +1,102 @@
+- name: Test connection
+  connection: ansible.netcommon.network_cli
+  gather_facts: false
+  hosts: public-machine
+  tasks:
+    - name: get pwd
+      command: pwd
+      register: result
+
+    - name: Display the config
+      debug:
+        msg: "The hostname is {{ inventory_hostname}} and the pwd is {{ result.stdout }}"
+
+- name: Install docker
+  hosts: public-machine
+  become: yes
+  vars:
+    pkgstoinstall: [ libffi-dev, libssl-dev, python3, python3-pip ]
+  tasks:
+    - name: Install a list of packages
+      apt:
+        name: "{{ pkgstoinstall }}"
+        update_cache: yes
+
+    - name: Remove python-configparser package
+      apt:
+        name: python-configparser
+        state: absent
+
+    - name: get docker convenience script
+      shell: curl -fsSL https://get.docker.com -o get-docker.sh
+      args:
+        creates: /home/azureuser/get-docker.sh
+
+    - name: install docker
+      shell: sh /home/azureuser/get-docker.sh
+      args:
+        creates: /usr/bin/docker
+
+- name: Create users and add SSH keys
+  hosts: public-machine
+  become: yes
+  vars:
+    users:
+      - username: mgarbowski
+        full_name: Mikołaj Garbowski
+      - username: mbienkowski
+        full_name: Maksym Bienkowski
+      - username: mluszczek
+        full_name: Michał Łuszczek
+  tasks:
+    - name: Ensure group pzsp exists
+      group:
+        name: pzsp
+        state: present
+
+    - name: Ensure users are created and added to groups
+      loop: "{{ users }}"
+      user:
+        name: "{{ item.username }}"
+        shell: /bin/bash
+        groups: docker,pzsp
+        append: yes
+        comment: "{{ item.full_name }}"
+
+    - name: Add SSH keys for users
+      loop: "{{ users }}"
+      ansible.posix.authorized_key:
+        user: "{{ item.username }}"
+        state: present
+        key: "{{ lookup('file', 'public_keys/' + item.username) }}"
+
+- name: Clone the project repository
+  hosts: public-machine
+  become: yes
+  vars:
+    branch: main
+  tasks:
+    - name: Clone the public repository
+      ansible.builtin.git:
+        repo: https://github.com/mGarbowski/pzsp2-projekt.git
+        dest: /home/azureuser/project-repo
+        version: "{{ branch }}"  # Specify branch, tag, or commit (optional)
+        force: no      # Do not re-clone if the destination exists
+
+- name: Redeploy docker compose
+  hosts: public-machine
+  become: yes
+  tasks:
+    - name: tear down Docker Compose stack
+      community.docker.docker_compose_v2:
+        project_src: /home/azureuser/project-repo
+        files:
+          - docker-compose.prod.yml
+        state: absent
+
+    - name: deploy Docker Compose stack
+      community.docker.docker_compose_v2:
+        project_src: /home/azureuser/project-repo
+        files:
+          - docker-compose.prod.yml
+        build: always
