@@ -10,6 +10,9 @@ export const Layout = () => {
             <Link to="/" className={styles.a}>Home</Link>
           </li>
           <li className={styles.li}>
+            <Link to="/import" className={styles.a}>Import</Link>
+          </li>
+          <li className={styles.li}>
             <Link to="/optimizer" className={styles.a}>Optimizer</Link>
           </li>
           <li className={styles.li}>
