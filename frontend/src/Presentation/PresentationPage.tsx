@@ -5,8 +5,12 @@ export const PresentationPage = () => {
   return (
     <div style={{display: 'flex', flexDirection: 'column', margin: '0 auto', placeItems: 'center'}}>
       <h1>Presentation</h1>
-      <GraphVisualisationDemo/>
-      <DownloadReport/>
+      <div style={{position: 'fixed', top: "20%", left: "5%", width: '45%', height: '100%', overflow: 'auto'}}>
+        <DownloadReport/>
+      </div>
+      <div style={{position: 'fixed', top: "20%", right: "5%", width: '45%', height: '100%', overflow: 'auto'}}>
+        <GraphVisualisationDemo/>
+      </div>
     </div>
   )
 }

@@ -34,7 +34,7 @@ export const GraphVisualisationDemo = () => {
   return (
     <>
       <p>{text}</p>
-      <div style={{position: "fixed", top: "30%", width: '50%', height: '50%'}}>
+      <div style={{position: "fixed", top: "30%", width: '45%', height: '50%'}}>
         <GraphCanvas
           nodes={nodes}
           edges={edges}
