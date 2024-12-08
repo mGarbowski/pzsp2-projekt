@@ -30,10 +30,10 @@
     - name: get docker convenience script
       shell: curl -fsSL https://get.docker.com -o get-docker.sh
       args:
-        creates: /home/azureuser/get-docker.sh
+        creates: ~/get-docker.sh
 
     - name: install docker
-      shell: sh /home/azureuser/get-docker.sh
+      shell: sh ~/get-docker.sh
       args:
         creates: /usr/bin/docker
 
@@ -48,6 +48,8 @@
         full_name: Maksym Bienkowski
       - username: mluszczek
         full_name: Michał Łuszczek
+      - username: ksokol
+        full_name: Krzysztof Sokół
   tasks:
     - name: Ensure group pzsp exists
       group:
@@ -59,7 +61,7 @@
       user:
         name: "{{ item.username }}"
         shell: /bin/bash
-        groups: docker,pzsp
+        groups: docker,pzsp,sudo
         append: yes
         comment: "{{ item.full_name }}"
 
@@ -70,18 +72,27 @@
         state: present
         key: "{{ lookup('file', 'public_keys/' + item.username) }}"
 
+    - name: Make users passwordless for sudo in group pzsp
+      lineinfile:
+        path: /etc/sudoers
+        state: present
+        regexp: '^%pzsp'
+        line: '%pzsp ALL=(ALL) NOPASSWD: ALL'
+        validate: 'visudo -cf %s'
+
 - name: Clone the project repository
   hosts: public-machine
   become: yes
   vars:
+#    branch: 21-set-up-azure-terraform-for-production-evironment
     branch: main
   tasks:
     - name: Clone the public repository
       ansible.builtin.git:
         repo: https://github.com/mGarbowski/pzsp2-projekt.git
-        dest: /home/azureuser/project-repo
+        dest: ~/project-repo
         version: "{{ branch }}"  # Specify branch, tag, or commit (optional)
-        force: no      # Do not re-clone if the destination exists
+        force: yes      # Do not re-clone if the destination exists
 
 - name: Redeploy docker compose
   hosts: public-machine
@@ -89,14 +100,14 @@
   tasks:
     - name: tear down Docker Compose stack
       community.docker.docker_compose_v2:
-        project_src: /home/azureuser/project-repo
+        project_src: ~/project-repo
         files:
           - docker-compose.prod.yml
         state: absent
 
     - name: deploy Docker Compose stack
       community.docker.docker_compose_v2:
-        project_src: /home/azureuser/project-repo
+        project_src: ~/project-repo
         files:
           - docker-compose.prod.yml
         build: always
