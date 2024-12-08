@@ -59,7 +59,7 @@
       user:
         name: "{{ item.username }}"
         shell: /bin/bash
-        groups: docker,pzsp
+        groups: docker,pzsp,sudo
         append: yes
         comment: "{{ item.full_name }}"
 
@@ -70,11 +70,19 @@
         state: present
         key: "{{ lookup('file', 'public_keys/' + item.username) }}"
 
+    - name: Make users passwordless for sudo in group pzsp
+      lineinfile:
+        path: /etc/sudoers
+        state: present
+        regexp: '^%pzsp'
+        line: '%pzsp ALL=(ALL) NOPASSWD: ALL'
+        validate: 'visudo -cf %s'
+
 - name: Clone the project repository
   hosts: public-machine
   become: yes
   vars:
-    branch: main
+    branch: 21-set-up-azure-terraform-for-production-evironment
   tasks:
     - name: Clone the public repository
       ansible.builtin.git:
