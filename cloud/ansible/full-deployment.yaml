@@ -82,7 +82,7 @@
   hosts: public-machine
   become: yes
   vars:
-    branch: 21-set-up-azure-terraform-for-production-evironment
+    branch: main
   tasks:
     - name: Clone the public repository
       ansible.builtin.git:
