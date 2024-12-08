@@ -48,6 +48,8 @@
         full_name: Maksym Bienkowski
       - username: mluszczek
         full_name: Michał Łuszczek
+      - username: ksokol
+        full_name: Krzysztof Sokół
   tasks:
     - name: Ensure group pzsp exists
       group:
