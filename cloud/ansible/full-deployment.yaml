@@ -92,7 +92,7 @@
         repo: https://github.com/mGarbowski/pzsp2-projekt.git
         dest: ~/project-repo
         version: "{{ branch }}"  # Specify branch, tag, or commit (optional)
-        force: no      # Do not re-clone if the destination exists
+        force: yes      # Do not re-clone if the destination exists
 
 - name: Redeploy docker compose
   hosts: public-machine
