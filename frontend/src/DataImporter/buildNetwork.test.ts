@@ -76,19 +76,24 @@ describe("Edges", () => {
 
       expect(mergeEdges(edges)).toEqual(expected)
     })
-    it("should throw an exception when edge can't be merged", () => {
+    it("should discard edges that can't be merged", () => {
       const edges: EdgeDataRow[] = [
         {id: '1', node1: '1', node2: '2', totalCapacity: '4.8 THz', provisionedCapacity: 50,}
       ]
 
-      expect(() => mergeEdges(edges)).toThrow("Can't merge")
+      expect(mergeEdges(edges)).toEqual([])
 
       const edges_2: EdgeDataRow[] = [
         {id: '1', node1: '1', node2: '2', totalCapacity: '4.8 THz', provisionedCapacity: 50,},
-        {id: '2', node1: '3', node2: '1', totalCapacity: '4.8 THz', provisionedCapacity: 50,}
+        {id: '2', node1: '3', node2: '1', totalCapacity: '4.8 THz', provisionedCapacity: 50,},
+        {id: '3', node1: '2', node2: '1', totalCapacity: '4.8 THz', provisionedCapacity: 50,},
       ]
 
-      expect(() => mergeEdges(edges_2)).toThrow("Can't merge")
+      const expected: Edge[] = [
+        {id: '1', node1Id: '1', node2Id: '2', totalCapacity: '4.8 THz', provisionedCapacity: 50,},
+      ]
+
+      expect(mergeEdges(edges_2)).toEqual(expected)
     })
     it('should merge edges form more complicated input', () => {
       const edges: EdgeDataRow[] = [
