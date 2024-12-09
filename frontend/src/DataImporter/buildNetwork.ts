@@ -24,7 +24,6 @@ export interface Channel {
   nodes: string[];
   frequency: number;
   width: number;
-  // wavelength: number;
 }
 
 export interface ChannelEdge {
@@ -33,7 +32,6 @@ export interface ChannelEdge {
   edges: string[];
   frequency: number;
   width: number;
-  // wavelength: number;
 }
 
 export interface Network {
@@ -65,7 +63,18 @@ export const handleEdge = (edgeData: EdgeDataRow, nodes: Node[]): Edge => {
   return edge;
 }
 
-export const mergeEdges = (edges: EdgeDataRow[]): EdgeDataRow[] => {
+
+/**
+ * Removes redundant edges
+ *
+ * since all edges are originally directed and have a corresponding edge going in opposite direction
+ * this function change from directed to non directed edges
+ * this function chooses id of edge that appears first in the list
+ *
+ * @param edges - list of edges with redundancies
+ * @returns - list of edges without redundancies
+ */
+export const mergeEdges = (edges: EdgeDataRow[]): EdgeDataRow[] =>{
   const merged: EdgeDataRow[] = []
   edges.map(
     edge => {
@@ -103,6 +112,16 @@ export const checkEdgeExists = (channelData: EdgeSpectrumDataRow[], edges: EdgeD
   })
 }
 
+/**
+ * Support function for groupByChannel
+ * this function reads channel id and checks if that channel has been written into an list
+ * if yes - it appends edge id to its list of edges
+ * if no - it creates new a Channel with 1 edge and appends it to list of Channels
+ *
+ * @param channelData - singe EdgeSpectrumDataRow row
+ * @param channels - list of all created Channels
+ * @returns updated ChannelEdge list
+ */
 export const getChannel = (channelData: EdgeSpectrumDataRow, channels: ChannelEdge[]): ChannelEdge[] => {
   const cur_id = channelData.channelId;
   const found = channels.find((channel) => channel.id == cur_id)
@@ -121,6 +140,15 @@ export const getChannel = (channelData: EdgeSpectrumDataRow, channels: ChannelEd
   return channels
 }
 
+/**
+ * Reads though parsed csv data and extracts information about channel
+ * In EdgeSpectrum data row information is grouped by edge,
+ * This function iterates though all rows of EdgeSpectrumDataRow and calls getChannel on all of them
+ *
+ *
+ * @param channelData - all EdgeSpectrumDataRow rows
+ * @returns - list of channel objects
+ */
 export const groupByChannel = (channelData: EdgeSpectrumDataRow[]): ChannelEdge[] => {
   let channel_edges: ChannelEdge[] = [];
   for (const element of channelData) {
@@ -129,6 +157,13 @@ export const groupByChannel = (channelData: EdgeSpectrumDataRow[]): ChannelEdge[
   return channel_edges
 }
 
+/**
+ * Replaces list of edge ids with list of node ids for all Channels
+ *
+ * @param channelsEdge - list of channels containing list of edges ids they go though
+ * @param edges - list of edges in the network, needed to get ids of nodes
+ * @returns list of channels containing list of nodes ids they go though
+ */
 export const getChannelNodes = (channelsEdge: ChannelEdge[], edges: Edge[]): Channel[] => {
   const channels: Channel[] = channelsEdge.map(channelE => {
     const channel: Channel = {
@@ -189,7 +224,18 @@ export const getChannelNodes = (channelsEdge: ChannelEdge[], edges: Edge[]): Cha
   return channels
 }
 
-export const mergeSpectrum = (channelData: EdgeSpectrumDataRow[], edges: Edge[]): EdgeSpectrumDataRow[] => {
+
+/**
+ * Removes rows which ids are not in Edge list
+ *
+ * Removes redundant edges and their channel info from EdgeSpectrumDataRow list
+ * Should be called after MergeEdges
+ *
+ * @param channelData
+ * @param edges - non redundant list of edges
+ * @returns - non redundant EdgeSpectrumDataRow list
+ */
+export const mergeSpectrum = (channelData: EdgeSpectrumDataRow[], edges: Edge[]):EdgeSpectrumDataRow[] =>{
   const channelMerged: EdgeSpectrumDataRow[] = []
   const edgeIDs: string[] = edges.map(element => element.id)
   for (const channel of channelData) {
