@@ -11,7 +11,8 @@ import {
   mergeEdges,
   mergeSpectrum,
   Network,
-  Node
+  Node,
+  removeIsolatedNodes
 } from "./buildNetwork";
 import {EdgeDataRow, EdgeSpectrumDataRow, NodeDataRow, parseEdges, parseEdgeSpectrum, parseNodes} from "./parseCsv";
 
@@ -36,6 +37,23 @@ describe('Nodes', () => {
         {id: '2', latitude: 40.71, longitude: -74.01, neighbors: [],}
       ]
       expect(handleNode(parsed)).toEqual(expected)
+    })
+  })
+  describe("remove isolated nodes",()=>{
+    it("should remove modes without neighbors from list", () =>{
+      const edge: Edge = {id:'1', node1Id:'1', node2Id:'3', totalCapacity:"4.8Thz", provisionedCapacity:10}
+      const nodes: Node[] = [
+        {id: '1', latitude: 34.05, longitude: -118.25, neighbors: [],},
+        {id: '2', latitude: 40.71, longitude: -74.01, neighbors: [],},
+        {id: '3', latitude: 12.71, longitude: -60.01, neighbors: [],}
+      ]
+      nodes[0].neighbors.push({node: nodes[2] , edge})
+      nodes[2].neighbors.push({node: nodes[1] , edge})
+      const expected: Node[] = []
+      expected.push(nodes[0])
+      expected.push(nodes[2])
+
+      expect(removeIsolatedNodes(nodes)).toEqual(expected)
     })
   })
 });

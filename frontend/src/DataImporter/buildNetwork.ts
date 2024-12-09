@@ -1,3 +1,4 @@
+import { Node } from "reagraph";
 import {EdgeDataRow, EdgeSpectrumDataRow, NodeDataRow} from "./parseCsv";
 
 export interface Edge {
@@ -247,9 +248,25 @@ export const mergeSpectrum = (channelData: EdgeSpectrumDataRow[], edges: Edge[])
   return channelMerged
 }
 
+/**
+ * Removes nodes without neighbors from the list
+ *
+ * @param nodes - list of nodes
+ * @returns - new list of nodes without isolated nodes
+ */
+export const removeIsolatedNodes = (nodes: Node[]): Node[] =>{
+  const new_nodes: Node[] = [];
+  nodes.forEach((node) => {
+    if(node.neighbors.length > 0){
+      new_nodes.push(node)
+    }
+  })
+  return new_nodes
+}
+
 export const buildNetwork = (nodesData: NodeDataRow[], edgesData: EdgeDataRow[], channelData: EdgeSpectrumDataRow[]): Network => {
   // moved for easier testing
-  const nodes: Node[] = handleNode(nodesData)
+  let nodes: Node[] = handleNode(nodesData)
 
   //check data integrity
   checkEdgeExists(channelData, edgesData)
@@ -259,6 +276,7 @@ export const buildNetwork = (nodesData: NodeDataRow[], edgesData: EdgeDataRow[],
 
   const edges = edgesMerged.map((edgeData) => handleEdge(edgeData, nodes));
 
+  nodes = removeIsolatedNodes(nodes)
   const channelsMerged = mergeSpectrum(channelData, edges)
 
   // temp data - group information into channels
