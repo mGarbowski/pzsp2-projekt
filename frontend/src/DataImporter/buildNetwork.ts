@@ -1,3 +1,4 @@
+import { Node } from "reagraph";
 import {EdgeDataRow, EdgeSpectrumDataRow, NodeDataRow} from "./parseCsv";
 
 export interface Edge {
@@ -86,8 +87,6 @@ export const mergeEdges = (edges: EdgeDataRow[]): EdgeDataRow[] =>{
         if (!merged.find(element => element.id == pair.id)) {
           merged.push(edge)
         }
-      } else {
-        throw new Error(`Can't merge: ${JSON.stringify(edge)} has no pair`);
       }
     }
   )
@@ -123,8 +122,8 @@ export const checkEdgeExists = (channelData: EdgeSpectrumDataRow[], edges: EdgeD
  * @returns updated ChannelEdge list
  */
 export const getChannel = (channelData: EdgeSpectrumDataRow, channels: ChannelEdge[]): ChannelEdge[] => {
-  const cur_id = channelData.channelId;
-  const found = channels.find((channel) => channel.id == cur_id)
+  const cur_label = channelData.channel_label;
+  const found = channels.find((channel) => channel.channel_label == cur_label)
   if (found) {
     found.edges.push(channelData.edgeId);
   } else {
@@ -210,9 +209,12 @@ export const getChannelNodes = (channelsEdge: ChannelEdge[], edges: Edge[]): Cha
       // if all misses try again
       else {
         attempts += 1
-        // if all edges cannot be organized into a path throw error
+        // if all edges cannot be organized into a path log information
         if (attempts > max_attempts) {
-          throw new Error(`Disconnected edge: ${JSON.stringify(channelE)} has a disconnected edge ${JSON.stringify(edge)}`)
+          if(channel.nodes.includes(edge.node1Id) || channel.nodes.includes(edge.node2Id)){
+            console.log(`branching edge ${JSON.stringify(edge)} in channel ${JSON.stringify(channel)}`)
+          }
+          break
         }
         //append to end of queue
         channelEdgesObj.push(edge)
@@ -246,9 +248,25 @@ export const mergeSpectrum = (channelData: EdgeSpectrumDataRow[], edges: Edge[])
   return channelMerged
 }
 
+/**
+ * Removes nodes without neighbors from the list
+ *
+ * @param nodes - list of nodes
+ * @returns - new list of nodes without isolated nodes
+ */
+export const removeIsolatedNodes = (nodes: Node[]): Node[] =>{
+  const new_nodes: Node[] = [];
+  nodes.forEach((node) => {
+    if(node.neighbors.length > 0){
+      new_nodes.push(node)
+    }
+  })
+  return new_nodes
+}
+
 export const buildNetwork = (nodesData: NodeDataRow[], edgesData: EdgeDataRow[], channelData: EdgeSpectrumDataRow[]): Network => {
   // moved for easier testing
-  const nodes: Node[] = handleNode(nodesData)
+  let nodes: Node[] = handleNode(nodesData)
 
   //check data integrity
   checkEdgeExists(channelData, edgesData)
@@ -258,6 +276,7 @@ export const buildNetwork = (nodesData: NodeDataRow[], edgesData: EdgeDataRow[],
 
   const edges = edgesMerged.map((edgeData) => handleEdge(edgeData, nodes));
 
+  nodes = removeIsolatedNodes(nodes)
   const channelsMerged = mergeSpectrum(channelData, edges)
 
   // temp data - group information into channels
