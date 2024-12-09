@@ -1,27 +1,26 @@
 import { Link, Outlet } from "react-router-dom";
-import styles from './Layout.module.css';
 import styled from '@emotion/styled'
 import { GraphVisualisationDemo } from "./Presentation/GraphVisualisationDemo";
 
 export const Layout = () => {
   return (
     <>
-      <nav className={styles.nav}>
-        <ul className={styles.ul}>
-          <li className={styles.li}>
-            <Link to="/" className={styles.a}>Home</Link>
-          </li>
-          <li className={styles.li}>
-            <Link to="/import" className={styles.a}>Import</Link>
-          </li>
-          <li className={styles.li}>
-            <Link to="/optimizer" className={styles.a}>Optimizer</Link>
-          </li>
-          <li className={styles.li}>
-            <Link to="/presentation" className={styles.a}>Presentation</Link>
-          </li>
-        </ul>
-      </nav>
+      <Nav>
+        <NavList>
+          <NavElement>
+            <NavLink to="/">Home</NavLink>
+          </NavElement>
+          <NavElement>
+            <NavLink to="/import">Import</NavLink>
+          </NavElement>
+          <NavElement>
+            <NavLink to="/optimizer">Optimizer</NavLink>
+          </NavElement>
+          <NavElement>
+            <NavLink to="/presentation">Presentation</NavLink>
+          </NavElement>
+        </NavList>
+      </Nav>
 
       <MainContainer>
         <ContentContainer>
@@ -46,3 +45,33 @@ const ContentContainer = styled.div({
   flex: 1,
   overflow: "auto",
 })
+
+const Nav = styled.nav({
+  backgroundColor: "#ed008c",
+  fontWeight: "bold",
+  padding: "1rem",
+})
+
+const NavList = styled.ul({
+  listStyleType: "none",
+  margin: 0,
+  padding: 0,
+  display: "flex",
+  justifyContent: "space-around",
+})
+
+const NavElement = styled.a({
+  color: "black",
+  textDecoration: "none",
+  paddingHorizontal: "0.5rem",
+  paddingVertical: "0.5rem 1rem",
+  display: "block",
+})
+
+const NavLink = styled(Link)({
+  color: "black",
+  textDecoration: "none",
+  padding: "0.5rem 1rem",
+  display: "block",
+  "&:hover": { backgroundColor: "#F0A8D0" }, // TODO: pick this color
+});
