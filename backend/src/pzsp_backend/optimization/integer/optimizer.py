@@ -1,7 +1,8 @@
-from attrs import define
-from pzsp_backend.models import Channel, ChannelDescription
-from pzsp_backend.optimization.base import Optimizer
 import pyomo.environ as pyo
+from attrs import define
+
+from src.pzsp_backend.models import Channel, ChannelDescription
+from src.pzsp_backend.optimization.base import Optimizer
 
 
 @define

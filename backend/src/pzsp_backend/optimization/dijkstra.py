@@ -1,7 +1,7 @@
 from attrs import define
 
-from pzsp_backend.models import Channel, ChannelDescription
-from pzsp_backend.optimization.base import Optimizer
+from src.pzsp_backend.models import Channel, ChannelDescription
+from src.pzsp_backend.optimization.base import Optimizer
 
 
 @define

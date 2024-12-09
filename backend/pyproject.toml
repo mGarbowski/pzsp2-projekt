@@ -33,7 +33,7 @@ lint = [
 ]
 
 [tool.pdm.scripts]
-start = {shell = "fastapi run src/pzsp_backend/app.py"}
+start = {shell = "uvicorn src.pzsp_backend.app:app --host 0.0.0.0"}
 lint = {shell = "flake8 src tests && black --check src tests && isort --check-only src tests"}
 format = {shell = "black src tests && isort src tests"}
 test = {shell = "pytest"}
@@ -52,9 +52,3 @@ target-version = ['py39']
 
 [tool.isort]
 profile = "black"
-
-[tool.flake8]
-max-line-length = 88
-extend-ignore = "E203, W503"
-
-
