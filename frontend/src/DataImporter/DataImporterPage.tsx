@@ -1,7 +1,8 @@
-import {useEffect, useState} from "react";
-import {CsvUpload} from "./CsvUpload.tsx";
-import {parseEdges, parseEdgeSpectrum, parseNodes} from "./parseCsv.ts";
-import {buildNetwork} from "./buildNetwork.ts";
+import { useEffect, useState } from "react";
+import { CsvUpload } from "./CsvUpload.tsx";
+import { parseEdges, parseEdgeSpectrum, parseNodes } from "./parseCsv.ts";
+import { buildNetwork } from "./buildNetwork.ts";
+import styled from "@emotion/styled";
 
 export const DataImporterPage = () => {
   const [message, setMessage] = useState<string | null>("");
@@ -29,14 +30,49 @@ export const DataImporterPage = () => {
   }, [nodesCsv, edgesCsv, spectrumCsv]);
 
   return (
-    <div style={{display: 'flex', flexDirection: 'column', margin: '0 auto', placeItems: 'center'}}>
-      <p>Węzły</p>
-      <CsvUpload onUpload={(data) => setNodesCsv(data)}/>
-      <p>Zajętość</p>
-      <CsvUpload onUpload={(data) => setEdgesCsv(data)}/>
-      <p>Spektrum kanały</p>
-      <CsvUpload onUpload={(data) => setSpectrumCsv(data)}/>
-      <p>{message}</p>
-    </div>
+    <ImporterOuterContainer>
+      <ImporterInnerContainer>
+        <h2>Wgraj dane sieci</h2>
+        <p>Wymagane są pliki w formacie .csv</p>
+        <ImporterUploadContainer>
+          <p>Węzły</p>
+          <CsvUpload id="nodes" onUpload={(data) => setNodesCsv(data)} />
+          <p>Zajętość</p>
+          <CsvUpload id="cap" onUpload={(data) => setEdgesCsv(data)} />
+          <p>Spektrum kanały</p>
+          <CsvUpload id="spectrum" onUpload={(data) => setSpectrumCsv(data)} />
+        </ImporterUploadContainer>
+        <p>{message}</p>
+      </ImporterInnerContainer>
+    </ImporterOuterContainer>
   );
 }
+
+
+const ImporterOuterContainer = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  height: '100vh',
+  paddingHorizontal: '500px',
+  alignItems: 'center',
+  justifyContent: 'center',
+})
+
+const ImporterInnerContainer = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  height: "35%",
+  boxShadow: "0 0 10px 0 rgba(0, 0, 0, 0.3)",
+  borderRadius: "8px",
+  alignItems: 'center',
+  padding: "10px 10px",
+  maxWidth: "80%",
+  minWidth: "50%",
+})
+
+const ImporterUploadContainer = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  marginTop: '2.5rem',
+})
