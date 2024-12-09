@@ -8,9 +8,6 @@ export const Layout = () => {
       <Nav>
         <NavList>
           <NavElement>
-            <NavLink to="/">Home</NavLink>
-          </NavElement>
-          <NavElement>
             <NavLink to="/import">Import</NavLink>
           </NavElement>
           <NavElement>
