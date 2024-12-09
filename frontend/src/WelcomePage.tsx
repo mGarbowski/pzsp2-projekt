@@ -1,4 +1,4 @@
-import {FormEvent, useState} from "react";
+import { FormEvent, useState } from "react";
 
 
 export const WelcomePage = () => {
@@ -21,7 +21,7 @@ export const WelcomePage = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({message}),
+        body: JSON.stringify({ message }),
       });
 
       if (!response.ok) {
@@ -37,21 +37,21 @@ export const WelcomePage = () => {
 
 
   return (
-    <div style={{display: 'flex', flexDirection: 'column', margin: '0 auto', placeItems: 'center'}}>
+    <div style={{ display: 'flex', flexDirection: 'column', margin: '0 auto', placeItems: 'center' }}>
       <h1>PZSP2 Projekt</h1>
       <p>Build: {modeName}</p>
       <p>Backend base URL: {backendBaseUrl}</p>
 
-      <form onSubmit={handleLengthSubmit} style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+      <form onSubmit={handleLengthSubmit} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <input
           type="text"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           placeholder="Enter your message"
           required
-          style={{marginBottom: '10px', padding: '5px'}}
+          style={{ marginBottom: '10px', padding: '5px' }}
         />
-        <button type="submit" style={{padding: '5px 10px', margin: '0px 0px 20px 0px'}}>Get Message Length</button>
+        <button type="submit" style={{ padding: '5px 10px', margin: '0px 0px 20px 0px' }}>Get Message Length</button>
       </form>
       {length !== 0 && <p>Length: {length}</p>}
       {error && <p>{error}</p>}

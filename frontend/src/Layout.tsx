@@ -1,5 +1,7 @@
-import {Link, Outlet} from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import styles from './Layout.module.css';
+import styled from '@emotion/styled'
+import { GraphVisualisationDemo } from "./Presentation/GraphVisualisationDemo";
 
 export const Layout = () => {
   return (
@@ -21,7 +23,26 @@ export const Layout = () => {
         </ul>
       </nav>
 
-      <Outlet/>
+      <MainContainer>
+        <ContentContainer>
+          <Outlet />
+        </ContentContainer>
+        <ContentContainer>
+          <GraphVisualisationDemo />
+        </ContentContainer>
+      </MainContainer>
     </>
   )
 };
+
+const MainContainer = styled.div({
+  display: 'flex',
+  flexDirection: 'row',
+  height: '100vh',
+  paddingHorizontal: '500px',
+})
+
+const ContentContainer = styled.div({
+  flex: 1,
+  overflow: "auto",
+})
