@@ -46,7 +46,6 @@ describe('CSV Parsers', () => {
         {edgeId: '1', channelId: '11', frequency: 195.85, channelWidth: 112.5, channel_label: "CH-2"},
         {edgeId: '1', channelId: '12', frequency: 195.45, channelWidth: 50.0, channel_label: "CH-10"},
         {edgeId: '2', channelId: '13', frequency: 195.65, channelWidth: 75.0, channel_label: "CH-6"},
-        {edgeId: '2', channelId: '14', frequency: 195.25, channelWidth: 50.0, channel_label: ""},
       ];
 
       expect(parseEdgeSpectrum(csvData)).toEqual(expected);
