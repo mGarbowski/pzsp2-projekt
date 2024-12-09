@@ -89,8 +89,8 @@ describe("Edges", () => {
         {id: '3', node1: '2', node2: '1', totalCapacity: '4.8 THz', provisionedCapacity: 50,},
       ]
 
-      const expected: Edge[] = [
-        {id: '1', node1Id: '1', node2Id: '2', totalCapacity: '4.8 THz', provisionedCapacity: 50,},
+      const expected: EdgeDataRow[] = [
+        {id: '1', node1: '1', node2: '2', totalCapacity: '4.8 THz', provisionedCapacity: 50,},
       ]
 
       expect(mergeEdges(edges_2)).toEqual(expected)
@@ -270,7 +270,7 @@ describe('Channels', () => {
     })
   })
   describe("CheckEdgeExists", () => {
-    it('should return true if all edges exist', () => {
+    it('should return if all edges exist', () => {
       const channelData: EdgeSpectrumDataRow[] = [
         {edgeId: '1', channelId: '1', frequency: 195, channelWidth: 50, channel_label: "CH-1"},
         {edgeId: '2', channelId: '1', frequency: 195, channelWidth: 50, channel_label: "CH-1"}

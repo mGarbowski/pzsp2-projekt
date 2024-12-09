@@ -86,8 +86,6 @@ export const mergeEdges = (edges: EdgeDataRow[]): EdgeDataRow[] =>{
         if (!merged.find(element => element.id == pair.id)) {
           merged.push(edge)
         }
-      } else {
-        throw new Error(`Can't merge: ${JSON.stringify(edge)} has no pair`);
       }
     }
   )
