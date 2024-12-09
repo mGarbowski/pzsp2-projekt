@@ -121,8 +121,8 @@ export const checkEdgeExists = (channelData: EdgeSpectrumDataRow[], edges: EdgeD
  * @returns updated ChannelEdge list
  */
 export const getChannel = (channelData: EdgeSpectrumDataRow, channels: ChannelEdge[]): ChannelEdge[] => {
-  const cur_id = channelData.channelId;
-  const found = channels.find((channel) => channel.id == cur_id)
+  const cur_label = channelData.channel_label;
+  const found = channels.find((channel) => channel.channel_label == cur_label)
   if (found) {
     found.edges.push(channelData.edgeId);
   } else {
@@ -208,9 +208,12 @@ export const getChannelNodes = (channelsEdge: ChannelEdge[], edges: Edge[]): Cha
       // if all misses try again
       else {
         attempts += 1
-        // if all edges cannot be organized into a path throw error
+        // if all edges cannot be organized into a path log information
         if (attempts > max_attempts) {
-          throw new Error(`Disconnected edge: ${JSON.stringify(channelE)} has a disconnected edge ${JSON.stringify(edge)}`)
+          if(channel.nodes.includes(edge.node1Id) || channel.nodes.includes(edge.node2Id)){
+            console.log(`branching edge ${JSON.stringify(edge)} in channel ${JSON.stringify(channel)}`)
+          }
+          break
         }
         //append to end of queue
         channelEdgesObj.push(edge)

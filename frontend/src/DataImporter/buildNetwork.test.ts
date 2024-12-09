@@ -98,59 +98,17 @@ describe("Edges", () => {
     it('should merge edges form more complicated input', () => {
       const edges: EdgeDataRow[] = [
         {id: '-160181617838685002', node1: '30990', node2: '39925', totalCapacity: '4.8 THz', provisionedCapacity: 10,},
-        {
-          id: '-1924338652343423293',
-          node1: '70080',
-          node2: '60168',
-          totalCapacity: '4.8 THz',
-          provisionedCapacity: 17,
-        },
-        {
-          id: '-2017457964338917446',
-          node1: '60168',
-          node2: '70080',
-          totalCapacity: '4.8 THz',
-          provisionedCapacity: 17,
-        },
-        {
-          id: '-2188716338357475633',
-          node1: '24246',
-          node2: '40990',
-          totalCapacity: '4.8 THz',
-          provisionedCapacity: 11,
-        },
-        {
-          id: '-8373146988370601128',
-          node1: '39925',
-          node2: '30990',
-          totalCapacity: '4.8 THz',
-          provisionedCapacity: 10,
-        },
-        {
-          id: '-4373598137077956487',
-          node1: '40990',
-          node2: '24246',
-          totalCapacity: '4.8 THz',
-          provisionedCapacity: 11,
-        },
+        {id: '-1924338652343423293', node1: '70080', node2: '60168', totalCapacity: '4.8 THz', provisionedCapacity: 17,},
+        {id: '-2017457964338917446', node1: '60168', node2: '70080', totalCapacity: '4.8 THz', provisionedCapacity: 17,},
+        {id: '-2188716338357475633', node1: '24246', node2: '40990', totalCapacity: '4.8 THz', provisionedCapacity: 11,},
+        {id: '-8373146988370601128', node1: '39925', node2: '30990', totalCapacity: '4.8 THz', provisionedCapacity: 10,},
+        {id: '-4373598137077956487', node1: '40990', node2: '24246', totalCapacity: '4.8 THz', provisionedCapacity: 11,},
       ]
 
       const expected: EdgeDataRow[] = [
         {id: '-160181617838685002', node1: '30990', node2: '39925', totalCapacity: '4.8 THz', provisionedCapacity: 10,},
-        {
-          id: '-1924338652343423293',
-          node1: '70080',
-          node2: '60168',
-          totalCapacity: '4.8 THz',
-          provisionedCapacity: 17,
-        },
-        {
-          id: '-2188716338357475633',
-          node1: '24246',
-          node2: '40990',
-          totalCapacity: '4.8 THz',
-          provisionedCapacity: 11,
-        },
+        {id: '-1924338652343423293', node1: '70080', node2: '60168', totalCapacity: '4.8 THz', provisionedCapacity: 17,},
+        {id: '-2188716338357475633', node1: '24246', node2: '40990', totalCapacity: '4.8 THz', provisionedCapacity: 11,},
       ]
 
       expect(mergeEdges(edges)).toEqual(expected)
@@ -162,15 +120,18 @@ describe('Channels', () => {
   describe('getChannel', () => {
     it('should convert edge first into channel first', () => {
       const EdgeSpectrum = "REQUESTED_FRE_ID,PHOTONIC_SERVICE_ID,FREQUENCY,WIDTH,WAVELENGTH,CHANNEL\n" +
-        "-2242719450019019377,6007100605839137070,191.900000,37.5,1562.23,CH-81\n";
+        "1,12,195,50,195,CH-81\n"+
+        "2,13,195,50,195,CH-81\n"+
+        "3,14,195,50,195,CH-81\n"+
+        "4,15,195,50,195,CH-81\n";
       const channelData = parseEdgeSpectrum(EdgeSpectrum);
       const expected: ChannelEdge[] = [
         {
-          id: '6007100605839137070',
+          id: '12',
           channel_label: "CH-81",
-          frequency: 191.900000,
-          width: 50.0,
-          edges: ["-2242719450019019377"],
+          frequency: 195,
+          width: 50,
+          edges: ["1", "2", "3", "4"],
         }
       ]
       expect(groupByChannel(channelData)).toEqual(expected);
@@ -179,7 +140,7 @@ describe('Channels', () => {
     it('should group data to 1 channel with 2 edges', () => {
       const EdgeSpectrum = "REQUESTED_FRE_ID,PHOTONIC_SERVICE_ID,FREQUENCY,WIDTH,WAVELENGTH,CHANNEL\n" +
         "-2242719450019019377,6007100605839137070,191.900000,37.5,1562.23,CH-81\n" +
-        "-1111111111111111111,6007100605839137070,191.900000,37.5,1562.23,CH-81\n";
+        "-1111111111111111111,7777777777777777777,191.900000,37.5,1562.23,CH-81\n";
       const channelData = parseEdgeSpectrum(EdgeSpectrum);
       const expected: ChannelEdge[] = [
         {
@@ -196,9 +157,9 @@ describe('Channels', () => {
     it('should group data to 2 channel with 2 edges each', () => {
       const EdgeSpectrum = "REQUESTED_FRE_ID,PHOTONIC_SERVICE_ID,FREQUENCY,WIDTH,WAVELENGTH,CHANNEL\n" +
         "-2242719450019019377,6007100605839137070,191.900000,37.5,1562.23,CH-81\n" +
-        "-1111111111111111111,6007100605839137070,191.900000,37.5,1562.23,CH-81\n" +
+        "-1111111111111111111,7777777777777777777,191.900000,37.5,1562.23,CH-81\n" +
         "-2242719450019019377,1111111111111111111,191.900000,37.5,1562.23,CH-82\n" +
-        "-1111111111111111111,1111111111111111111,191.900000,37.5,1562.23,CH-82\n";
+        "-1111111111111111111,2222222222222222222,191.900000,37.5,1562.23,CH-82\n";
       const channelData = parseEdgeSpectrum(EdgeSpectrum);
       const expected: ChannelEdge[] = [
         {
@@ -223,7 +184,7 @@ describe('Channels', () => {
     it('should merge edge spectrum rows', () => {
       const channelData: EdgeSpectrumDataRow[] = [
         {edgeId: '1', channelId: '1', frequency: 195, channelWidth: 50, channel_label: "CH-1"},
-        {edgeId: '2', channelId: '1', frequency: 195, channelWidth: 50, channel_label: "CH-1"}
+        {edgeId: '2', channelId: '2', frequency: 195, channelWidth: 50, channel_label: "CH-1"}
       ]
       const edges: Edge[] = [
         {id: '1', node1Id: '1', node2Id: '2', totalCapacity: '4.8 THz', provisionedCapacity: 10}
@@ -254,7 +215,7 @@ describe('Channels', () => {
     it('should not merge spectrum from different edges', () => {
       const channelData: EdgeSpectrumDataRow[] = [
         {edgeId: '1', channelId: '1', frequency: 195, channelWidth: 50, channel_label: "CH-1"},
-        {edgeId: '2', channelId: '1', frequency: 195, channelWidth: 50, channel_label: "CH-1"}
+        {edgeId: '2', channelId: '3', frequency: 195, channelWidth: 50, channel_label: "CH-1"}
       ]
       const edges: Edge[] = [
         {id: '1', node1Id: '1', node2Id: '2', totalCapacity: '4.8 THz', provisionedCapacity: 10},
@@ -263,7 +224,7 @@ describe('Channels', () => {
 
       const expected: EdgeSpectrumDataRow[] = [
         {edgeId: '1', channelId: '1', frequency: 195, channelWidth: 50, channel_label: "CH-1"},
-        {edgeId: '2', channelId: '1', frequency: 195, channelWidth: 50, channel_label: "CH-1"}
+        {edgeId: '2', channelId: '3', frequency: 195, channelWidth: 50, channel_label: "CH-1"}
       ]
 
       expect(mergeSpectrum(channelData, edges)).toEqual(expected)
@@ -273,7 +234,7 @@ describe('Channels', () => {
     it('should return if all edges exist', () => {
       const channelData: EdgeSpectrumDataRow[] = [
         {edgeId: '1', channelId: '1', frequency: 195, channelWidth: 50, channel_label: "CH-1"},
-        {edgeId: '2', channelId: '1', frequency: 195, channelWidth: 50, channel_label: "CH-1"}
+        {edgeId: '2', channelId: '2', frequency: 195, channelWidth: 50, channel_label: "CH-1"}
       ]
       const edges: EdgeDataRow[] = [
         {id: '1', node1: '1', node2: '2', totalCapacity: '4.8 THz', provisionedCapacity: 10},
@@ -285,7 +246,7 @@ describe('Channels', () => {
     it('should throw an exception if EdgeSpectrum refers to non existent edge', () => {
       const channelData: EdgeSpectrumDataRow[] = [
         {edgeId: '1', channelId: '1', frequency: 195, channelWidth: 50, channel_label: "CH-1"},
-        {edgeId: '2', channelId: '1', frequency: 195, channelWidth: 50, channel_label: "CH-1"}
+        {edgeId: '2', channelId: '2', frequency: 195, channelWidth: 50, channel_label: "CH-1"}
       ]
       const edges: EdgeDataRow[] = [
         {id: '1', node1: '1', node2: '2', totalCapacity: '4.8 THz', provisionedCapacity: 10},
@@ -356,7 +317,24 @@ describe('Channels', () => {
       ]
       expect(getChannelNodes(channels, edges)).toEqual(expectedChannel)
     })
-    it("Should throw an exception if edge can't be connected", () => {
+    it("Should handle out of order edges 2", () => {
+      const edges: Edge[] = [
+        {id: '1', node1Id: '1', node2Id: '2', totalCapacity: '4.8 THz', provisionedCapacity: 10,},
+        {id: '2', node1Id: '2', node2Id: '3', totalCapacity: '4.8 THz', provisionedCapacity: 17,},
+        {id: '3', node1Id: '3', node2Id: '4', totalCapacity: '4.8 THz', provisionedCapacity: 17,},
+        {id: '4', node1Id: '4', node2Id: '5', totalCapacity: '4.8 THz', provisionedCapacity: 17,},
+        {id: '6', node1Id: '6', node2Id: '7', totalCapacity: '4.8 THz', provisionedCapacity: 17,},
+        {id: '7', node1Id: '8', node2Id: '9', totalCapacity: '4.8 THz', provisionedCapacity: 17,},
+      ]
+      const channels: ChannelEdge[] = [
+        {id: '1', channel_label: 'CH-1', width: 50, frequency: 195, edges: ['2', '1', '4', '3']},
+      ]
+      const expectedChannel: Channel[] = [
+        {id: '1', channel_label: 'CH-1', width: 50, frequency: 195, nodes: ['1', '2', '3', '4', '5']}
+      ]
+      expect(getChannelNodes(channels, edges)).toEqual(expectedChannel)
+    })
+    it("Should ignore edge that can't be connected", () => {
       const edges: Edge[] = [
         {id: '1', node1Id: '1', node2Id: '2', totalCapacity: '4.8 THz', provisionedCapacity: 10,},
         {id: '2', node1Id: '2', node2Id: '3', totalCapacity: '4.8 THz', provisionedCapacity: 17,},
@@ -366,8 +344,12 @@ describe('Channels', () => {
       const channels: ChannelEdge[] = [
         {id: '1', channel_label: 'CH-1', width: 50, frequency: 195, edges: ['2', '1', '4', '3']},
       ]
-      expect(() => getChannelNodes(channels, edges)).toThrow("Disconnected edge")
+      const expected: Channel[] = [{id: '1', channel_label: 'CH-1', width: 50, frequency: 195, nodes: ['1', '2', '3','4']}]
+      expect(getChannelNodes(channels, edges)).toEqual(expected)
     })
+    //     it("should handle real channels", () =>{
+    //       const cannel_csv = "REQUESTED_FRE_ID,PHOTONIC_SERVICE_ID,FREQUENCY,WIDTH,WAVELENGTH,CHANNEL\n" +
+
   })
 });
 
