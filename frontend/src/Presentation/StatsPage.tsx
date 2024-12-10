@@ -1,7 +1,10 @@
 import styled from "@emotion/styled";
 import { DownloadReport } from "../ReportGeneration/DownloadReport.tsx";
+import { useNavigate } from 'react-router-dom';
+import { StyledButton } from "../StyledComponents/button.tsx";
 
 export const StatsPage = () => {
+  const navigate = useNavigate();
   return (
     <MainContainer>
       <h1>Statystyki sieci</h1>
@@ -22,9 +25,12 @@ export const StatsPage = () => {
         </StatsInnerContainer>
 
       </StatsOuterContainer>
-      <div>
+      <ButtonContainer>
         <DownloadReport />
-      </div>
+        <StyledButton onClick={() => navigate('/add-channel')}>
+          Dodaj kanał
+        </StyledButton>
+      </ButtonContainer>
     </MainContainer>
   )
 }
@@ -57,5 +63,11 @@ const StatsInnerContainer = styled.div({
 const StatsHeader = styled.h2({
   fontWeight: "normal",
   fontSize: "1.2rem"
+})
+
+const ButtonContainer = styled.div({
+  display: "flex",
+  flexDirection: "row",
+  justifyContent: "space-evenly"
 })
 

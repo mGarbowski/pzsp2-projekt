@@ -67,5 +67,5 @@ const NavLink = styled(Link)({
   textDecoration: "none",
   padding: "0.5rem 1rem",
   display: "block",
-  "&:hover": { backgroundColor: "#F0A8D0" }, // TODO: pick this color
+  "&:hover": { color: "#444" }, // TODO: pick this color
 });
