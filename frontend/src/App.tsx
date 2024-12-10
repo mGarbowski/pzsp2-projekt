@@ -14,7 +14,7 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<WelcomePage />} />
           <Route path="import" element={<DataImporterPage />} />
-          <Route path="optimizer" element={<OptimizerPage />} />
+          <Route path="add-channel" element={< OptimizerPage />} />
           <Route path="stats" element={<StatsPage />} />
           <Route path="*" element={<NoPage />} />
         </Route>

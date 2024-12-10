@@ -13,6 +13,9 @@ export const Layout = () => {
           <NavElement>
             <NavLink to="/stats">Statystyki</NavLink>
           </NavElement>
+          <NavElement>
+            <NavLink to="/add-channel">Dodaj kanał</NavLink>
+          </NavElement>
         </NavList>
       </Nav>
 
