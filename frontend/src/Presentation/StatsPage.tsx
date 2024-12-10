@@ -1,16 +1,57 @@
-import { GraphVisualisationDemo } from "./GraphVisualisationDemo.tsx";
+import styled from "@emotion/styled";
 import { DownloadReport } from "../ReportGeneration/DownloadReport.tsx";
 
 export const StatsPage = () => {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', margin: '0 auto', placeItems: 'center' }}>
-      <h1>Presentation</h1>
-      <div style={{ position: 'fixed', top: "20%", left: "5%", width: '45%', height: '100%', overflow: 'auto' }}>
+    <MainContainer>
+      <h1>Statystyki sieci</h1>
+      <StatsOuterContainer>
+        <StatsInnerContainer>
+          <StatsHeader>Najwęższe wolne pasmo</StatsHeader>
+          <p>Lorem ipsum </p>
+        </StatsInnerContainer>
+
+        <StatsInnerContainer>
+          <StatsHeader>Najbardziej zajęte połączenie</StatsHeader>
+          <p>Lorem ipsum </p>
+        </StatsInnerContainer>
+
+        <StatsInnerContainer>
+          <StatsHeader>Ogólna zajętość sieci</StatsHeader>
+          <p>Lorem ipsum </p>
+        </StatsInnerContainer>
+
+      </StatsOuterContainer>
+      <div>
         <DownloadReport />
       </div>
-      <div style={{ position: 'fixed', top: "20%", right: "5%", width: '45%', height: '100%', overflow: 'auto' }}>
-        <GraphVisualisationDemo />
-      </div>
-    </div>
+    </MainContainer>
   )
 }
+
+const MainContainer = styled.div({
+  display: "flex",
+  flexDirection: "column",
+  placeContent: "center",
+  marginLeft: "10px",
+  marginTop: "10px"
+})
+
+const StatsOuterContainer = styled.div({
+  display: "flex",
+  flexDirection: "column",
+  placeContent: "center",
+})
+
+const StatsInnerContainer = styled.div({
+  backgroundColor: "#FDF4F5",
+  margin: "3px",
+  borderRadius: "5px",
+  padding: "5px",
+})
+
+const StatsHeader = styled.h2({
+  fontWeight: "normal",
+  fontSize: "1.2rem"
+})
+
