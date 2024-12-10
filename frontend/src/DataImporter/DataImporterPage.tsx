@@ -67,6 +67,7 @@ const ImporterInnerContainer = styled.div({
   padding: "10px 10px",
   maxWidth: "80%",
   minWidth: "50%",
+  marginBottom: "10rem"
 })
 
 const ImporterUploadContainer = styled.div({

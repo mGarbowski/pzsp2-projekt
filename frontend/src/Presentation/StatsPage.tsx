@@ -38,6 +38,7 @@ const MainContainer = styled.div({
 })
 
 const StatsOuterContainer = styled.div({
+  marginTop: "2rem",
   display: "flex",
   flexDirection: "column",
   placeContent: "center",
@@ -46,8 +47,11 @@ const StatsOuterContainer = styled.div({
 const StatsInnerContainer = styled.div({
   backgroundColor: "#FDF4F5",
   margin: "3px",
-  borderRadius: "5px",
-  padding: "5px",
+  borderRadius: "0.5rem",
+  paddingLeft: "1rem",
+  "&:hover": {
+    backgroundColor: "#BEAEE2"
+  }
 })
 
 const StatsHeader = styled.h2({
