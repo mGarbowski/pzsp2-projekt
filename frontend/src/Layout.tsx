@@ -11,10 +11,7 @@ export const Layout = () => {
             <NavLink to="/import">Import</NavLink>
           </NavElement>
           <NavElement>
-            <NavLink to="/optimizer">Optimizer</NavLink>
-          </NavElement>
-          <NavElement>
-            <NavLink to="/presentation">Presentation</NavLink>
+            <NavLink to="/stats">Statystyki</NavLink>
           </NavElement>
         </NavList>
       </Nav>

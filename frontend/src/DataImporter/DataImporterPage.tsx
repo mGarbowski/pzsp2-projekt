@@ -61,7 +61,6 @@ const ImporterOuterContainer = styled.div({
 const ImporterInnerContainer = styled.div({
   display: 'flex',
   flexDirection: 'column',
-  height: "35%",
   boxShadow: "0 0 10px 0 rgba(0, 0, 0, 0.3)",
   borderRadius: "8px",
   alignItems: 'center',
