@@ -53,7 +53,6 @@ const ImporterOuterContainer = styled.div({
   display: 'flex',
   flexDirection: 'column',
   height: '100vh',
-  paddingHorizontal: '500px',
   alignItems: 'center',
   justifyContent: 'center',
 })
