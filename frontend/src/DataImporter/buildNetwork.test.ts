@@ -136,7 +136,7 @@ describe("Edges", () => {
 
 describe('Channels', () => {
   describe('getChannel', () => {
-    it('should convert edge first into channel first', () => {
+    it('should group data edgeSpectrumRows by phonic service id into Channel objects ', () => {
       const EdgeSpectrum = "REQUESTED_FRE_ID,PHOTONIC_SERVICE_ID,FREQUENCY,WIDTH,WAVELENGTH,CHANNEL\n" +
         "1,12,195,50,195,CH-81\n"+
         "2,12,195,50,195,CH-82\n"+
