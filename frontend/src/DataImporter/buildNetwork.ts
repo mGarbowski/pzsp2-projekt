@@ -122,8 +122,8 @@ export const checkEdgeExists = (channelData: EdgeSpectrumDataRow[], edges: EdgeD
  * @returns updated ChannelEdge list
  */
 export const getChannel = (channelData: EdgeSpectrumDataRow, channels: ChannelEdge[]): ChannelEdge[] => {
-  const cur_label = channelData.channel_label;
-  const found = channels.find((channel) => channel.channel_label == cur_label)
+  const cur_label = channelData.channelId;
+  const found = channels.find((channel) => channel.id == cur_label)
   if (found) {
     found.edges.push(channelData.edgeId);
   } else {

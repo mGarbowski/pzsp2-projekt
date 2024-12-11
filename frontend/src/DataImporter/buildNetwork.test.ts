@@ -139,9 +139,9 @@ describe('Channels', () => {
     it('should convert edge first into channel first', () => {
       const EdgeSpectrum = "REQUESTED_FRE_ID,PHOTONIC_SERVICE_ID,FREQUENCY,WIDTH,WAVELENGTH,CHANNEL\n" +
         "1,12,195,50,195,CH-81\n"+
-        "2,13,195,50,195,CH-81\n"+
-        "3,14,195,50,195,CH-81\n"+
-        "4,15,195,50,195,CH-81\n";
+        "2,12,195,50,195,CH-82\n"+
+        "3,12,195,50,195,CH-83\n"+
+        "4,12,195,50,195,CH-84\n";
       const channelData = parseEdgeSpectrum(EdgeSpectrum);
       const expected: ChannelEdge[] = [
         {
@@ -158,7 +158,7 @@ describe('Channels', () => {
     it('should group data to 1 channel with 2 edges', () => {
       const EdgeSpectrum = "REQUESTED_FRE_ID,PHOTONIC_SERVICE_ID,FREQUENCY,WIDTH,WAVELENGTH,CHANNEL\n" +
         "-2242719450019019377,6007100605839137070,191.900000,37.5,1562.23,CH-81\n" +
-        "-1111111111111111111,7777777777777777777,191.900000,37.5,1562.23,CH-81\n";
+        "-1111111111111111111,6007100605839137070,191.900000,37.5,1562.23,CH-81\n";
       const channelData = parseEdgeSpectrum(EdgeSpectrum);
       const expected: ChannelEdge[] = [
         {
@@ -175,9 +175,9 @@ describe('Channels', () => {
     it('should group data to 2 channel with 2 edges each', () => {
       const EdgeSpectrum = "REQUESTED_FRE_ID,PHOTONIC_SERVICE_ID,FREQUENCY,WIDTH,WAVELENGTH,CHANNEL\n" +
         "-2242719450019019377,6007100605839137070,191.900000,37.5,1562.23,CH-81\n" +
-        "-1111111111111111111,7777777777777777777,191.900000,37.5,1562.23,CH-81\n" +
+        "-1111111111111111111,6007100605839137070,191.900000,37.5,1562.23,CH-81\n" +
         "-2242719450019019377,1111111111111111111,191.900000,37.5,1562.23,CH-82\n" +
-        "-1111111111111111111,2222222222222222222,191.900000,37.5,1562.23,CH-82\n";
+        "-1111111111111111111,1111111111111111111,191.900000,37.5,1562.23,CH-82\n";
       const channelData = parseEdgeSpectrum(EdgeSpectrum);
       const expected: ChannelEdge[] = [
         {
