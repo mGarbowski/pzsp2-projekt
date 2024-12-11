@@ -5,20 +5,23 @@ import { NoPage } from "./NoPage.tsx";
 import { Layout } from "./Layout.tsx";
 import { StatsPage } from "./Presentation/StatsPage.tsx";
 import { DataImporterPage } from './DataImporter/DataImporterPage.tsx';
+import { ThemeProvider } from "./components/theme-provider.tsx";
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<WelcomePage />} />
-          <Route path="import" element={<DataImporterPage />} />
-          <Route path="add-channel" element={< OptimizerPage />} />
-          <Route path="stats" element={<StatsPage />} />
-          <Route path="*" element={<NoPage />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<WelcomePage />} />
+            <Route path="import" element={<DataImporterPage />} />
+            <Route path="add-channel" element={< OptimizerPage />} />
+            <Route path="stats" element={<StatsPage />} />
+            <Route path="*" element={<NoPage />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </ThemeProvider>
   );
 }
 
