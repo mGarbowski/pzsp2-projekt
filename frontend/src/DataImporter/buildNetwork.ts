@@ -1,4 +1,3 @@
-import { Node } from "reagraph";
 import {EdgeDataRow, EdgeSpectrumDataRow, NodeDataRow} from "./parseCsv";
 
 export interface Edge {
@@ -122,8 +121,8 @@ export const checkEdgeExists = (channelData: EdgeSpectrumDataRow[], edges: EdgeD
  * @returns updated ChannelEdge list
  */
 export const getChannel = (channelData: EdgeSpectrumDataRow, channels: ChannelEdge[]): ChannelEdge[] => {
-  const cur_label = channelData.channelId;
-  const found = channels.find((channel) => channel.id == cur_label)
+  const cur_id = channelData.channelId;
+  const found = channels.find((channel) => channel.id == cur_id)
   if (found) {
     found.edges.push(channelData.edgeId);
   } else {
