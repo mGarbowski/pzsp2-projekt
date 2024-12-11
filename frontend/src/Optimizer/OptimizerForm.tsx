@@ -1,6 +1,15 @@
 import React, { useState } from "react"
 import styled from '@emotion/styled'
 import { Button } from "../components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../components/ui/select"
+import { Input } from "../components/ui/input";
+
 
 export const OptimizerForm = () => {
   const [startNode, setStartNode] = useState<string | null>(null);
@@ -19,7 +28,7 @@ export const OptimizerForm = () => {
   return <StyledForm onSubmit={handleSubmit}>
     <label>
       Węzeł startowy
-      <TextInput
+      <Input
         type="text"
         placeholder="ID węzła"
         value={startNode || ""}
@@ -39,7 +48,7 @@ export const OptimizerForm = () => {
 
     <label>
       Węzeł końcowy
-      <TextInput
+      <Input
         type="text"
         placeholder="ID węzła"
         required={true}
@@ -59,46 +68,40 @@ export const OptimizerForm = () => {
 
     <label>
       Przepustowość
-      <SelectInput
+      <Select
         value={bandwidth || ""}
-        onChange={(e) => setBandwidth(e.target.value)}
-        required={true}
-        style={{
-          display: "block",
-          marginTop: "5px",
-          marginBottom: "15px",
-          width: "100%",
-          padding: "8px",
-          border: "1px solid #ccc",
-          borderRadius: "4px",
-        }}
+        onValueChange={(value: string) => setBandwidth(value)}
+        required
+        className="block mt-1.5 mb-3 w-full px-2 py-2 border border-gray-300 rounded-md"
       >
-        <option value="10Gb/s">10Gb/s</option>
-        <option value="40Gb/s">40Gb/s</option>
-        <option value="100Gb/s">100Gb/s</option>
-        <option value="400Gb/s">400Gb/s</option>
-      </SelectInput>
+        <SelectTrigger aria-label="Bandwidth">
+          <SelectValue placeholder="Wybierz opcję" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="10Gb/s">10Gb/s</SelectItem>
+          <SelectItem value="40Gb/s">40Gb/s</SelectItem>
+          <SelectItem value="100Gb/s">100Gb/s</SelectItem>
+          <SelectItem value="400Gb/s">400Gb/s</SelectItem>
+        </SelectContent>
+      </Select>
     </label>
 
     <label>
       Optymalizator
-      <SelectInput
+      <Select
         value={optimizer || ""}
-        onChange={(e) => setOptimizer(e.target.value)}
-        required={true}
-        style={{
-          display: "block",
-          marginTop: "5px",
-          marginBottom: "15px",
-          width: "100%",
-          padding: "8px",
-          border: "1px solid #ccc",
-          borderRadius: "4px",
-        }}
+        onValueChange={(value: string) => setOptimizer(value)}
+        required
+        className="block mt-1.5 mb-3 w-full px-2 py-2 border border-gray-300 rounded-md"
       >
-        <option value="dijkstra">Algorytm Dijkstry</option>
-        <option value="integer">Model całkowitoliczbowy</option>
-      </SelectInput>
+        <SelectTrigger aria-label="Optimizer">
+          <SelectValue placeholder="Select optimizer" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="dijkstra">Algorytm Dijkstry</SelectItem>
+          <SelectItem value="integer">Model całkowitoliczbowy</SelectItem>
+        </SelectContent>
+      </Select>
     </label>
 
     <Button type="submit" >
@@ -120,14 +123,6 @@ const TextInput = styled.input({
 
 })
 
-const SelectInput = styled.select({
-  display: "block",
-  marginTop: "5px",
-  marginBottom: "15px",
-  padding: "8px",
-  border: "1px solid #ccc",
-  borderRadius: "4px",
-})
 
 const StyledForm = styled.form({
   display: "flex",
