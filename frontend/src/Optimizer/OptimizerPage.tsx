@@ -2,18 +2,19 @@ import { OptimizerForm } from "./OptimizerForm";
 import styled from '@emotion/styled'
 
 export const OptimizerPage = () => {
-  // const backendBaseUrl = import.meta.env.VITE_BACKEND_URL as string;
-  // const url = `${backendBaseUrl}/ws/optimizer`;
 
   return <MainContainer>
+    <h1>Dodaj kanał</h1>
     <OptimizerForm />
   </MainContainer >
 }
 
 const MainContainer = styled.div({
-  layout: "flex",
+  display: "flex",
   flexDirection: "column",
-  placeContent: "center",
   marginLeft: "10px",
-  marginTop: "10px"
+  marginTop: "10px",
+  alignItems: 'center',
+  height: '100vh',
+  justifyContent: 'center',
 });

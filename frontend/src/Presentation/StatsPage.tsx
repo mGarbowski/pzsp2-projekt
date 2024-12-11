@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import { DownloadReport } from "../ReportGeneration/DownloadReport.tsx";
 import { useNavigate } from 'react-router-dom';
 import { StyledButton } from "../StyledComponents/button.tsx";
+import { StyledH2 } from "../StyledComponents/header.tsx";
 
 export const StatsPage = () => {
   const navigate = useNavigate();
@@ -10,17 +11,17 @@ export const StatsPage = () => {
       <h1>Statystyki sieci</h1>
       <StatsOuterContainer>
         <StatsInnerContainer>
-          <StatsHeader>Najwęższe wolne pasmo</StatsHeader>
+          <StyledH2>Najwęższe wolne pasmo</StyledH2>
           <p>Lorem ipsum </p>
         </StatsInnerContainer>
 
         <StatsInnerContainer>
-          <StatsHeader>Najbardziej zajęte połączenie</StatsHeader>
+          <StyledH2>Najbardziej zajęte połączenie</StyledH2>
           <p>Lorem ipsum </p>
         </StatsInnerContainer>
 
         <StatsInnerContainer>
-          <StatsHeader>Ogólna zajętość sieci</StatsHeader>
+          <StyledH2>Ogólna zajętość sieci</StyledH2>
           <p>Lorem ipsum </p>
         </StatsInnerContainer>
 
@@ -58,11 +59,6 @@ const StatsInnerContainer = styled.div({
   "&:hover": {
     backgroundColor: "#BEAEE2"
   }
-})
-
-const StatsHeader = styled.h2({
-  fontWeight: "normal",
-  fontSize: "1.2rem"
 })
 
 const ButtonContainer = styled.div({

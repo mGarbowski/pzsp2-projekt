@@ -124,7 +124,6 @@ const SelectInput = styled.select({
   display: "block",
   marginTop: "5px",
   marginBottom: "15px",
-  maxWidth: "95%",
   padding: "8px",
   border: "1px solid #ccc",
   borderRadius: "4px",
