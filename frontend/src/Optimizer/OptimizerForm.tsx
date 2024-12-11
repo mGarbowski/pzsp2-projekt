@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import { StyledButton } from "../StyledComponents/button";
+import styled from '@emotion/styled'
 
 export const OptimizerForm = () => {
   const [startNode, setStartNode] = useState<string | null>(null);
@@ -15,10 +16,10 @@ export const OptimizerForm = () => {
     alert("Channel added");
   }
 
-  return <form onSubmit={handleSubmit}>
+  return <StyledForm onSubmit={handleSubmit}>
     <label>
       Węzeł startowy
-      <input
+      <TextInput
         type="text"
         placeholder="ID węzła"
         value={startNode || ""}
@@ -38,7 +39,7 @@ export const OptimizerForm = () => {
 
     <label>
       Węzeł końcowy
-      <input
+      <TextInput
         type="text"
         placeholder="ID węzła"
         required={true}
@@ -58,7 +59,7 @@ export const OptimizerForm = () => {
 
     <label>
       Przepustowość
-      <select
+      <SelectInput
         value={bandwidth || ""}
         onChange={(e) => setBandwidth(e.target.value)}
         required={true}
@@ -76,12 +77,12 @@ export const OptimizerForm = () => {
         <option value="40Gb/s">40Gb/s</option>
         <option value="100Gb/s">100Gb/s</option>
         <option value="400Gb/s">400Gb/s</option>
-      </select>
+      </SelectInput>
     </label>
 
     <label>
       Optymalizator
-      <select
+      <SelectInput
         value={optimizer || ""}
         onChange={(e) => setOptimizer(e.target.value)}
         required={true}
@@ -97,7 +98,7 @@ export const OptimizerForm = () => {
       >
         <option value="dijkstra">Algorytm Dijkstry</option>
         <option value="integer">Model całkowitoliczbowy</option>
-      </select>
+      </SelectInput>
     </label>
 
     <StyledButton type="submit" >
@@ -105,5 +106,35 @@ export const OptimizerForm = () => {
     </StyledButton >
 
 
-  </form>
+  </StyledForm>
 }
+
+const TextInput = styled.input({
+  display: "block",
+  marginTop: "5px",
+  marginBottom: "15px",
+  maxWidth: "90%",
+  padding: "8px",
+  border: "1px solid #ccc",
+  borderRadius: "4px",
+
+})
+
+const SelectInput = styled.select({
+  display: "block",
+  marginTop: "5px",
+  marginBottom: "15px",
+  maxWidth: "95%",
+  padding: "8px",
+  border: "1px solid #ccc",
+  borderRadius: "4px",
+})
+
+const StyledForm = styled.form({
+  display: "flex",
+  flexDirection: "column",
+  placeContent: "center",
+  marginLeft: "10px",
+  marginTop: "10px",
+})
+
