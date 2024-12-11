@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import { generateDemoReport } from "./generateReport.ts";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFileExport } from '@fortawesome/free-solid-svg-icons'
-import { StyledButton } from "../StyledComponents/button.tsx";
+import { Button } from "../components/ui/button.tsx";
 
 export const DownloadReport = () => {
 
@@ -19,10 +19,10 @@ export const DownloadReport = () => {
 
   return (
     <DownloadButtonContainer>
-      <StyledButton onClick={handleDownload}>
+      <Button onClick={handleDownload}>
         Pobierz raport
         <DownloadIcon icon={faFileExport} />
-      </StyledButton>
+      </Button>
     </DownloadButtonContainer >
   )
 }
@@ -30,7 +30,6 @@ export const DownloadReport = () => {
 const DownloadButtonContainer = styled.div({
   display: "flex",
   placeContent: "center",
-  marginTop: "5px"
 })
 
 const DownloadIcon = styled(FontAwesomeIcon)({

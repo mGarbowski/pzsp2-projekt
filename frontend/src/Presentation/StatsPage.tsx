@@ -1,8 +1,8 @@
 import styled from "@emotion/styled";
 import { DownloadReport } from "../ReportGeneration/DownloadReport.tsx";
 import { useNavigate } from 'react-router-dom';
-import { StyledButton } from "../StyledComponents/button.tsx";
 import { StyledH2 } from "../StyledComponents/header.tsx";
+import { Button } from "../components/ui/button.tsx";
 
 export const StatsPage = () => {
   const navigate = useNavigate();
@@ -28,9 +28,9 @@ export const StatsPage = () => {
       </StatsOuterContainer>
       <ButtonContainer>
         <DownloadReport />
-        <StyledButton onClick={() => navigate('/add-channel')}>
+        <Button onClick={() => navigate('/add-channel')}>
           Dodaj kanał
-        </StyledButton>
+        </Button>
       </ButtonContainer>
     </MainContainer>
   )

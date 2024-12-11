@@ -1,6 +1,6 @@
 import React, { useState } from "react"
-import { StyledButton } from "../StyledComponents/button";
 import styled from '@emotion/styled'
+import { Button } from "../components/ui/button";
 
 export const OptimizerForm = () => {
   const [startNode, setStartNode] = useState<string | null>(null);
@@ -101,9 +101,9 @@ export const OptimizerForm = () => {
       </SelectInput>
     </label>
 
-    <StyledButton type="submit" >
+    <Button type="submit" >
       Dodaj kanał
-    </StyledButton >
+    </Button >
 
 
   </StyledForm>

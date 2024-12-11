@@ -1,6 +1,6 @@
 import { ChangeEvent, useState } from "react";
 import styled from '@emotion/styled'
-import { StyledLabelButton } from "../StyledComponents/button";
+import { Button } from "../components/ui/button";
 
 interface CsvUploadProps {
   id: string
@@ -26,7 +26,11 @@ export const CsvUpload = (props: CsvUploadProps) => {
 
   return <div>
     <HiddenFileInput type="file" accept=".csv" id={props.id} onChange={handleFileUpload} />
-    <StyledLabelButton htmlFor={props.id}>Wybierz plik</StyledLabelButton>
+    <Button>
+      <label htmlFor={props.id}>
+        Wybierz plik
+      </label>
+    </Button>
     {fileName && <p>{fileName}</p>}
   </div>
 }
