@@ -9,6 +9,7 @@ import {
   SelectValue,
 } from "../components/ui/select"
 import { Input } from "../components/ui/input";
+import { Label } from "../components/ui/label";
 
 
 export const OptimizerForm = () => {
@@ -26,7 +27,7 @@ export const OptimizerForm = () => {
   }
 
   return <StyledForm onSubmit={handleSubmit}>
-    <label>
+    <Label>
       Węzeł startowy
       <Input
         type="text"
@@ -44,9 +45,9 @@ export const OptimizerForm = () => {
           borderRadius: "4px",
         }}
       />
-    </label>
+    </Label>
 
-    <label>
+    <Label>
       Węzeł końcowy
       <Input
         type="text"
@@ -64,15 +65,14 @@ export const OptimizerForm = () => {
           borderRadius: "4px",
         }}
       />
-    </label>
+    </Label>
 
-    <label>
+    <Label>
       Przepustowość
       <Select
         value={bandwidth || ""}
         onValueChange={(value: string) => setBandwidth(value)}
         required
-        className="block mt-1.5 mb-3 w-full px-2 py-2 border border-gray-300 rounded-md"
       >
         <SelectTrigger aria-label="Bandwidth">
           <SelectValue placeholder="Wybierz opcję" />
@@ -84,15 +84,14 @@ export const OptimizerForm = () => {
           <SelectItem value="400Gb/s">400Gb/s</SelectItem>
         </SelectContent>
       </Select>
-    </label>
+    </Label>
 
-    <label>
+    <Label>
       Optymalizator
       <Select
         value={optimizer || ""}
         onValueChange={(value: string) => setOptimizer(value)}
         required
-        className="block mt-1.5 mb-3 w-full px-2 py-2 border border-gray-300 rounded-md"
       >
         <SelectTrigger aria-label="Optimizer">
           <SelectValue placeholder="Select optimizer" />
@@ -102,7 +101,7 @@ export const OptimizerForm = () => {
           <SelectItem value="integer">Model całkowitoliczbowy</SelectItem>
         </SelectContent>
       </Select>
-    </label>
+    </Label>
 
     <Button type="submit" >
       Dodaj kanał
@@ -112,16 +111,6 @@ export const OptimizerForm = () => {
   </StyledForm>
 }
 
-const TextInput = styled.input({
-  display: "block",
-  marginTop: "5px",
-  marginBottom: "15px",
-  maxWidth: "90%",
-  padding: "8px",
-  border: "1px solid #ccc",
-  borderRadius: "4px",
-
-})
 
 
 const StyledForm = styled.form({
