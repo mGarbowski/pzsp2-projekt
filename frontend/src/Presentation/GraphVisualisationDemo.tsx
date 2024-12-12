@@ -1,4 +1,4 @@
-import {GraphCanvas, InternalGraphEdge, InternalGraphNode} from "reagraph";
+import {GraphCanvas, InternalGraphEdge, InternalGraphNode, InternalGraphPosition} from "reagraph";
 import {useState} from "react";
 import {useNetwork} from "../NetworkModel/NetworkContext.tsx";
 
@@ -12,7 +12,7 @@ export const GraphVisualisationDemo = () => {
 
   const highlightedChannel = highlightedChannelId ? network.channels[highlightedChannelId] : null;
 
-  const nodes = Object.values(network.nodes).map(node => {
+  const visNodes = Object.values(network.nodes).map(node => {
     return {
       id: node.id,
       label: node.id,
@@ -22,7 +22,7 @@ export const GraphVisualisationDemo = () => {
     };
   });
 
-  const edges = Object.values(network.edges).map(edge => {
+  const visEdges = Object.values(network.edges).map(edge => {
     return {
       source: edge.node1Id,
       target: edge.node2Id,
@@ -43,16 +43,28 @@ export const GraphVisualisationDemo = () => {
     setText("Edge " + edge.id + " clicked");
   }
 
+  const calcNodeCoordinates = (id: string) => {
+    const center = {latitude: 52.2297, longitude: 21.0122}; // Warsaw
+    const scale = 50;
+
+    const node = network.nodes[id];
+    const x = (node.longitude - center.longitude) * scale;
+    const y = (node.latitude - center.latitude) * scale;
+    return {x, y, z: 1} as InternalGraphPosition;
+  }
+
   return (
     <>
       <p>{text}</p>
       <div style={{position: "fixed", top: "30%", width: '45%', height: '50%'}}>
         <GraphCanvas
-          nodes={nodes}
-          edges={edges}
+          nodes={visNodes}
+          edges={visEdges}
           onNodeClick={handleNodeClick}
           onEdgeClick={handleEdgeClick}
           edgeArrowPosition={"none"}
+          layoutType={"custom"}
+          layoutOverrides={({getNodePosition: calcNodeCoordinates})}
         />
       </div>
     </>
