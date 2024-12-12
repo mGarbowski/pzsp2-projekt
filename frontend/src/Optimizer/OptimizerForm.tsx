@@ -94,7 +94,7 @@ export const OptimizerForm = () => {
         required
       >
         <SelectTrigger aria-label="Optimizer">
-          <SelectValue placeholder="Select optimizer" />
+          <SelectValue placeholder="Wybierz optymalizator" />
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="dijkstra">Algorytm Dijkstry</SelectItem>
