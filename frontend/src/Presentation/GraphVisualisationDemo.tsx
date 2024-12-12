@@ -11,7 +11,8 @@ export const GraphVisualisationDemo = () => {
       id: node.id,
       label: node.id,
       x: node.longitude,
-      y: node.latitude
+      y: node.latitude,
+      color: '#FF0000'
     };
   });
 
@@ -20,7 +21,7 @@ export const GraphVisualisationDemo = () => {
       source: edge.node1Id,
       target: edge.node2Id,
       id: edge.id,
-      label: `${edge.node1Id}-${edge.node2Id}`
+      label: `${edge.node1Id}-${edge.node2Id}`,
     };
   });
 
@@ -35,6 +36,20 @@ export const GraphVisualisationDemo = () => {
     setText("Edge " + edge.id + " clicked");
   }
 
+  const myRenderNode = ({size, color, opacity, id}) => (
+    <group>
+      <mesh>
+        <circleGeometry args={[size]} />
+        <meshBasicMaterial
+          attach="material"
+          color={Number(id) % 2 == 0 ? "#FF0000" : "#00FF00"}
+          opacity={opacity}
+          transparent
+        />
+      </mesh>
+    </group>
+  );
+
   return (
     <>
       <p>{text}</p>
@@ -44,6 +59,7 @@ export const GraphVisualisationDemo = () => {
           edges={edges}
           onNodeClick={handleNodeClick}
           onEdgeClick={handleEdgeClick}
+          renderNode={myRenderNode}
         />
       </div>
     </>
