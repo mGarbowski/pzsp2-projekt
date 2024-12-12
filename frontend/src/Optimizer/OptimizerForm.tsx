@@ -99,7 +99,7 @@ export const OptimizerForm = () => {
       </Select>
     </Label>
 
-    <Button type="submit" >
+    <Button variant={"outline"} type="submit" >
       Dodaj kanał
     </Button >
 

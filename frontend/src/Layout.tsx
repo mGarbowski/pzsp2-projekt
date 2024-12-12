@@ -2,26 +2,50 @@ import { Link, Outlet } from "react-router-dom";
 import styled from '@emotion/styled'
 import { GraphVisualisationDemo } from "./Presentation/GraphVisualisationDemo";
 import { ModeToggle } from "./components/mode-toggle";
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  navigationMenuTriggerStyle,
+} from "./components/ui/navigation-menu"
 
 export const Layout = () => {
   return (
     <>
-      <Nav className="bg-secondary">
-        <NavList>
-          <NavElement>
-            <NavLink to="/import">Import</NavLink>
-          </NavElement>
-          <NavElement>
-            <NavLink to="/stats">Statystyki</NavLink>
-          </NavElement>
-          <NavElement>
-            <NavLink to="/add-channel">Dodaj kanał</NavLink>
-          </NavElement>
-          <NavElement>
-            <ModeToggle />
-          </NavElement>
-        </NavList>
-      </Nav>
+      <NavigationMenu>
+        <NavigationMenuList>
+          <div className="flex flex-row justify-between">
+            <div className="flex flex-row">
+              <NavigationMenuItem>
+                <Link to="/import">
+                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                    Import
+                  </NavigationMenuLink>
+                </Link>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <Link to="/stats">
+                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                    Statystyki
+                  </NavigationMenuLink>
+                </Link>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <Link to="/add-channel">
+                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                    Dodaj kanał
+                  </NavigationMenuLink>
+                </Link>
+              </NavigationMenuItem>
+            </div>
+            <NavigationMenuItem>
+              <ModeToggle />
+            </NavigationMenuItem>
+          </div>
+        </NavigationMenuList>
+      </NavigationMenu >
+
 
       <MainContainer>
         <ContentContainer>
@@ -47,11 +71,6 @@ const ContentContainer = styled.div({
   overflow: "auto",
 })
 
-const Nav = styled.nav({
-  fontWeight: "bold",
-  padding: "1rem",
-})
-
 const NavList = styled.ul({
   listStyleType: "none",
   margin: 0,
@@ -71,5 +90,5 @@ const NavLink = styled(Link)({
   textDecoration: "none",
   padding: "0.5rem 1rem",
   display: "block",
-  "&:hover": { color: "#444" }, // TODO: pick this color
+  "&:hover": { color: "#555" }, // TODO: pick this color
 });

@@ -4,8 +4,10 @@ import styled from '@emotion/styled'
 export const OptimizerPage = () => {
 
   return <MainContainer>
-    <h1>Dodaj kanał</h1>
-    <OptimizerForm />
+    <div className="mb-64">
+      <h1 className="text-3xl font-bold mb-16">Dodaj kanał</h1>
+      <OptimizerForm />
+    </div>
   </MainContainer >
 }
 
