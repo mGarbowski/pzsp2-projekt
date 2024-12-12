@@ -5,6 +5,8 @@ import {demoNetwork} from "../NetworkModel/demoNetwork.ts";
 export const GraphVisualisationDemo = () => {
   const [text, setText] = useState("");
   const network = demoNetwork;
+  const highlightedChannel = network.channels.C2;
+
 
   const nodes = Object.values(network.nodes).map(node => {
     return {
@@ -12,7 +14,6 @@ export const GraphVisualisationDemo = () => {
       label: node.id,
       x: node.longitude,
       y: node.latitude,
-      color: '#FF0000'
     };
   });
 
@@ -36,13 +37,13 @@ export const GraphVisualisationDemo = () => {
     setText("Edge " + edge.id + " clicked");
   }
 
-  const myRenderNode = ({size, color, opacity, id}) => (
+  const myRenderNode = ({size, opacity, id}) => (
     <group>
       <mesh>
         <circleGeometry args={[size]} />
         <meshBasicMaterial
           attach="material"
-          color={Number(id) % 2 == 0 ? "#FF0000" : "#00FF00"}
+          color={highlightedChannel.nodes.includes(id) ? "rgba(11,154,138,0.62)" : "rgba(14,97,140,0.62)"}
           opacity={opacity}
           transparent
         />
@@ -60,6 +61,8 @@ export const GraphVisualisationDemo = () => {
           onNodeClick={handleNodeClick}
           onEdgeClick={handleEdgeClick}
           renderNode={myRenderNode}
+          edgeArrowPosition={"none"}
+          actives={highlightedChannel.edges}
         />
       </div>
     </>
