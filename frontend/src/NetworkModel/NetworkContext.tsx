@@ -21,6 +21,7 @@ export const NetworkProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useNetwork = (): NetworkContextType => {
   const context = useContext(NetworkContext);
   if (!context) {
