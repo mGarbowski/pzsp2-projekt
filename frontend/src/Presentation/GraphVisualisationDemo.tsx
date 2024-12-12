@@ -18,6 +18,7 @@ export const GraphVisualisationDemo = () => {
       label: node.id,
       x: node.longitude,
       y: node.latitude,
+      fill: "#FF0000"
     };
   });
 
@@ -27,6 +28,7 @@ export const GraphVisualisationDemo = () => {
       target: edge.node2Id,
       id: edge.id,
       label: `${edge.node1Id}-${edge.node2Id}`,
+      fill: '#FF0000'
     };
   });
 
@@ -41,20 +43,6 @@ export const GraphVisualisationDemo = () => {
     setText("Edge " + edge.id + " clicked");
   }
 
-  const myRenderNode = ({size, opacity, id}: NodeRendererProps) => (
-    <group>
-      <mesh>
-        <circleGeometry args={[size]}/>
-        <meshBasicMaterial
-          attach="material"
-          color={highlightedChannel?.nodes.includes(id) ? "rgba(11,154,138,0.62)" : "rgba(14,97,140,0.62)"}
-          opacity={opacity}
-          transparent
-        />
-      </mesh>
-    </group>
-  );
-
   return (
     <>
       <p>{text}</p>
@@ -64,7 +52,6 @@ export const GraphVisualisationDemo = () => {
           edges={edges}
           onNodeClick={handleNodeClick}
           onEdgeClick={handleEdgeClick}
-          renderNode={myRenderNode}
           edgeArrowPosition={"none"}
           actives={highlightedChannel?.edges}
         />
