@@ -1,12 +1,16 @@
 import {GraphCanvas, InternalGraphEdge, InternalGraphNode, NodeRendererProps} from "reagraph";
 import {useState} from "react";
-import {demoNetwork} from "../NetworkModel/demoNetwork.ts";
+import {useNetwork} from "../NetworkModel/NetworkContext.tsx";
 
 export const GraphVisualisationDemo = () => {
   const [text, setText] = useState("");
-  const network = demoNetwork;
-  const highlightedChannel = network.channels.C2;
+  const {network} = useNetwork();
 
+  if (!network) {
+    return <p>Network not loaded</p>;
+  }
+
+  const highlightedChannel = network.channels.C2;
 
   const nodes = Object.values(network.nodes).map(node => {
     return {
