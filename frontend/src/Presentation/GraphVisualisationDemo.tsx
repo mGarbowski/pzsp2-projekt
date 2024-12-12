@@ -1,4 +1,4 @@
-import {GraphCanvas, InternalGraphEdge, InternalGraphNode, NodeRendererProps} from "reagraph";
+import {GraphCanvas, InternalGraphEdge, InternalGraphNode} from "reagraph";
 import {useState} from "react";
 import {useNetwork} from "../NetworkModel/NetworkContext.tsx";
 
@@ -18,7 +18,7 @@ export const GraphVisualisationDemo = () => {
       label: node.id,
       x: node.longitude,
       y: node.latitude,
-      fill: "#FF0000"
+      fill: highlightedChannel?.nodes.includes(node.id) ? "#FF0000" : "#0000FF"
     };
   });
 
@@ -28,7 +28,7 @@ export const GraphVisualisationDemo = () => {
       target: edge.node2Id,
       id: edge.id,
       label: `${edge.node1Id}-${edge.node2Id}`,
-      fill: '#FF0000'
+      fill: highlightedChannel?.edges.includes(edge.id) ? "#FF0000" : "#0000FF"
     };
   });
 
@@ -53,7 +53,6 @@ export const GraphVisualisationDemo = () => {
           onNodeClick={handleNodeClick}
           onEdgeClick={handleEdgeClick}
           edgeArrowPosition={"none"}
-          actives={highlightedChannel?.edges}
         />
       </div>
     </>
