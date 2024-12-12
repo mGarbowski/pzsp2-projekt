@@ -6,7 +6,7 @@ import { ModeToggle } from "./components/mode-toggle";
 export const Layout = () => {
   return (
     <>
-      <Nav>
+      <Nav className="bg-secondary">
         <NavList>
           <NavElement>
             <NavLink to="/import">Import</NavLink>
@@ -48,7 +48,6 @@ const ContentContainer = styled.div({
 })
 
 const Nav = styled.nav({
-  backgroundColor: "#ed008c",
   fontWeight: "bold",
   padding: "1rem",
 })

@@ -19,7 +19,7 @@ export const DownloadReport = () => {
 
   return (
     <DownloadButtonContainer>
-      <Button onClick={handleDownload}>
+      <Button variant={"outline"} onClick={handleDownload}>
         Pobierz raport
         <DownloadIcon icon={faFileExport} />
       </Button>

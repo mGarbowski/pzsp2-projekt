@@ -41,8 +41,6 @@ export const OptimizerForm = () => {
           marginBottom: "15px",
           width: "100%",
           padding: "8px",
-          border: "1px solid #ccc",
-          borderRadius: "4px",
         }}
       />
     </Label>
@@ -61,8 +59,6 @@ export const OptimizerForm = () => {
           marginBottom: "15px",
           width: "100%",
           padding: "8px",
-          border: "1px solid #ccc",
-          borderRadius: "4px",
         }}
       />
     </Label>

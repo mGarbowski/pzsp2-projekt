@@ -1,4 +1,5 @@
 import { FormEvent, useState } from "react";
+import { Input } from "./components/ui/input";
 
 
 export const WelcomePage = () => {
@@ -43,7 +44,7 @@ export const WelcomePage = () => {
       <p>Backend base URL: {backendBaseUrl}</p>
 
       <form onSubmit={handleLengthSubmit} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <input
+        <Input
           type="text"
           value={message}
           onChange={(e) => setMessage(e.target.value)}

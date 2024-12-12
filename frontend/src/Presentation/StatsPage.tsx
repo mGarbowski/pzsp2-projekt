@@ -28,7 +28,7 @@ export const StatsPage = () => {
       </StatsOuterContainer>
       <ButtonContainer>
         <DownloadReport />
-        <Button onClick={() => navigate('/add-channel')}>
+        <Button variant={"outline"} onClick={() => navigate('/add-channel')}>
           Dodaj kanał
         </Button>
       </ButtonContainer>
@@ -52,13 +52,9 @@ const StatsOuterContainer = styled.div({
 })
 
 const StatsInnerContainer = styled.div({
-  backgroundColor: "#FDF4F5",
   margin: "3px",
   borderRadius: "0.5rem",
   paddingLeft: "1rem",
-  "&:hover": {
-    backgroundColor: "#BEAEE2"
-  }
 })
 
 const ButtonContainer = styled.div({
