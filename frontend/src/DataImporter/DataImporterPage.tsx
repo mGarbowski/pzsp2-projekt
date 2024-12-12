@@ -33,7 +33,7 @@ export const DataImporterPage = () => {
         setMessage("Nie udało się zaimportować danych");
       }
     }
-  }, [nodesCsv, edgesCsv, spectrumCsv]);
+  }, [nodesCsv, edgesCsv, spectrumCsv, setNetwork]);
 
   return (
     <div style={{display: 'flex', flexDirection: 'column', margin: '0 auto', placeItems: 'center'}}>
