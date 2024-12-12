@@ -1,4 +1,4 @@
-import {GraphCanvas, InternalGraphEdge, InternalGraphNode} from "reagraph";
+import {GraphCanvas, InternalGraphEdge, InternalGraphNode, NodeRendererProps} from "reagraph";
 import {useState} from "react";
 import {demoNetwork} from "../NetworkModel/demoNetwork.ts";
 
@@ -37,10 +37,10 @@ export const GraphVisualisationDemo = () => {
     setText("Edge " + edge.id + " clicked");
   }
 
-  const myRenderNode = ({size, opacity, id}) => (
+  const myRenderNode = ({size, opacity, id}: NodeRendererProps) => (
     <group>
       <mesh>
-        <circleGeometry args={[size]} />
+        <circleGeometry args={[size]}/>
         <meshBasicMaterial
           attach="material"
           color={highlightedChannel.nodes.includes(id) ? "rgba(11,154,138,0.62)" : "rgba(14,97,140,0.62)"}
