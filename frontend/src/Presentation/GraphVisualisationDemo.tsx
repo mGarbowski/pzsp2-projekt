@@ -4,13 +4,13 @@ import {useNetwork} from "../NetworkModel/NetworkContext.tsx";
 
 export const GraphVisualisationDemo = () => {
   const [text, setText] = useState("");
-  const {network} = useNetwork();
+  const {network, highlightedChannelId} = useNetwork();
 
   if (!network) {
     return <p>Network not loaded</p>;
   }
 
-  const highlightedChannel = network.channels.C2;
+  const highlightedChannel = highlightedChannelId ? network.channels[highlightedChannelId] : null;
 
   const nodes = Object.values(network.nodes).map(node => {
     return {
@@ -47,7 +47,7 @@ export const GraphVisualisationDemo = () => {
         <circleGeometry args={[size]}/>
         <meshBasicMaterial
           attach="material"
-          color={highlightedChannel.nodes.includes(id) ? "rgba(11,154,138,0.62)" : "rgba(14,97,140,0.62)"}
+          color={highlightedChannel?.nodes.includes(id) ? "rgba(11,154,138,0.62)" : "rgba(14,97,140,0.62)"}
           opacity={opacity}
           transparent
         />
@@ -66,7 +66,7 @@ export const GraphVisualisationDemo = () => {
           onEdgeClick={handleEdgeClick}
           renderNode={myRenderNode}
           edgeArrowPosition={"none"}
-          actives={highlightedChannel.edges}
+          actives={highlightedChannel?.edges}
         />
       </div>
     </>
