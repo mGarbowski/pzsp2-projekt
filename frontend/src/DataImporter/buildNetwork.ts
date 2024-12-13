@@ -67,9 +67,8 @@ export const handleEdge = (edgeData: EdgeDataRow, nodes: Node[]): Edge => {
 /**
  * Removes redundant edges
  *
- * since all edges are originally directed and have a corresponding edge going in opposite direction
- * this function change from directed to non directed edges
- * this function chooses id of edge that appears first in the list
+ * First edge is kept from 2 connecting the same nodes
+ * If an edge does not have a pair it is treated as invalid and discarded
  *
  * @param edges - list of edges with redundancies
  * @returns - list of edges without redundancies
@@ -101,11 +100,16 @@ export const handleNode = (nodesData: NodeDataRow[]): Node[] => {
   }));
 }
 
-export const checkEdgeExists = (channelData: EdgeSpectrumDataRow[], edges: EdgeDataRow[]): void => {
-  const edgeIDs: string[] = edges.map(element => element.id)
-  channelData.forEach(channel => {
-    if (!edgeIDs.includes(channel.edgeId)) {
-      throw new Error(`Edge does not exists: ${JSON.stringify(channel)} edge id does not appear in EdgeDataRow`);
+/**
+ * Checks if edge id from edgeSpectrum data row exists in EdgeDataRow
+ * @param edgeSpectrumData - unfiltered edgeSpectrumDataRow[]
+ * @param edgeDataRows -
+ */
+export const checkIfEdgeExists = (edgeSpectrumData: EdgeSpectrumDataRow[], edgeDataRows: EdgeDataRow[]): void => {
+  const edgeIDs: string[] = edgeDataRows.map(element => element.id)
+  edgeSpectrumData.forEach(spectrumData => {
+    if (!edgeIDs.includes(spectrumData.edgeId)) {
+      throw new Error(`Edge does not exists: ${JSON.stringify(spectrumData)} edge id does not appear in EdgeDataRow`);
     }
   })
 }
@@ -131,7 +135,7 @@ export const buildNetwork = (nodesData: NodeDataRow[], edgesData: EdgeDataRow[],
   let nodes: Node[] = handleNode(nodesData)
 
   //check data integrity
-  checkEdgeExists(channelData, edgesData)
+  checkIfEdgeExists(channelData, edgesData)
 
   // pair directional edges in handle edge
   const edgesMerged = mergeEdges(edgesData);

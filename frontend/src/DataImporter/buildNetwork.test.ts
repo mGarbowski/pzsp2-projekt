@@ -7,7 +7,7 @@ import {
   Network,
   Node,
   removeIsolatedNodes,
-  checkEdgeExists
+  checkIfEdgeExists
 } from "./buildNetwork";
 import {EdgeDataRow, EdgeSpectrumDataRow, NodeDataRow, parseEdges, parseNodes} from "./parseCsv";
 
@@ -140,7 +140,7 @@ describe("Check if edge exists", () =>{
       {id: '2', node1: '2', node2: '1', totalCapacity: '4.8 THz', provisionedCapacity: 10}
     ]
 
-    expect(() => checkEdgeExists(channelData, edges)).not.toThrow()
+    expect(() => checkIfEdgeExists(channelData, edges)).not.toThrow()
   })
   it('should throw an exception if EdgeSpectrum refers to non existent edge', () => {
     const channelData: EdgeSpectrumDataRow[] = [
@@ -151,7 +151,7 @@ describe("Check if edge exists", () =>{
       {id: '1', node1: '1', node2: '2', totalCapacity: '4.8 THz', provisionedCapacity: 10},
     ]
 
-    expect(() => checkEdgeExists(channelData, edges)).toThrow("Edge does not exists")
+    expect(() => checkIfEdgeExists(channelData, edges)).toThrow("Edge does not exists")
   })
 })
 

@@ -1,6 +1,6 @@
 import {
   ChannelEdge,
-  groupByChannel,
+  groupSpectrumByChannel,
   mergeSpectrum,
   getChannelNodes
 } from "./createChannels"
@@ -32,7 +32,7 @@ describe('Channels', () => {
           edges: ["1", "2", "3", "4"],
         }
       ]
-      expect(groupByChannel(channelData)).toEqual(expected);
+      expect(groupSpectrumByChannel(channelData)).toEqual(expected);
     });
 
     it('should group data to 1 channel with 2 edges', () => {
@@ -49,7 +49,7 @@ describe('Channels', () => {
           edges: ["-2242719450019019377", "-1111111111111111111"],
         }
       ]
-      expect(groupByChannel(channelData)).toEqual(expected);
+      expect(groupSpectrumByChannel(channelData)).toEqual(expected);
     });
 
     it('should group data to 2 channel with 2 edges each', () => {
@@ -75,7 +75,7 @@ describe('Channels', () => {
           edges: ["-2242719450019019377", "-1111111111111111111"],
         },
       ]
-      expect(groupByChannel(channelData)).toEqual(expected);
+      expect(groupSpectrumByChannel(channelData)).toEqual(expected);
     });
   })
   describe("mergeSpectrum", () => {

@@ -18,17 +18,18 @@ export interface ChannelEdge {
 /**
  * Removes rows which ids are not in Edge list
  *
- * Removes redundant edges and their channel info from EdgeSpectrumDataRow list
+ * Checks if edge id form edgeSpectrumData exists in edges list
+ * edgeSpectrumDataRow is removed, if no mach is found
  * Should be called after MergeEdges
  *
- * @param channelData
+ * @param edgeSpectrumData - EdgeSpectrumDataRow list
  * @param edges - non redundant list of edges
  * @returns - non redundant EdgeSpectrumDataRow list
  */
-export const mergeSpectrum = (channelData: EdgeSpectrumDataRow[], edges: Edge[]):EdgeSpectrumDataRow[] =>{
+export const mergeSpectrum = (edgeSpectrumData: EdgeSpectrumDataRow[], edges: Edge[]):EdgeSpectrumDataRow[] =>{
   const channelMerged: EdgeSpectrumDataRow[] = []
   const edgeIDs: string[] = edges.map(element => element.id)
-  for (const channel of channelData) {
+  for (const channel of edgeSpectrumData) {
     if (edgeIDs.includes(channel.edgeId)) {
       channelMerged.push(channel)
     }
@@ -36,11 +37,11 @@ export const mergeSpectrum = (channelData: EdgeSpectrumDataRow[], edges: Edge[])
   return channelMerged
 }
 
-/*
- * Support function for groupByChannel
- * this function reads channel id and checks if that channel has been written into an list
+/**
+ * Support function for groupSpectrumByChannel
+ * this function reads channel id and checks if that channel has been already created
  * if yes - it appends edge id to its list of edges
- * if no - it creates new a Channel with 1 edge and appends it to list of Channels
+ * if no - it creates new a Channel with 1 edge and appends it to the list of Channels
  *
  * @param channelData - singe EdgeSpectrumDataRow row
  * @param channels - list of all created Channels
@@ -65,15 +66,12 @@ export const getChannel = (channelData: EdgeSpectrumDataRow, channels: ChannelEd
 }
 
 /**
-   * Reads though parsed csv data and extracts information about channel
-   * In EdgeSpectrum data row information is grouped by edge,
-   * This function iterates though all rows of EdgeSpectrumDataRow and calls getChannel on all of them
-   *
+   * Reads though parsed csv data and creates channel objects from it
    *
    * @param channelData - all EdgeSpectrumDataRow rows
    * @returns - list of channel objects
    */
-export const groupByChannel = (channelData: EdgeSpectrumDataRow[]): ChannelEdge[] => {
+export const groupSpectrumByChannel = (channelData: EdgeSpectrumDataRow[]): ChannelEdge[] => {
   let channel_edges: ChannelEdge[] = [];
   for (const element of channelData) {
     channel_edges = getChannel(element, channel_edges);
@@ -155,7 +153,7 @@ export const getChannelNodes = (channelsEdge: ChannelEdge[], edges: Edge[]): Cha
 export const createChannels = (channelData: EdgeSpectrumDataRow[], edges: Edge[]): Channel[]=>{
   // temp data - group information into channels
   channelData = mergeSpectrum(channelData, edges)
-  const channelEdges = groupByChannel(channelData);
+  const channelEdges = groupSpectrumByChannel(channelData);
 
   const channels = getChannelNodes(channelEdges, edges);
 
