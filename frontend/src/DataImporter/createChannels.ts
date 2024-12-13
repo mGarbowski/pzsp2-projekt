@@ -16,10 +16,10 @@ export interface ChannelEdge {
 
 
 /**
- * Removes rows which ids are not in edges list
+ * Removes rows which ids are not in the edges list
  *
  *
- * For each row of edgeSpectrumData check if edge exists in edges list
+ * For each row of edgeSpectrumData check if edge exists in the edges list
  * A row is removed if no mach is found
  * Should be called after MergeEdges
  *
@@ -40,11 +40,11 @@ export const removeRedundantSpectrumRows = (edgeSpectrumData: EdgeSpectrumDataRo
 
 /**
  * Support function for groupSpectrumByChannel
- * this function reads channel id and checks if that channel has been already created
- * if yes - it appends edge id to its list of edges
- * if no - it creates new a Channel with 1 edge and appends it to the list of Channels
+ * this function reads channel id and checks if it has been already created
+ * if yes - append edge id to its list of edges
+ * if no - create new a Channel with 1 edge and append it to the list of Channels
  *
- * @param channelData - singe EdgeSpectrumDataRow row
+ * @param channelData - single EdgeSpectrumDataRow row
  * @param channels -a list of all created Channels
  * @returns updated ChannelEdge list
 */
@@ -67,7 +67,7 @@ export const getChannel = (channelData: EdgeSpectrumDataRow, channels: ChannelEd
 }
 
 /**
- * Reads though parsed csv data and creates channel objects from it
+ * Reads through parsed csv data and creates channel objects from it
  *
  * @param channelData - all EdgeSpectrumDataRow rows
  * @returns - list of channel objects
@@ -94,7 +94,7 @@ export const changeChannelEdgesToNodes = (channel: ChannelEdge, edges: Edge[]): 
   }
   catch{
     // throw more descriptive error
-    throw new Error(`Edge does not exists: ${JSON.stringify(channel)} edge id does not appear in EdgeDataRow`);
+    throw new Error(`Edge does not exist: ${JSON.stringify(channel)} edge id does not appear in EdgeDataRow`);
   }
   return arrangeEdgesNodesIntoPath(channelEdges)
 }

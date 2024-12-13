@@ -125,14 +125,14 @@ describe('Channels', () => {
     it("Should throw an error if there are no edges in the network", () => {
       const edges: Edge[] = []
       const channel: ChannelEdge = {id: '1', channel_label: 'CH-1', width: 50, frequency: 195, edges: ['1', '2']}
-      expect(() => changeChannelEdgesToNodes(channel, edges)).toThrow("Edge does not exists")
+      expect(() => changeChannelEdgesToNodes(channel, edges)).toThrow("Edge does not exist")
     })
     it("should throw an error if channel has a non existent edge", () => {
       const edges: Edge[] = [
         {id: '3', node1Id: '1', node2Id: '2', totalCapacity: '4.8 THz', provisionedCapacity: 10,},
       ]
       const channel: ChannelEdge = {id: '1', channel_label: 'CH-1', width: 50, frequency: 195, edges: ['1', '2']}
-      expect(() => changeChannelEdgesToNodes(channel, edges)).toThrow("Edge does not exists")
+      expect(() => changeChannelEdgesToNodes(channel, edges)).toThrow("Edge does not exist")
     })
     it("Should handle edges with out of order nodes", () => {
       const edges: Edge[] = [
