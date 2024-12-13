@@ -124,11 +124,7 @@ export const checkIfEdgeExists = (edgeSpectrumData: EdgeSpectrumDataRow[], edgeD
  */
 export const removeIsolatedNodes = (nodes: Node[]): Node[] =>{
   const new_nodes: Node[] = [];
-  nodes.forEach((node) => {
-    if(node.neighbors.length > 0){
-      new_nodes.push(node)
-    }
-  })
+  nodes.filter((node) => node.neighbors.length > 0)
   return new_nodes
 }
 
