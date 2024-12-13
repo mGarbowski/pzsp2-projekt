@@ -26,7 +26,7 @@ export interface ChannelEdge {
  * @param edges - non redundant list of edges
  * @returns - non redundant EdgeSpectrumDataRow list
 */
-export const mergeSpectrum = (edgeSpectrumData: EdgeSpectrumDataRow[], edges: Edge[]):EdgeSpectrumDataRow[] =>{
+export const removeRedundantSpectrumRows = (edgeSpectrumData: EdgeSpectrumDataRow[], edges: Edge[]):EdgeSpectrumDataRow[] =>{
   const channelMerged: EdgeSpectrumDataRow[] = []
   const edgeIDs: string[] = edges.map(element => element.id)
   for (const channel of edgeSpectrumData) {
@@ -163,7 +163,7 @@ export const getEdgesFromChannel = (edgeIds: string[], edges: Edge[]): Edge[] =>
 
 export const createChannels = (channelData: EdgeSpectrumDataRow[], edges: Edge[]): Channel[]=>{
   // temp data - group information into channels
-  channelData = mergeSpectrum(channelData, edges)
+  channelData = removeRedundantSpectrumRows(channelData, edges)
   const channelEdges = groupSpectrumByChannel(channelData);
 
   const channels: Channel[] = channelEdges.map(channelE => {

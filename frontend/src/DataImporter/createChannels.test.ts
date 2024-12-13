@@ -1,7 +1,7 @@
 import {
   ChannelEdge,
   groupSpectrumByChannel,
-  mergeSpectrum,
+  removeRedundantSpectrumRows,
   changeChannelEdgesToNodes
 } from "./createChannels"
 import {
@@ -77,11 +77,11 @@ describe('Channels', () => {
       expect(groupSpectrumByChannel(channelData)).toEqual(expected);
     });
   })
-  describe("mergeSpectrum", () => {
-    it('should merge edge spectrum rows', () => {
+  describe("removeRedundantSpectrumRows", () => {
+    it('should remove edge spectrum rows which do not appear in edges', () => {
       const channelData: EdgeSpectrumDataRow[] = [
         {edgeId: '1', channelId: '1', frequency: 195, channelWidth: 50, channel_label: "CH-1"},
-        {edgeId: '2', channelId: '2', frequency: 195, channelWidth: 50, channel_label: "CH-1"}
+        {edgeId: '2', channelId: '1', frequency: 195, channelWidth: 50, channel_label: "CH-1"}
       ]
       const edges: Edge[] = [
         {id: '1', node1Id: '1', node2Id: '2', totalCapacity: '4.8 THz', provisionedCapacity: 10}
@@ -91,25 +91,9 @@ describe('Channels', () => {
         {edgeId: '1', channelId: '1', frequency: 195, channelWidth: 50, channel_label: "CH-1"}
       ]
 
-      expect(mergeSpectrum(channelData, edges)).toEqual(expected)
+      expect(removeRedundantSpectrumRows(channelData, edges)).toEqual(expected)
     })
-    it('should not merge spectrum form different channels', () => {
-      const channelData: EdgeSpectrumDataRow[] = [
-        {edgeId: '1', channelId: '1', frequency: 195, channelWidth: 50, channel_label: "CH-1"},
-        {edgeId: '1', channelId: '2', frequency: 195, channelWidth: 50, channel_label: "CH-2"}
-      ]
-      const edges: Edge[] = [
-        {id: '1', node1Id: '1', node2Id: '2', totalCapacity: '4.8 THz', provisionedCapacity: 10}
-      ]
-
-      const expected: EdgeSpectrumDataRow[] = [
-        {edgeId: '1', channelId: '1', frequency: 195, channelWidth: 50, channel_label: "CH-1"},
-        {edgeId: '1', channelId: '2', frequency: 195, channelWidth: 50, channel_label: "CH-2"}
-      ]
-
-      expect(mergeSpectrum(channelData, edges)).toEqual(expected)
-    })
-    it('should not merge spectrum from different edges', () => {
+    it('should not remove spectrum from existing edges', () => {
       const channelData: EdgeSpectrumDataRow[] = [
         {edgeId: '1', channelId: '1', frequency: 195, channelWidth: 50, channel_label: "CH-1"},
         {edgeId: '2', channelId: '3', frequency: 195, channelWidth: 50, channel_label: "CH-1"}
@@ -123,12 +107,12 @@ describe('Channels', () => {
         {edgeId: '1', channelId: '1', frequency: 195, channelWidth: 50, channel_label: "CH-1"},
         {edgeId: '2', channelId: '3', frequency: 195, channelWidth: 50, channel_label: "CH-1"}
       ]
-      expect(mergeSpectrum(channelData, edges)).toEqual(expected)
+      expect(removeRedundantSpectrumRows(channelData, edges)).toEqual(expected)
     })
   })
 
   describe("changeChannelEdgesToNodes", () => {
-    it("Should return list of channels with nodes instead of edges", () => {
+    it("Should return channel with nodes instead of edges", () => {
       const edges: Edge[] = [
         {id: '1', node1Id: '1', node2Id: '2', totalCapacity: '4.8 THz', provisionedCapacity: 10,},
         {id: '2', node1Id: '2', node2Id: '3', totalCapacity: '4.8 THz', provisionedCapacity: 17,},
