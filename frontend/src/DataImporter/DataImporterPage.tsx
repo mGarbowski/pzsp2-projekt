@@ -43,11 +43,11 @@ export const DataImporterPage = () => {
 
           <ImporterUploadContainer>
             <p className="font-bold">Węzły</p>
-            <CsvUpload id="nodes" onUpload={(data) => setNodesCsv(data)} />
+            <CsvUpload onUpload={(data) => setNodesCsv(data)} />
             <p className="font-bold">Zajętość</p>
-            <CsvUpload id="cap" onUpload={(data) => setEdgesCsv(data)} />
+            <CsvUpload onUpload={(data) => setEdgesCsv(data)} />
             <p className="font-bold">Spektrum kanały</p>
-            <CsvUpload id="spectrum" onUpload={(data) => setSpectrumCsv(data)} />
+            <CsvUpload onUpload={(data) => setSpectrumCsv(data)} />
           </ImporterUploadContainer>
           <p>{message}</p>
         </CardContent>
