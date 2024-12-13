@@ -13,42 +13,7 @@ import {
 export const Layout = () => {
   return (
     <>
-      <NavigationMenu>
-        <NavigationMenuList>
-          <div className="flex w-full justify-between ml-2">
-            <div className="flex flex-row w-full">
-              <NavigationMenuItem>
-                <Link to="/import">
-                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                    Import
-                  </NavigationMenuLink>
-                </Link>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <Link to="/stats">
-                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                    Statystyki
-                  </NavigationMenuLink>
-                </Link>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <Link to="/add-channel">
-                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                    Dodaj kanał
-                  </NavigationMenuLink>
-                </Link>
-              </NavigationMenuItem>
-            </div>
-            <div className="mr-2">
-              <NavigationMenuItem>
-                <ModeToggle />
-              </NavigationMenuItem>
-            </div>
-          </div>
-        </NavigationMenuList>
-      </NavigationMenu >
-
-
+      {Navbar}
       <MainContainer>
         <ContentContainer>
           <Outlet />
@@ -72,3 +37,39 @@ const ContentContainer = styled.div({
   flex: 1,
   overflow: "auto",
 })
+
+const Navbar = <NavigationMenu>
+  <NavigationMenuList>
+    <div className="flex w-full justify-between ml-2">
+      <div className="flex flex-row w-full">
+        <NavigationMenuItem>
+          <Link to="/import">
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              Import
+            </NavigationMenuLink>
+          </Link>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <Link to="/stats">
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              Statystyki
+            </NavigationMenuLink>
+          </Link>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <Link to="/add-channel">
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              Dodaj kanał
+            </NavigationMenuLink>
+          </Link>
+        </NavigationMenuItem>
+      </div>
+      <div className="mr-2">
+        <NavigationMenuItem>
+          <ModeToggle />
+        </NavigationMenuItem>
+      </div>
+    </div>
+  </NavigationMenuList>
+</NavigationMenu >
+
