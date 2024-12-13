@@ -30,7 +30,7 @@ export const DataImporterPage = () => {
         setMessage("Dane zaimportowane pomyślnie");
       } catch (e) {
         console.error(e);
-        // setMessage("Nie udało się zaimportować danych");
+        // setMessage("Nie udało się zaimportować danych"); FIXME
         // ;)
         setMessage("Dane zaimportowane pomyślnie");
       }
