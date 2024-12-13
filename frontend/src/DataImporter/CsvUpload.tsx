@@ -1,14 +1,15 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 import styled from '@emotion/styled'
 import { Button } from "../Components/UI/button";
 
 interface CsvUploadProps {
-  id: string
   onUpload: (data: string) => void;
 }
 
 export const CsvUpload = (props: CsvUploadProps) => {
   const [fileName, setFileName] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
   const handleFileUpload = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) {
@@ -25,8 +26,8 @@ export const CsvUpload = (props: CsvUploadProps) => {
   }
 
   return <div>
-    <HiddenFileInput type="file" accept=".csv" id={props.id} onChange={handleFileUpload} />
-    <Button className="mb-3" variant={"outline"} onClick={() => document.getElementById(props.id)!.click()}>
+    <HiddenFileInput type="file" accept=".csv" ref={fileInputRef} onChange={handleFileUpload} />
+    <Button className="mb-3" variant={"outline"} onClick={() => fileInputRef.current?.click()}>
       Wybierz plik
     </Button>
     {fileName && <p>{fileName}</p>}
