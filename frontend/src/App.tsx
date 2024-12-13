@@ -1,5 +1,4 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { WelcomePage } from "./WelcomePage.tsx";
 import { OptimizerPage } from "./Optimizer/OptimizerPage.tsx";
 import { NoPage } from "./NoPage.tsx";
 import { Layout } from "./Layout.tsx";
@@ -13,7 +12,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Layout />}>
-            <Route index element={<WelcomePage />} />
+            <Route index element={<DataImporterPage />} />
             <Route path="import" element={<DataImporterPage />} />
             <Route path="add-channel" element={< OptimizerPage />} />
             <Route path="stats" element={<StatsPage />} />
