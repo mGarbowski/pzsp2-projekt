@@ -95,60 +95,50 @@ export const getChannelNodes = (channelsEdge: ChannelEdge[], edges: Edge[]): Cha
       channel_label: channelE.channel_label,
       nodes: []
     }
-
-    const channelEdgesRef: string[] = channelE.edges.slice()
     // get list of edges
-
-    const channelEdgesObj = channelEdgesRef.map(edgeID => edges.find(element => element.id == edgeID));
-    if (!channelEdgesObj || !channelEdgesObj[0]) {
+    const channelEdges = channelE.edges.map(edgeID => edges.find(element => element.id == edgeID));
+    if (!channelEdges) {
       throw new Error(`Edge does not exists: ${JSON.stringify(channelE)} edge id does not appear in EdgeDataRow`);
     }
-    // add first node's edges and see if next edges connect
-
-    channel.nodes.push(channelEdgesObj[0]!.node1Id)
-    channel.nodes.push(channelEdgesObj[0]!.node2Id)
-
-    const max_attempts = channelEdgesObj.length
-    let attempts = 0
-    channelEdgesObj.shift()
-    for (const edge of channelEdgesObj!) {
-      if (!edge) {
-        throw new Error(`Edge does not exists: ${JSON.stringify(channelE)} edge id does not appear in EdgeDataRow`);
-      }
-      // check last node in path
-      if (edge!.node1Id == channel.nodes.slice(-1)[0]) {
-        channel.nodes.push(edge!.node2Id)
-        attempts = 0
-      } else if (edge!.node2Id == channel.nodes.slice(-1)[0]) {
-        channel.nodes.push(edge!.node1Id)
-        attempts = 0
-      } else if (edge!.node1Id == channel.nodes[0]) {
-        channel.nodes.unshift(edge!.node2Id)
-        attempts = 0
-      } else if (edge!.node2Id == channel.nodes[0]) {
-        channel.nodes.unshift(edge!.node1Id)
-        attempts = 0
-      }
-      // if all misses try again
-      else {
-        attempts += 1
-        // if all edges cannot be organized into a path log information
-        if (attempts > max_attempts) {
-          if(channel.nodes.includes(edge.node1Id) || channel.nodes.includes(edge.node2Id)){
-            console.log(`branching edge ${JSON.stringify(edge)} in channel ${JSON.stringify(channel)}`)
-          }
-          break
-        }
-        //append to end of queue
-        channelEdgesObj.push(edge)
-      }
-    }
+    // start with first edge
+    const nodeList = [channelEdges[0]!.node1Id, channelEdges[0]!.node2Id]
+    // ts does not automatically convert Edge||undefined to Edge[] after if(channelEdges)
+    channel.nodes = addNodesFormEdges(channelEdges as Edge[] , nodeList)
     return channel
   })
 
   return channels
 }
 
+export const addNodesFormEdges = (edges: Edge[], nodeIdList: string[]): string[] =>{
+  const max_attempts = edges.length
+  let attempts = 0
+  edges.shift()
+  for (const edge of edges!) {
+    // check last node in path
+    const lastNode = nodeIdList[nodeIdList.length - 1];
+    const firstNode = nodeIdList[0];
+
+    if ([edge.node1Id, edge.node2Id].includes(lastNode)) {
+      nodeIdList.push(edge.node1Id === lastNode ? edge.node2Id : edge.node1Id);
+      attempts = 0;
+    } else if ([edge.node1Id, edge.node2Id].includes(firstNode)) {
+      nodeIdList.unshift(edge.node1Id === firstNode ? edge.node2Id : edge.node1Id);
+      attempts = 0;
+    }
+    // if all misses try again
+    else {
+      attempts += 1
+      // if all edges cannot be organized into a path log information
+      if (attempts > max_attempts) {
+        break
+      }
+      //append to end of queue
+      edges.push(edge)
+    }
+  }
+  return nodeIdList
+}
 
 export const createChannels = (channelData: EdgeSpectrumDataRow[], edges: Edge[]): Channel[]=>{
   // temp data - group information into channels
