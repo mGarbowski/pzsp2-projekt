@@ -76,7 +76,7 @@ export const handleEdge = (edgeData: EdgeDataRow, nodes: Node[]): Edge => {
  */
 export const discardRedundantEdges = (edges: EdgeDataRow[]): EdgeDataRow[] =>{
   const merged: EdgeDataRow[] = []
-  edges.map(
+  edges.forEach(
     edge => {
       // finding corresponding edge
       const pair = edges.find(element => element.node1 == edge.node2 && element.node2 == edge.node1)
