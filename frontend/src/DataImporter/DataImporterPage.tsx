@@ -66,18 +66,6 @@ const ImporterOuterContainer = styled.div({
   justifyContent: 'center',
 })
 
-const ImporterInnerContainer = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  boxShadow: "0 0 10px 0 rgba(0, 0, 0, 0.3)",
-  borderRadius: "8px",
-  alignItems: 'center',
-  padding: "10px 10px",
-  maxWidth: "80%",
-  minWidth: "50%",
-  marginBottom: "10rem"
-})
-
 const ImporterUploadContainer = styled.div({
   display: 'flex',
   flexDirection: 'column',

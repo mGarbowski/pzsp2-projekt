@@ -111,7 +111,4 @@ const StyledTextInput = styled(Input)({
   padding: "8px",
 })
 
-const StyledSelect = styled(Select)({
-
-})
 
