@@ -25,7 +25,7 @@ export interface ChannelEdge {
  * @param edgeSpectrumData - EdgeSpectrumDataRow list
  * @param edges - non redundant list of edges
  * @returns - non redundant EdgeSpectrumDataRow list
- */
+*/
 export const mergeSpectrum = (edgeSpectrumData: EdgeSpectrumDataRow[], edges: Edge[]):EdgeSpectrumDataRow[] =>{
   const channelMerged: EdgeSpectrumDataRow[] = []
   const edgeIDs: string[] = edges.map(element => element.id)
@@ -46,7 +46,7 @@ export const mergeSpectrum = (edgeSpectrumData: EdgeSpectrumDataRow[], edges: Ed
  * @param channelData - singe EdgeSpectrumDataRow row
  * @param channels - list of all created Channels
  * @returns updated ChannelEdge list
- */
+*/
 export const getChannel = (channelData: EdgeSpectrumDataRow, channels: ChannelEdge[]): ChannelEdge[] => {
   const cur_id = channelData.channelId;
   const found = channels.find((channel) => channel.id == cur_id)
@@ -66,11 +66,11 @@ export const getChannel = (channelData: EdgeSpectrumDataRow, channels: ChannelEd
 }
 
 /**
-   * Reads though parsed csv data and creates channel objects from it
-   *
-   * @param channelData - all EdgeSpectrumDataRow rows
-   * @returns - list of channel objects
-   */
+ * Reads though parsed csv data and creates channel objects from it
+ *
+ * @param channelData - all EdgeSpectrumDataRow rows
+ * @returns - list of channel objects
+*/
 export const groupSpectrumByChannel = (channelData: EdgeSpectrumDataRow[]): ChannelEdge[] => {
   let channel_edges: ChannelEdge[] = [];
   for (const element of channelData) {
@@ -80,45 +80,48 @@ export const groupSpectrumByChannel = (channelData: EdgeSpectrumDataRow[]): Chan
 }
 
 /**
-   * Replaces list of edge ids with list of node ids for all Channels
-   *
-   * @param channelsEdge - list of channels containing list of edges ids they go though
-   * @param edges - list of edges in the network, needed to get ids of nodes
-   * @returns list of channels containing list of nodes ids they go though
-   */
-export const getChannelNodes = (channelsEdge: ChannelEdge[], edges: Edge[]): Channel[] => {
-  const channels: Channel[] = channelsEdge.map(channelE => {
-    const channel: Channel = {
-      id: channelE.id,
-      width: channelE.width,
-      frequency: channelE.frequency,
-      channel_label: channelE.channel_label,
-      nodes: []
-    }
-    // get list of edges
-    const channelEdges = channelE.edges.map(edgeID => edges.find(element => element.id == edgeID));
-    if (!channelEdges) {
-      throw new Error(`Edge does not exists: ${JSON.stringify(channelE)} edge id does not appear in EdgeDataRow`);
-    }
-    // start with first edge
-    const nodeList = [channelEdges[0]!.node1Id, channelEdges[0]!.node2Id]
-    // ts does not automatically convert Edge||undefined to Edge[] after if(channelEdges)
-    channel.nodes = addNodesFormEdges(channelEdges as Edge[] , nodeList)
-    return channel
-  })
-
-  return channels
+ * Replaces list of edge ids with list of node ids for given channel
+ *
+ * @param channel - ChannelEdge channel with list containing edge ids creating the path that channel takes
+ * @param edges - list of edges in the network, needed to get node ids
+ * @returns list of Node ids channel goes though
+*/
+export const changeChannelEdgesToNodes = (channel: ChannelEdge, edges: Edge[]): string[] =>{
+  let channelEdges: Edge[] = []
+  try{
+    channelEdges = getEdgesFromChannel(channel.edges, edges)
+  }
+  catch{
+    // throw more descriptive error
+    throw new Error(`Edge does not exists: ${JSON.stringify(channel)} edge id does not appear in EdgeDataRow`);
+  }
+  return arrangeEdgesNodesIntoPath(channelEdges)
 }
 
-export const addNodesFormEdges = (edges: Edge[], nodeIdList: string[]): string[] =>{
-  const max_attempts = edges.length
+/**
+ * Arrange node ids form Edges list into a valid path
+ *
+ * Function starts with nodes from the first edge in the list.
+ * Next edges are iterated though in a loop
+ * Each iteration adds a node id to the path if other node from the list is at one of the path`s ends
+ *
+ * If no node cannot be added edge is appended to the back of the edges list to be considered again later
+ * Appending can be done for maximum of edge list length -1 times.
+ * It is so that
+ * 1) loop will not end before a maximum length path is arranged
+ * 2) loop will not be endless in case of an edge disconnected from the rest
+ *
+ * @param channelEdges - list of edges which nodes should be arranged into a path
+ * @returns - string list containing node ids arranged into a path
+ */
+export const arrangeEdgesNodesIntoPath = (channelEdges: Edge[]): string[] =>{
+  const max_attempts = channelEdges.length
   let attempts = 0
-  edges.shift()
-  for (const edge of edges!) {
-    // check last node in path
+  const nodeIdList = [channelEdges[0]!.node1Id, channelEdges[0]!.node2Id]
+  channelEdges.shift()
+  for (const edge of channelEdges) {
     const lastNode = nodeIdList[nodeIdList.length - 1];
     const firstNode = nodeIdList[0];
-
     if ([edge.node1Id, edge.node2Id].includes(lastNode)) {
       nodeIdList.push(edge.node1Id === lastNode ? edge.node2Id : edge.node1Id);
       attempts = 0;
@@ -126,18 +129,36 @@ export const addNodesFormEdges = (edges: Edge[], nodeIdList: string[]): string[]
       nodeIdList.unshift(edge.node1Id === firstNode ? edge.node2Id : edge.node1Id);
       attempts = 0;
     }
-    // if all misses try again
+    // if nodes cannot be arranged try again
     else {
       attempts += 1
-      // if all edges cannot be organized into a path log information
       if (attempts > max_attempts) {
         break
       }
-      //append to end of queue
-      edges.push(edge)
+      //append to the end of the queue
+      channelEdges.push(edge)
     }
   }
   return nodeIdList
+}
+
+/**
+ * Retrieves edge objects based on list of provided ids
+ * @param edgeIds - list of edge id
+ * @param edges - list of edges in the network, needed to get node ids
+ * @returns - list of Edge objects
+ */
+export const getEdgesFromChannel = (edgeIds: string[], edges: Edge[]): Edge[] => {
+  if(edgeIds.length == 0){
+    return []
+  }
+  // get list of edges
+  const channelEdges = edgeIds.map(edgeID => edges.find(element => element.id == edgeID));
+  if (channelEdges && channelEdges[0]) {
+    return channelEdges as Edge[]
+  }
+  throw new Error(`Edge does not exist`)
+  // ts does not automatically convert Edge||undefined to Edge[] after if(channelEdges)
 }
 
 export const createChannels = (channelData: EdgeSpectrumDataRow[], edges: Edge[]): Channel[]=>{
@@ -145,7 +166,16 @@ export const createChannels = (channelData: EdgeSpectrumDataRow[], edges: Edge[]
   channelData = mergeSpectrum(channelData, edges)
   const channelEdges = groupSpectrumByChannel(channelData);
 
-  const channels = getChannelNodes(channelEdges, edges);
+  const channels: Channel[] = channelEdges.map(channelE => {
+    return {
+      id: channelE.id,
+      width: channelE.width,
+      frequency: channelE.frequency,
+      channel_label: channelE.channel_label,
+      nodes: changeChannelEdgesToNodes(channelE, edges)
+    }
+  }
+  )
 
   return channels
 }
