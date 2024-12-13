@@ -1,8 +1,10 @@
 import {GraphVisualisationDemo} from "./GraphVisualisationDemo.tsx";
 import {DownloadReport} from "../ReportGeneration/DownloadReport.tsx";
 import {useNetwork} from "../NetworkModel/NetworkContext.tsx";
+import {useState} from "react";
 
 export const PresentationPage = () => {
+  const [counter, setCounter] = useState(0);
   const {network, setHighlightedChannelId} = useNetwork();
 
   const onFindChannel = () => {
@@ -10,8 +12,10 @@ export const PresentationPage = () => {
       return;
     }
     setTimeout(() => {
-      const firstChannel = Object.keys(network.channels)[0];
-      setHighlightedChannelId(firstChannel);
+      const channelIdx = counter % Object.keys(network.channels).length;
+      const channel = Object.keys(network.channels)[channelIdx];
+      setCounter(counter + 1);
+      setHighlightedChannelId(channel);
     }, 3000);
   }
 
