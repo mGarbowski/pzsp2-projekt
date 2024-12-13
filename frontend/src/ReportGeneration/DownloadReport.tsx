@@ -1,4 +1,3 @@
-import styled from "@emotion/styled";
 import { generateDemoReport } from "./generateReport.ts";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFileExport } from '@fortawesome/free-solid-svg-icons'
@@ -18,20 +17,11 @@ export const DownloadReport = () => {
   }
 
   return (
-    <DownloadButtonContainer>
-      <Button variant={"outline"} onClick={handleDownload}>
+    <div className="w-full">
+      <Button className="w-full py-6 text-md m" variant={"outline"} onClick={handleDownload}>
         Pobierz raport
-        <DownloadIcon icon={faFileExport} />
+        <FontAwesomeIcon icon={faFileExport} />
       </Button>
-    </DownloadButtonContainer >
+    </div >
   )
 }
-
-const DownloadButtonContainer = styled.div({
-  display: "flex",
-  placeContent: "center",
-})
-
-const DownloadIcon = styled(FontAwesomeIcon)({
-  fontSize: "1.5rem"
-})

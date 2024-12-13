@@ -2,7 +2,8 @@ import styled from "@emotion/styled";
 import { DownloadReport } from "../ReportGeneration/DownloadReport.tsx";
 import { useNavigate } from 'react-router-dom';
 import { Button } from "../components/ui/button.tsx";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card.tsx";
+import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card.tsx";
+import { MainContainer } from "../StyledComponents/MainContainer.tsx";
 
 export const StatsPage = () => {
   const navigate = useNavigate();
@@ -41,7 +42,7 @@ export const StatsPage = () => {
 
         <ButtonContainer>
           <DownloadReport />
-          <Button variant={"outline"} onClick={() => navigate('/add-channel')}>
+          <Button className="w-full py-6 text-md" variant={"outline"} onClick={() => navigate('/add-channel')}>
             Dodaj kanał
           </Button>
         </ButtonContainer>
@@ -50,16 +51,6 @@ export const StatsPage = () => {
     </MainContainer>
   )
 }
-
-const MainContainer = styled.div({
-  display: "flex",
-  flexDirection: "column",
-  marginLeft: "10px",
-  marginTop: "10px",
-  alignItems: 'center',
-  height: '100vh',
-  justifyContent: 'center',
-});
 
 const StatsOuterContainer = styled.div({
   marginBottom: "10rem",
@@ -72,6 +63,6 @@ const StatsOuterContainer = styled.div({
 const ButtonContainer = styled.div({
   display: "flex",
   flexDirection: "row",
-  justifyContent: "space-evenly"
+  gap: "0.3rem"
 })
 
