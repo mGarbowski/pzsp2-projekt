@@ -56,7 +56,7 @@ export const OptimizerForm = () => {
         onValueChange={(value: string) => setBandwidth(value)}
         required
       >
-        <SelectTrigger className="mb-2 mt-1" aria-label="Bandwidth">
+        <SelectTrigger aria-label="Bandwidth">
           <SelectValue placeholder="Wybierz opcję" />
         </SelectTrigger>
         <SelectContent>
@@ -85,7 +85,7 @@ export const OptimizerForm = () => {
       </Select>
     </Label>
 
-    <Button variant={"outline"} type="submit" >
+    <Button variant={"outline"} type="submit" className="py-6" >
       Dodaj kanał
     </Button >
 
@@ -106,7 +106,7 @@ const StyledForm = styled.form({
 const StyledTextInput = styled(Input)({
   display: "block",
   marginTop: "5px",
-  marginBottom: "15px",
+  marginBottom: "1rem",
   width: "100%",
   padding: "8px",
 })
