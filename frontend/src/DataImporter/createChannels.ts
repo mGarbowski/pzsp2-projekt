@@ -16,14 +16,15 @@ export interface ChannelEdge {
 
 
 /**
- * Removes rows which ids are not in Edge list
+ * Removes rows which ids are not in edges list
  *
- * Checks if edge id form edgeSpectrumData exists in edges list
- * edgeSpectrumDataRow is removed, if no mach is found
+ *
+ * For each row of edgeSpectrumData check if edge exists in edges list
+ * A row is removed if no mach is found
  * Should be called after MergeEdges
  *
  * @param edgeSpectrumData - EdgeSpectrumDataRow list
- * @param edges - non redundant list of edges
+ * @param edges - non redundant Edge list
  * @returns - non redundant EdgeSpectrumDataRow list
 */
 export const removeRedundantSpectrumRows = (edgeSpectrumData: EdgeSpectrumDataRow[], edges: Edge[]):EdgeSpectrumDataRow[] =>{
@@ -44,7 +45,7 @@ export const removeRedundantSpectrumRows = (edgeSpectrumData: EdgeSpectrumDataRo
  * if no - it creates new a Channel with 1 edge and appends it to the list of Channels
  *
  * @param channelData - singe EdgeSpectrumDataRow row
- * @param channels - list of all created Channels
+ * @param channels -a list of all created Channels
  * @returns updated ChannelEdge list
 */
 export const getChannel = (channelData: EdgeSpectrumDataRow, channels: ChannelEdge[]): ChannelEdge[] => {
@@ -80,11 +81,11 @@ export const groupSpectrumByChannel = (channelData: EdgeSpectrumDataRow[]): Chan
 }
 
 /**
- * Replaces list of edge ids with list of node ids for given channel
+ * Replaces a list of edge ids with a list of node ids for given channel
  *
- * @param channel - ChannelEdge channel with list containing edge ids creating the path that channel takes
- * @param edges - list of edges in the network, needed to get node ids
- * @returns list of Node ids channel goes though
+ * @param channel - ChannelEdge object containing a list of edge ids
+ * @param edges - a list of edges in the network, needed to get node ids
+ * @returns - a list of Node ids that channel goes though
 */
 export const changeChannelEdgesToNodes = (channel: ChannelEdge, edges: Edge[]): string[] =>{
   let channelEdges: Edge[] = []
@@ -111,8 +112,8 @@ export const changeChannelEdgesToNodes = (channel: ChannelEdge, edges: Edge[]): 
  * 1) loop will not end before a maximum length path is arranged
  * 2) loop will not be endless in case of an edge disconnected from the rest
  *
- * @param channelEdges - list of edges which nodes should be arranged into a path
- * @returns - string list containing node ids arranged into a path
+ * @param channelEdges - a list of edges which nodes should be arranged into a path
+ * @returns - a list of stings containing node ids arranged into a path
  */
 export const arrangeEdgesNodesIntoPath = (channelEdges: Edge[]): string[] =>{
   const max_attempts = channelEdges.length
@@ -143,10 +144,10 @@ export const arrangeEdgesNodesIntoPath = (channelEdges: Edge[]): string[] =>{
 }
 
 /**
- * Retrieves edge objects based on list of provided ids
- * @param edgeIds - list of edge id
- * @param edges - list of edges in the network, needed to get node ids
- * @returns - list of Edge objects
+ * Retrieves edge objects based on a list of provided ids
+ * @param edgeIds - a list of edge id
+ * @param edges - a list of edges in the network, needed to get node ids
+ * @returns - a list of Edge objects
  */
 export const getEdgesFromChannel = (edgeIds: string[], edges: Edge[]): Edge[] => {
   if(edgeIds.length == 0){

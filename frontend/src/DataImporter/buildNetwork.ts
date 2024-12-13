@@ -65,15 +65,16 @@ export const handleEdge = (edgeData: EdgeDataRow, nodes: Node[]): Edge => {
 
 
 /**
- * Removes redundant edges
+ * Discards redundant edges from EdgeDataRow list
  *
- * First edge is kept from 2 connecting the same nodes
- * If an edge does not have a pair it is treated as invalid and discarded
+ * First edge that appears in the EdgeDataRow list is kept from 2 connecting the same nodes
+ * If an edge does not have a pair it is treated as invalid and also discarded
+ *
  *
  * @param edges - list of edges with redundancies
  * @returns - list of edges without redundancies
  */
-export const mergeEdges = (edges: EdgeDataRow[]): EdgeDataRow[] =>{
+export const discardRedundantEdges = (edges: EdgeDataRow[]): EdgeDataRow[] =>{
   const merged: EdgeDataRow[] = []
   edges.map(
     edge => {
@@ -102,8 +103,9 @@ export const handleNode = (nodesData: NodeDataRow[]): Node[] => {
 
 /**
  * Checks if edge id from edgeSpectrum data row exists in EdgeDataRow
- * @param edgeSpectrumData - unfiltered edgeSpectrumDataRow[]
- * @param edgeDataRows -
+ *
+ * @param edgeSpectrumData - unfiltered edgeSpectrumDataRow list
+ * @param edgeDataRows
  */
 export const checkIfEdgeExists = (edgeSpectrumData: EdgeSpectrumDataRow[], edgeDataRows: EdgeDataRow[]): void => {
   const edgeIDs: string[] = edgeDataRows.map(element => element.id)
@@ -118,7 +120,7 @@ export const checkIfEdgeExists = (edgeSpectrumData: EdgeSpectrumDataRow[], edgeD
  * Removes nodes without neighbors from the list
  *
  * @param nodes - list of nodes
- * @returns - new list of nodes without isolated nodes
+ * @returns - new list without isolated nodes
  */
 export const removeIsolatedNodes = (nodes: Node[]): Node[] =>{
   const new_nodes: Node[] = [];
@@ -138,7 +140,7 @@ export const buildNetwork = (nodesData: NodeDataRow[], edgesData: EdgeDataRow[],
   checkIfEdgeExists(channelData, edgesData)
 
   // pair directional edges in handle edge
-  const edgesMerged = mergeEdges(edgesData);
+  const edgesMerged = discardRedundantEdges(edgesData);
 
   const edges = edgesMerged.map((edgeData) => handleEdge(edgeData, nodes));
 

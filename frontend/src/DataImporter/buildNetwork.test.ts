@@ -3,7 +3,7 @@ import {
   Edge,
   handleEdge,
   handleNode,
-  mergeEdges,
+  discardRedundantEdges,
   Network,
   Node,
   removeIsolatedNodes,
@@ -34,8 +34,8 @@ describe('Nodes', () => {
       expect(handleNode(parsed)).toEqual(expected)
     })
   })
-  describe("remove isolated nodes",()=>{
-    it("should remove modes without neighbors from list", () =>{
+  describe("removeIsolatedNodes",()=>{
+    it("should remove nodes without neighbors from list", () =>{
       const edge: Edge = {id:'1', node1Id:'1', node2Id:'3', totalCapacity:"4.8Thz", provisionedCapacity:10}
       const nodes: Node[] = [
         {id: '1', latitude: 34.05, longitude: -118.25, neighbors: [],},
@@ -55,7 +55,7 @@ describe('Nodes', () => {
 
 describe("Edges", () => {
   describe("handleEdge", () => {
-    it("should create edge and update neighbor", () => {
+    it("should create an edge and update its nodes by adding neighbors", () => {
       const csvData = 'LOCATION,LATITUDE,LONGITUDE\n1,34.05,-118.25\n2,40.71,-74.01\n';
       const parsed = parseNodes(csvData);
       const nodes = handleNode(parsed)
@@ -76,8 +76,8 @@ describe("Edges", () => {
       expect(nodes).toEqual(expected_nodes)
     })
   })
-  describe("mergeEdges", () => {
-    it('should merge edges with same nodes', () => {
+  describe("discardRedundantEdges", () => {
+    it('should keep first edge connecting the same nodes', () => {
       const edges: EdgeDataRow[] = [
         {id: '1', node1: '1', node2: '2', totalCapacity: '4.8 THz', provisionedCapacity: 50,},
         {id: '2', node1: '2', node2: '1', totalCapacity: '4.8 THz', provisionedCapacity: 50,}
@@ -87,14 +87,14 @@ describe("Edges", () => {
         {id: '1', node1: '1', node2: '2', totalCapacity: '4.8 THz', provisionedCapacity: 50,}
       ]
 
-      expect(mergeEdges(edges)).toEqual(expected)
+      expect(discardRedundantEdges(edges)).toEqual(expected)
     })
     it("should discard edges that can't be merged", () => {
       const edges: EdgeDataRow[] = [
         {id: '1', node1: '1', node2: '2', totalCapacity: '4.8 THz', provisionedCapacity: 50,}
       ]
 
-      expect(mergeEdges(edges)).toEqual([])
+      expect(discardRedundantEdges(edges)).toEqual([])
 
       const edges_2: EdgeDataRow[] = [
         {id: '1', node1: '1', node2: '2', totalCapacity: '4.8 THz', provisionedCapacity: 50,},
@@ -106,9 +106,9 @@ describe("Edges", () => {
         {id: '1', node1: '1', node2: '2', totalCapacity: '4.8 THz', provisionedCapacity: 50,},
       ]
 
-      expect(mergeEdges(edges_2)).toEqual(expected)
+      expect(discardRedundantEdges(edges_2)).toEqual(expected)
     })
-    it('should merge edges form more complicated input', () => {
+    it('should discard redundant edges form more complicated input', () => {
       const edges: EdgeDataRow[] = [
         {id: '-160181617838685002', node1: '30990', node2: '39925', totalCapacity: '4.8 THz', provisionedCapacity: 10,},
         {id: '-1924338652343423293', node1: '70080', node2: '60168', totalCapacity: '4.8 THz', provisionedCapacity: 17,},
@@ -124,13 +124,13 @@ describe("Edges", () => {
         {id: '-2188716338357475633', node1: '24246', node2: '40990', totalCapacity: '4.8 THz', provisionedCapacity: 11,},
       ]
 
-      expect(mergeEdges(edges)).toEqual(expected)
+      expect(discardRedundantEdges(edges)).toEqual(expected)
     })
   })
 });
 
-describe("Check if edge exists", () =>{
-  it('should return if all edges exist', () => {
+describe("checkIfEdgeExists", () =>{
+  it('should exit successfully if all edges exist', () => {
     const channelData: EdgeSpectrumDataRow[] = [
       {edgeId: '1', channelId: '1', frequency: 195, channelWidth: 50, channel_label: "CH-1"},
       {edgeId: '2', channelId: '2', frequency: 195, channelWidth: 50, channel_label: "CH-1"}
@@ -142,7 +142,7 @@ describe("Check if edge exists", () =>{
 
     expect(() => checkIfEdgeExists(channelData, edges)).not.toThrow()
   })
-  it('should throw an exception if EdgeSpectrum refers to non existent edge', () => {
+  it('should throw an error if EdgeSpectrum refers to non existent edge', () => {
     const channelData: EdgeSpectrumDataRow[] = [
       {edgeId: '1', channelId: '1', frequency: 195, channelWidth: 50, channel_label: "CH-1"},
       {edgeId: '2', channelId: '2', frequency: 195, channelWidth: 50, channel_label: "CH-1"}
