@@ -35,7 +35,7 @@ const MainContainer = styled.div({
 
 const ContentContainer = styled.div({
   flex: 1,
-  overflow: "auto",
+  overflowY: "clip",
 })
 
 const Navbar = <NavigationMenu>
