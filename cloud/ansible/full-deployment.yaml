@@ -1,7 +1,9 @@
 - name: Test connection
   connection: ansible.netcommon.network_cli
   gather_facts: false
+  remote_user: azureuser
   hosts: public-machine
+  become: yes
   tasks:
     - name: get pwd
       command: pwd
@@ -13,16 +15,19 @@
 
 - name: Install docker
   hosts: public-machine
-  become: yes
+  remote_user: azureuser
+  become: no
   vars:
     pkgstoinstall: [ libffi-dev, libssl-dev, python3, python3-pip ]
   tasks:
     - name: Install a list of packages
+      become: yes
       apt:
         name: "{{ pkgstoinstall }}"
         update_cache: yes
 
     - name: Remove python-configparser package
+      become: yes
       apt:
         name: python-configparser
         state: absent
@@ -32,8 +37,16 @@
       args:
         creates: ~/get-docker.sh
 
+    - name: Ensure the file is executable for everyone
+      become: yes
+      ansible.builtin.file:
+        path: ./get-docker.sh
+        mode: '0755'
+        state: file
+
     - name: install docker
-      shell: sh ~/get-docker.sh
+      shell: |
+        sudo sh ~/get-docker.sh
       args:
         creates: /usr/bin/docker
 
