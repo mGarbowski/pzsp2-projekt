@@ -32,7 +32,7 @@ export const DataImporterPage = () => {
   return (
     <ImporterOuterContainer>
       <ImporterInnerContainer>
-        <h1 className="text-3xl font-bold">Zaimportuj dane sieci</h1>
+        <h1 className="text-3xl font-bold mb-16">Zaimportuj dane sieci</h1>
         <p>Wymagane są pliki w formacie .csv</p>
         <ImporterUploadContainer>
           <p>Węzły</p>
