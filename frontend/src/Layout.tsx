@@ -15,8 +15,8 @@ export const Layout = () => {
     <>
       <NavigationMenu>
         <NavigationMenuList>
-          <div className="flex flex-row justify-between">
-            <div className="flex flex-row">
+          <div className="flex w-full justify-between ml-2">
+            <div className="flex flex-row w-full">
               <NavigationMenuItem>
                 <Link to="/import">
                   <NavigationMenuLink className={navigationMenuTriggerStyle()}>
@@ -39,9 +39,11 @@ export const Layout = () => {
                 </Link>
               </NavigationMenuItem>
             </div>
-            <NavigationMenuItem>
-              <ModeToggle />
-            </NavigationMenuItem>
+            <div className="mr-2">
+              <NavigationMenuItem>
+                <ModeToggle />
+              </NavigationMenuItem>
+            </div>
           </div>
         </NavigationMenuList>
       </NavigationMenu >
@@ -70,25 +72,3 @@ const ContentContainer = styled.div({
   flex: 1,
   overflow: "auto",
 })
-
-const NavList = styled.ul({
-  listStyleType: "none",
-  margin: 0,
-  padding: 0,
-  display: "flex",
-  justifyContent: "space-around",
-})
-
-const NavElement = styled.a({
-  textDecoration: "none",
-  paddingHorizontal: "0.5rem",
-  paddingVertical: "0.5rem 1rem",
-  display: "block",
-})
-
-const NavLink = styled(Link)({
-  textDecoration: "none",
-  padding: "0.5rem 1rem",
-  display: "block",
-  "&:hover": { color: "#555" }, // TODO: pick this color
-});
