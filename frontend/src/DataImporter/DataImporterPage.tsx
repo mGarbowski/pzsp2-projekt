@@ -32,7 +32,7 @@ export const DataImporterPage = () => {
 
   return (
     <ImporterOuterContainer>
-      <Card className="ml-4 mb-16 w-min-9/12">
+      <Card className="mx-4 mb-16 w-min-9/12">
         <CardHeader>
           <CardTitle className="text-3xl font-bold">
             Zaimportuj dane sieci

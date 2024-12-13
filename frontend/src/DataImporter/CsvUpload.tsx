@@ -25,12 +25,12 @@ export const CsvUpload = (props: CsvUploadProps) => {
     setFileName(file.name);
   }
 
-  return <div>
+  return <div className="grid">
     <HiddenFileInput type="file" accept=".csv" ref={fileInputRef} onChange={handleFileUpload} />
     <Button className="mb-3" variant={"outline"} onClick={() => fileInputRef.current?.click()}>
       Wybierz plik
     </Button>
-    {fileName && <p>{fileName}</p>}
+    {fileName && <p className="mb-5">{fileName}</p>}
   </div>
 }
 
