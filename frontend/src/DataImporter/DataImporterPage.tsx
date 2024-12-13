@@ -3,7 +3,7 @@ import { CsvUpload } from "./CsvUpload.tsx";
 import { parseEdges, parseEdgeSpectrum, parseNodes } from "./parseCsv.ts";
 import { buildNetwork } from "./buildNetwork.ts";
 import styled from "@emotion/styled";
-import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card.tsx";
+import { Card, CardContent, CardHeader, CardTitle } from "../Components/UI/card.tsx";
 
 export const DataImporterPage = () => {
   const [message, setMessage] = useState<string | null>("");

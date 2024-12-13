@@ -1,15 +1,15 @@
 import React, { useState } from "react"
 import styled from '@emotion/styled'
-import { Button } from "../components/ui/button";
+import { Button } from "../Components/UI/button";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../components/ui/select"
-import { Input } from "../components/ui/input";
-import { Label } from "../components/ui/label";
+} from "../Components/UI/select"
+import { Input } from "../Components/UI/input";
+import { Label } from "../Components/UI/label";
 
 
 export const OptimizerForm = () => {

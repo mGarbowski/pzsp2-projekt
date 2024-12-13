@@ -5,7 +5,7 @@ import { NoPage } from "./NoPage.tsx";
 import { Layout } from "./Layout.tsx";
 import { StatsPage } from "./Presentation/StatsPage.tsx";
 import { DataImporterPage } from './DataImporter/DataImporterPage.tsx';
-import { ThemeProvider } from "./components/theme-provider.tsx";
+import { ThemeProvider } from "./Components/themeProvider.tsx";
 
 function App() {
   return (

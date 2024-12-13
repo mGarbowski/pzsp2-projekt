@@ -1,8 +1,8 @@
 import styled from "@emotion/styled";
 import { DownloadReport } from "../ReportGeneration/DownloadReport.tsx";
 import { useNavigate } from 'react-router-dom';
-import { Button } from "../components/ui/button.tsx";
-import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card.tsx";
+import { Button } from "../Components/UI/button.tsx";
+import { Card, CardContent, CardHeader, CardTitle } from "../Components/UI/card.tsx";
 import { MainContainer } from "../StyledComponents/MainContainer.tsx";
 
 export const StatsPage = () => {

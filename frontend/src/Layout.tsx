@@ -1,14 +1,14 @@
 import { Link, Outlet } from "react-router-dom";
 import styled from '@emotion/styled'
 import { GraphVisualisationDemo } from "./Presentation/GraphVisualisationDemo";
-import { ModeToggle } from "./components/mode-toggle";
+import { ModeToggle } from "./Components/modeToggle.tsx";
 import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
   navigationMenuTriggerStyle,
-} from "./components/ui/navigation-menu"
+} from "./Components/UI/navigationMenu.tsx"
 
 export const Layout = () => {
   return (

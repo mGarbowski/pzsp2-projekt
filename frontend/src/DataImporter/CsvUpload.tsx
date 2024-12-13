@@ -1,6 +1,6 @@
 import { ChangeEvent, useState } from "react";
 import styled from '@emotion/styled'
-import { Button } from "../components/ui/button";
+import { Button } from "../Components/UI/button";
 
 interface CsvUploadProps {
   id: string

@@ -1,7 +1,7 @@
 import { generateDemoReport } from "./generateReport.ts";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFileExport } from '@fortawesome/free-solid-svg-icons'
-import { Button } from "../components/ui/button.tsx";
+import { Button } from "../Components/UI/button.tsx";
 
 export const DownloadReport = () => {
 

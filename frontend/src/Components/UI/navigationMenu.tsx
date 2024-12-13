@@ -3,7 +3,7 @@ import * as NavigationMenuPrimitive from "@radix-ui/react-navigation-menu"
 import { cva } from "class-variance-authority"
 import { ChevronDown } from "lucide-react"
 
-import { cn } from "../../lib/utils"
+import { cn } from "../utils.ts"
 
 const NavigationMenu = React.forwardRef<
   React.ElementRef<typeof NavigationMenuPrimitive.Root>,
@@ -116,7 +116,7 @@ NavigationMenuIndicator.displayName =
   NavigationMenuPrimitive.Indicator.displayName
 
 export {
-  // eslint-disable-next-line react-refresh/only-export-components
+  // eslint-disable-next-line react-refresh/only-export-Components
   navigationMenuTriggerStyle,
   NavigationMenu,
   NavigationMenuList,
