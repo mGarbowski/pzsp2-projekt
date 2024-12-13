@@ -101,18 +101,6 @@ resource "azurerm_network_interface" "frontend_nic" {
   }
 }
 
-resource "azurerm_network_interface" "backend_nic" {
-  name                = "backend-nic"
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
-
-  ip_configuration {
-    name                          = "backend-ip-config"
-    subnet_id                     = azurerm_subnet.pzsp2_subnet.id
-    private_ip_address_allocation = "Static"
-    private_ip_address            = var.backend_private_ip
-  }
-}
 
 resource "azurerm_linux_virtual_machine" "frontend_vm" {
   name                            = var.frontend_name
@@ -141,58 +129,13 @@ resource "azurerm_linux_virtual_machine" "frontend_vm" {
   }
 }
 
-resource "azurerm_linux_virtual_machine" "backend_vm" {
-  name                            = var.backend_name
-  location                        = azurerm_resource_group.rg.location
-  resource_group_name             = azurerm_resource_group.rg.name
-  size                            = "Standard_B1s"
-  admin_username                  = "azureuser"
-  network_interface_ids           = [azurerm_network_interface.backend_nic.id]
-  disable_password_authentication = true
-
-  admin_ssh_key {
-    username   = "azureuser"
-    public_key = file(var.public_ssh_key_file)
-  }
-
-  os_disk {
-    caching              = "ReadWrite"
-    storage_account_type = "Standard_LRS"
-  }
-
-  source_image_reference {
-    publisher = "Canonical"
-    offer     = "0001-com-ubuntu-server-focal"
-    sku       = "20_04-lts"
-    version   = "latest"
-  }
-}
-
 resource "azurerm_network_interface_security_group_association" "frontend_nsg_association" {
   network_interface_id      = azurerm_network_interface.frontend_nic.id
   network_security_group_id = azurerm_network_security_group.pzsp2_nsg.id
 }
 
-resource "azurerm_network_interface_security_group_association" "backend_nsg_association" {
-  network_interface_id      = azurerm_network_interface.backend_nic.id
-  network_security_group_id = azurerm_network_security_group.pzsp2_nsg.id
-}
-
 resource "azurerm_dev_test_global_vm_shutdown_schedule" "frontend_auto_shutdown" {
   virtual_machine_id = azurerm_linux_virtual_machine.frontend_vm.id
-  location           = azurerm_resource_group.rg.location
-  enabled            = true
-
-  daily_recurrence_time = "1100"
-  timezone              = "Pacific Standard Time"
-
-  notification_settings {
-    enabled = false
-  }
-}
-
-resource "azurerm_dev_test_global_vm_shutdown_schedule" "backend_auto_shutdown" {
-  virtual_machine_id = azurerm_linux_virtual_machine.backend_vm.id
   location           = azurerm_resource_group.rg.location
   enabled            = true
 

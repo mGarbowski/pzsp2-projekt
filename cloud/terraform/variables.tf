@@ -10,11 +10,6 @@ variable "frontend_name" {
   default     = "frontend"
 }
 
-variable "backend_name" {
-  description = "Name of the backend VM"
-  type        = string
-  default     = "backend"
-}
 
 variable "public_ssh_key_file" {
   description = "public key"
@@ -26,9 +21,4 @@ variable "frontend_private_ip" {
   description = "Private IP of the frontend VM"
   type        = string
   default     = "10.0.1.7"
-}
-variable "backend_private_ip" {
-  description = "Private IP of the backend VM"
-  type        = string
-  default     = "10.0.1.8"
 }
