@@ -108,7 +108,7 @@ describe("Edges", () => {
 
       expect(discardRedundantEdges(edges_2)).toEqual(expected)
     })
-    it('should discard redundant edges form more complicated input', () => {
+    it('should discard redundant edges from more complicated input', () => {
       const edges: EdgeDataRow[] = [
         {id: '-160181617838685002', node1: '30990', node2: '39925', totalCapacity: '4.8 THz', provisionedCapacity: 10,},
         {id: '-1924338652343423293', node1: '70080', node2: '60168', totalCapacity: '4.8 THz', provisionedCapacity: 17,},
