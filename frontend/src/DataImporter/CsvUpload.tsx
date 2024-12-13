@@ -26,7 +26,7 @@ export const CsvUpload = (props: CsvUploadProps) => {
 
   return <div>
     <HiddenFileInput type="file" accept=".csv" id={props.id} onChange={handleFileUpload} />
-    <Button variant={"outline"} onClick={() => document.getElementById(props.id)!.click()}>
+    <Button className="mb-3" variant={"outline"} onClick={() => document.getElementById(props.id)!.click()}>
       Wybierz plik
     </Button>
     {fileName && <p>{fileName}</p>}

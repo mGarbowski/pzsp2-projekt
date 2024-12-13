@@ -29,37 +29,23 @@ export const OptimizerForm = () => {
   return <StyledForm onSubmit={handleSubmit}>
     <Label>
       Węzeł startowy
-      <Input
+      <StyledTextInput
         type="text"
         placeholder="ID węzła"
         value={startNode || ""}
         onChange={(e) => setStartNode(e.target.value)}
         required={true}
-        style={{
-          display: "block",
-          marginTop: "5px",
-          marginBottom: "15px",
-          width: "100%",
-          padding: "8px",
-        }}
       />
     </Label>
 
     <Label>
       Węzeł końcowy
-      <Input
+      <StyledTextInput
         type="text"
         placeholder="ID węzła"
         required={true}
         value={endNode || ""}
         onChange={(e) => setEndNode(e.target.value)}
-        style={{
-          display: "block",
-          marginTop: "5px",
-          marginBottom: "15px",
-          width: "100%",
-          padding: "8px",
-        }}
       />
     </Label>
 
@@ -70,7 +56,7 @@ export const OptimizerForm = () => {
         onValueChange={(value: string) => setBandwidth(value)}
         required
       >
-        <SelectTrigger aria-label="Bandwidth">
+        <SelectTrigger className="mb-2 mt-1" aria-label="Bandwidth">
           <SelectValue placeholder="Wybierz opcję" />
         </SelectTrigger>
         <SelectContent>
@@ -115,5 +101,17 @@ const StyledForm = styled.form({
   placeContent: "center",
   marginLeft: "10px",
   marginTop: "10px",
+})
+
+const StyledTextInput = styled(Input)({
+  display: "block",
+  marginTop: "5px",
+  marginBottom: "15px",
+  width: "100%",
+  padding: "8px",
+})
+
+const StyledSelect = styled(Select)({
+
 })
 
