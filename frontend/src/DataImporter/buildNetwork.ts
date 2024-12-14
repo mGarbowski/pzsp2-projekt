@@ -32,8 +32,6 @@ export interface Channel {
   width: number;
 }
 
-
-
 export interface Network {
   nodes: Node[];
   edges: Edge[];
@@ -47,7 +45,6 @@ export const handleEdge = (edgeData: EdgeDataRow, nodes: Node[]): Edge => {
   if (!node1 || !node2) {
     throw new Error(`Edge ${edgeData.id} references non-existing nodes`);
   }
-
 
   const edge: Edge = {
     id: edgeData.id,
@@ -63,9 +60,8 @@ export const handleEdge = (edgeData: EdgeDataRow, nodes: Node[]): Edge => {
   return edge;
 }
 
-
 /**
- * Discards redundant edges from EdgeDataRow list
+ * Discard redundant edges from EdgeDataRow list
  *
  * First edge that appears in the EdgeDataRow list is kept from 2 connecting the same nodes
  * If an edge does not have a pair it is treated as invalid and also discarded
@@ -78,11 +74,11 @@ export const discardRedundantEdges = (edges: EdgeDataRow[]): EdgeDataRow[] =>{
   const merged: EdgeDataRow[] = []
   edges.forEach(
     edge => {
-      // finding corresponding edge
+      // find corresponding edge
       const pair = edges.find(element => element.node1 == edge.node2 && element.node2 == edge.node1)
       // check if corresponding edge exists
       if (pair) {
-        // check if corresponding edge has been written in merged - push if not - ignore if yes
+        // check if corresponding edge has been written in merged - if not push - if yes ignore
         if (!merged.find(element => element.id == pair.id)) {
           merged.push(edge)
         }
@@ -102,11 +98,11 @@ export const handleNode = (nodesData: NodeDataRow[]): Node[] => {
 }
 
 /**
- * Checks if edge id from edgeSpectrum data row exists in EdgeDataRow
+ * Check if edge id from edgeSpectrum data row exists in EdgeDataRow
  *
  * @param edgeSpectrumData - unfiltered edgeSpectrumDataRow list
- * @param edgeDataRows
- */
+ * @param edgeDataRows - list of edge data rows for spectrum data to be compared against
+*/
 export const checkIfEdgeExists = (edgeSpectrumData: EdgeSpectrumDataRow[], edgeDataRows: EdgeDataRow[]): void => {
   const edgeIDs: string[] = edgeDataRows.map(element => element.id)
   edgeSpectrumData.forEach(spectrumData => {
@@ -117,7 +113,7 @@ export const checkIfEdgeExists = (edgeSpectrumData: EdgeSpectrumDataRow[], edgeD
 }
 
 /**
- * Removes nodes without neighbors from the list
+ * Remove nodes without neighbors from the list
  *
  * @param nodes - list of nodes
  * @returns - new list without isolated nodes
@@ -128,7 +124,6 @@ export const removeIsolatedNodes = (nodes: Node[]): Node[] =>{
 }
 
 export const buildNetwork = (nodesData: NodeDataRow[], edgesData: EdgeDataRow[], channelData: EdgeSpectrumDataRow[]): Network => {
-  // moved for easier testing
   let nodes: Node[] = handleNode(nodesData)
 
   //check data integrity
