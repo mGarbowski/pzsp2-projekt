@@ -100,7 +100,7 @@ export const changeChannelEdgesToNodes = (channel: ChannelEdge, edges: Edge[]): 
 }
 
 /**
- * Arrange node ids form Edges list into a valid path
+ * Arrange node ids from Edges list into a valid path
  *
  * Function starts with nodes from the first edge in the list.
  * Next edges are iterated though in a loop
