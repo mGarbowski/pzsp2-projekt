@@ -11,7 +11,7 @@ import {
 import { Input } from "../Components/UI/input";
 import { Label } from "../Components/UI/label";
 import { useNetwork } from "../NetworkModel/NetworkContext";
-import Loader2 from "lucide-react";
+import { Loader2 } from "lucide-react";
 
 
 export const OptimizerForm = () => {
