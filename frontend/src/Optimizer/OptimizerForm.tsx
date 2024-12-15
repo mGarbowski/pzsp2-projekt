@@ -10,20 +10,41 @@ import {
 } from "../Components/UI/select"
 import { Input } from "../Components/UI/input";
 import { Label } from "../Components/UI/label";
+import { useNetwork } from "../NetworkModel/NetworkContext";
+import { Loader, Loader2 } from "lucide-react";
 
 
 export const OptimizerForm = () => {
+  const { network, setHighlightedChannelId } = useNetwork();
+  const [counter, setCounter] = useState(0);
   const [startNode, setStartNode] = useState<string | null>(null);
   const [endNode, setEndNode] = useState<string | null>(null);
   const [bandwidth, setBandwidth] = useState<string | null>(null);
   const [optimizer, setOptimizer] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const handleSubmit = (_: React.FormEvent) => {
-    console.log("Start node: ", startNode);
-    console.log("End node: ", endNode);
-    console.log("Bandwidth: ", bandwidth);
-    console.log("Optimizer: ", optimizer);
-    alert("Channel added");
+  const resetForm = () => {
+    setStartNode(null);
+    setEndNode(null);
+    setBandwidth(null);
+    setOptimizer(null);
+  }
+
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    if (!network) {
+      return;
+    }
+
+    resetForm();
+    setLoading(true);
+    setTimeout(() => {
+      const channelIdx = counter % Object.keys(network.channels).length;
+      const channel = Object.keys(network.channels)[channelIdx];
+      setCounter(counter + 1);
+      setHighlightedChannelId(channel);
+      setLoading(false);
+    }, 3000);
   }
 
   return <StyledForm onSubmit={handleSubmit}>
@@ -85,8 +106,12 @@ export const OptimizerForm = () => {
       </Select>
     </Label>
 
-    <Button variant={"outline"} type="submit" className="py-6" >
-      Dodaj kanał
+    <Button disabled={loading} variant={"outline"} type="submit" className="py-6" >
+      {
+        loading ?
+          <> < Loader2 className="animate-spin" />Ładowanie kanału </>
+          : "Dodaj kanał"
+      }
     </Button >
 
 
