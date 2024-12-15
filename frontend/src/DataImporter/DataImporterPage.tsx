@@ -1,12 +1,14 @@
-import {useEffect, useState} from "react";
-import {CsvUpload} from "./CsvUpload.tsx";
-import {parseEdges, parseEdgeSpectrum, parseNodes} from "./parseCsv.ts";
-import {buildNetwork} from "./buildNetwork.ts";
-import {useNetwork} from "../NetworkModel/NetworkContext.tsx";
-import {demoNetwork} from "../NetworkModel/demoNetwork.ts";
+import styled from "@emotion/styled";
+import { Card, CardContent, CardHeader, CardTitle } from "../Components/UI/card.tsx";
+import { useEffect, useState } from "react";
+import { CsvUpload } from "./CsvUpload.tsx";
+import { parseEdges, parseEdgeSpectrum, parseNodes } from "./parseCsv.ts";
+import { buildNetwork } from "./buildNetwork.ts";
+import { useNetwork } from "../NetworkModel/NetworkContext.tsx";
+import { demoNetwork } from "../NetworkModel/demoNetwork.ts";
 
 export const DataImporterPage = () => {
-  const {setNetwork} = useNetwork();
+  const { setNetwork } = useNetwork();
 
   const [message, setMessage] = useState<string | null>("");
   const [nodesCsv, setNodesCsv] = useState<string | null>(null);
@@ -38,14 +40,44 @@ export const DataImporterPage = () => {
   }, [nodesCsv, edgesCsv, spectrumCsv, setNetwork]);
 
   return (
-    <div style={{display: 'flex', flexDirection: 'column', margin: '0 auto', placeItems: 'center'}}>
-      <p>Węzły</p>
-      <CsvUpload onUpload={(data) => setNodesCsv(data)}/>
-      <p>Zajętość</p>
-      <CsvUpload onUpload={(data) => setEdgesCsv(data)}/>
-      <p>Spektrum kanały</p>
-      <CsvUpload onUpload={(data) => setSpectrumCsv(data)}/>
-      <p>{message}</p>
-    </div>
+    <ImporterOuterContainer>
+      <Card className="mx-4 mb-16 w-min-9/12">
+        <CardHeader>
+          <CardTitle className="text-3xl font-bold">
+            Zaimportuj dane sieci
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p>Wymagane są pliki w formacie .csv</p>
+
+          <ImporterUploadContainer>
+            <p className="font-bold">Węzły</p>
+            <CsvUpload onUpload={(data) => setNodesCsv(data)} />
+            <p className="font-bold">Zajętość</p>
+            <CsvUpload onUpload={(data) => setEdgesCsv(data)} />
+            <p className="font-bold">Spektrum kanały</p>
+            <CsvUpload onUpload={(data) => setSpectrumCsv(data)} />
+          </ImporterUploadContainer>
+          <p className="text-center font-bold text-green-200">{message}</p> {/* FIXME: should be red when incorrect data is loaded */}
+        </CardContent>
+
+      </Card>
+    </ImporterOuterContainer>
   );
 }
+
+
+const ImporterOuterContainer = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  height: '100vh',
+  alignItems: 'center',
+  justifyContent: 'center',
+})
+
+const ImporterUploadContainer = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  marginTop: '2.5rem',
+})

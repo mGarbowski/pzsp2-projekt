@@ -1,13 +1,13 @@
-import {GraphCanvas, InternalGraphEdge, InternalGraphNode, InternalGraphPosition} from "reagraph";
-import {useState} from "react";
-import {useNetwork} from "../NetworkModel/NetworkContext.tsx";
+import { GraphCanvas, InternalGraphEdge, InternalGraphNode, InternalGraphPosition } from "reagraph";
+import { useState } from "react";
+import { useNetwork } from "../NetworkModel/NetworkContext.tsx";
 
 export const GraphVisualisationDemo = () => {
   const [text, setText] = useState("");
-  const {network, highlightedChannelId} = useNetwork();
+  const { network, highlightedChannelId } = useNetwork();
 
   if (!network) {
-    return <p>Network not loaded</p>;
+    return <p className="flex justify-center align-middle font-bold">Dane sieci niezaładowane</p>;
   }
 
   const highlightedChannel = highlightedChannelId ? network.channels[highlightedChannelId] : null;
@@ -44,19 +44,19 @@ export const GraphVisualisationDemo = () => {
   }
 
   const calcNodeCoordinates = (id: string) => {
-    const center = {latitude: 52.2297, longitude: 21.0122}; // Warsaw
+    const center = { latitude: 52.2297, longitude: 21.0122 }; // Warsaw
     const scale = 50;
 
     const node = network.nodes[id];
     const x = (node.longitude - center.longitude) * scale;
     const y = (node.latitude - center.latitude) * scale;
-    return {x, y, z: 1} as InternalGraphPosition;
+    return { x, y, z: 1 } as InternalGraphPosition;
   }
 
   return (
     <>
       <p>{text}</p>
-      <div style={{position: "fixed", top: "30%", width: '45%', height: '50%'}}>
+      <div style={{ position: "fixed", top: "27%", width: '45%', height: '50%', marginRight: "3rem" }}>
         <GraphCanvas
           nodes={visNodes}
           edges={visEdges}
@@ -64,7 +64,7 @@ export const GraphVisualisationDemo = () => {
           onEdgeClick={handleEdgeClick}
           edgeArrowPosition={"none"}
           layoutType={"custom"}
-          layoutOverrides={({getNodePosition: calcNodeCoordinates})}
+          layoutOverrides={({ getNodePosition: calcNodeCoordinates })}
         />
       </div>
     </>
