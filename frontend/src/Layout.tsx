@@ -29,7 +29,7 @@ export const Layout = () => {
 const MainContainer = styled.div({
   display: 'flex',
   flexDirection: 'row',
-  height: '100vh',
+  height: '95vh',
   paddingHorizontal: '500px',
 })
 
@@ -46,7 +46,7 @@ const NetworkContainer = styled.div({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  height: "100vh",
+  height: "95vh",
 })
 
 const Navbar = <NavigationMenu>
