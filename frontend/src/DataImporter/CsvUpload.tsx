@@ -25,7 +25,7 @@ export const CsvUpload = (props: CsvUploadProps) => {
     setFileName(file.name);
   }
 
-  return <div className="grid">
+  return <div className="flex flex-col w-1/2">
     <HiddenFileInput type="file" accept=".csv" ref={fileInputRef} onChange={handleFileUpload} />
     <Button className="mb-3" variant={"outline"} onClick={() => fileInputRef.current?.click()}>
       Wybierz plik

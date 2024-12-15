@@ -54,6 +54,8 @@ export const StatsPage = () => {
 
 const StatsOuterContainer = styled.div({
   marginBottom: "10rem",
+  marginLeft: "3rem",
+  marginRight: "3rem",
   display: "flex",
   flexDirection: "column",
   placeContent: "center",
