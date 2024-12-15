@@ -1,25 +1,37 @@
-import {GraphCanvas, InternalGraphEdge, InternalGraphNode} from "reagraph";
-import {useState} from "react";
+import { GraphCanvas, InternalGraphEdge, InternalGraphNode, InternalGraphPosition } from "reagraph";
+import { useState } from "react";
+import { useNetwork } from "../NetworkModel/NetworkContext.tsx";
 
 export const GraphVisualisationDemo = () => {
   const [text, setText] = useState("");
+  const { network, highlightedChannelId } = useNetwork();
 
-  const nodes = [
-    {id: '1', label: '1', x: 100, y: 100},
-    {id: '2', label: '2', x: 200, y: 100},
-    {id: '3', label: '3', x: 300, y: 100},
-    {id: '4', label: '4', x: 400, y: 100},
-    {id: '5', label: '5', x: 500, y: 100}
-  ];
+  if (!network) {
+    return <p className="flex justify-center align-middle font-bold">Dane sieci niezaładowane</p>;
+  }
 
-  const edges = [
-    {source: '1', target: '2', id: '1-2', label: '1-2'},
-    {source: '2', target: '1', id: '2-1', label: '2-1'},
-    {source: '1', target: '3', id: '1-3', label: '1-3'},
-    {source: '3', target: '4', id: '3-4', label: '3-4'},
-    {source: '4', target: '5', id: '4-5', label: '4-5'},
-    {source: '5', target: '1', id: '5-1', label: '5-1'}
-  ];
+  const highlightedChannel = highlightedChannelId ? network.channels[highlightedChannelId] : null;
+
+  const visNodes = Object.values(network.nodes).map(node => {
+    return {
+      id: node.id,
+      label: node.id,
+      x: node.longitude,
+      y: node.latitude,
+      fill: highlightedChannel?.nodes.includes(node.id) ? "#FF0000" : "#0000FF"
+    };
+  });
+
+  const visEdges = Object.values(network.edges).map(edge => {
+    return {
+      source: edge.node1Id,
+      target: edge.node2Id,
+      id: edge.id,
+      label: `${edge.node1Id}-${edge.node2Id}`,
+      fill: highlightedChannel?.edges.includes(edge.id) ? "#FF0000" : "#0000FF"
+    };
+  });
+
 
   const handleNodeClick = (node: InternalGraphNode) => {
     console.log(node);
@@ -31,15 +43,28 @@ export const GraphVisualisationDemo = () => {
     setText("Edge " + edge.id + " clicked");
   }
 
+  const calcNodeCoordinates = (id: string) => {
+    const center = { latitude: 52.2297, longitude: 21.0122 }; // Warsaw
+    const scale = 50;
+
+    const node = network.nodes[id];
+    const x = (node.longitude - center.longitude) * scale;
+    const y = (node.latitude - center.latitude) * scale;
+    return { x, y, z: 1 } as InternalGraphPosition;
+  }
+
   return (
     <>
       <p>{text}</p>
-      <div style={{position: "fixed", top: "30%", width: '45%', height: '50%'}}>
+      <div style={{ position: "fixed", top: "27%", width: '45%', height: '50%', marginRight: "3rem" }}>
         <GraphCanvas
-          nodes={nodes}
-          edges={edges}
+          nodes={visNodes}
+          edges={visEdges}
           onNodeClick={handleNodeClick}
           onEdgeClick={handleEdgeClick}
+          edgeArrowPosition={"none"}
+          layoutType={"custom"}
+          layoutOverrides={({ getNodePosition: calcNodeCoordinates })}
         />
       </div>
     </>

@@ -18,9 +18,9 @@ export const Layout = () => {
         <ContentContainer>
           <Outlet />
         </ContentContainer>
-        <ContentContainer>
+        <NetworkContainer>
           <GraphVisualisationDemo />
-        </ContentContainer>
+        </NetworkContainer>
       </MainContainer>
     </>
   )
@@ -34,8 +34,19 @@ const MainContainer = styled.div({
 })
 
 const ContentContainer = styled.div({
+  display: "flex",
   flex: 1,
   overflowY: "clip",
+  justifyContent: "center"
+});
+
+const NetworkContainer = styled.div({
+  flex: 1,
+  overflowY: "clip",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  height: "100vh",
 })
 
 const Navbar = <NavigationMenu>

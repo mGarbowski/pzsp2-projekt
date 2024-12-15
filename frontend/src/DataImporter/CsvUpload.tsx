@@ -30,7 +30,7 @@ export const CsvUpload = (props: CsvUploadProps) => {
     <Button className="mb-3" variant={"outline"} onClick={() => fileInputRef.current?.click()}>
       Wybierz plik
     </Button>
-    {fileName && <p className="mb-5">{fileName}</p>}
+    {fileName && <p className="mb-5 text-center">{fileName}</p>}
   </div>
 }
 
