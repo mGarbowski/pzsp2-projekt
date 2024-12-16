@@ -104,28 +104,43 @@ export const changeChannelEdgesToNodes = (channel: ChannelEdge, edges: Edge[]): 
 /**
  * Arrange node ids from Edges list into a valid path
  *
- * Start with first edge from the list, add its nodes to path
- * Find a neighboring edge and remove it from the list of edges
- * Check whether a new node, from the found edge, should be added to the front or back of the path.
- * Check which of the 2 nodes to append
+ * Function starts with nodes from the first edge in the list.
+ * Next, edges are iterated though in a loop
+ * Each iteration checks if a node can be added to the path.
+ * For that one of the edge`s nodes must be at either end of the path.
+ *
+ * If no node cannot be added edge is appended to the back of the edges list to be considered again later
+ * Appending can be done for maximum of edge list length -1 times.
+ * It is so that
+ * 1) loop will not end before a maximum length path is arranged
+ * 2) loop will not be endless in case of an edge disconnected from the rest
  *
  * @param channelEdges - a list of edges which nodes should be arranged into a path
  * @returns - a list of strings containing node ids arranged into a path
 */
 export const arrangeEdgesNodesIntoPath = (channelEdges: Edge[]): string[] =>{
+  const max_attempts = channelEdges.length
+  let attempts = 0
   const nodeIdList = [channelEdges[0]!.node1Id, channelEdges[0]!.node2Id]
   channelEdges.shift()
-  while(channelEdges.length > 0) {
+  for (const edge of channelEdges) {
     const lastNode = nodeIdList[nodeIdList.length - 1];
     const firstNode = nodeIdList[0];
-    const endNodes = [firstNode, lastNode];
-    const nextEdge = channelEdges.find(edge => endNodes.includes(edge.node1Id) || endNodes.includes(edge.node2Id))
-    if(!nextEdge){
-      break
-    }else if ([nextEdge.node1Id, nextEdge.node2Id].includes(lastNode)) {
-      nodeIdList.push(nextEdge.node1Id === endNodes[0] ? nextEdge.node2Id : nextEdge.node1Id);
-    } else if ([nextEdge.node1Id, nextEdge.node2Id].includes(firstNode)) {
-      nodeIdList.unshift(nextEdge.node1Id === endNodes[1] ? nextEdge.node2Id : nextEdge.node1Id);
+    if ([edge.node1Id, edge.node2Id].includes(lastNode)) {
+      nodeIdList.push(edge.node1Id === lastNode ? edge.node2Id : edge.node1Id);
+      attempts = 0;
+    } else if ([edge.node1Id, edge.node2Id].includes(firstNode)) {
+      nodeIdList.unshift(edge.node1Id === firstNode ? edge.node2Id : edge.node1Id);
+      attempts = 0;
+    }
+    // if nodes cannot be arranged try again
+    else {
+      attempts += 1
+      if (attempts > max_attempts) {
+        break
+      }
+      //append to the end of the queue
+      channelEdges.push(edge)
     }
   }
   return nodeIdList
@@ -144,7 +159,7 @@ export const getEdgesFromChannel = (edgeIds: string[], edges: Edge[]): Edge[] =>
   }
   // get list of edges
   const channelEdges = edgeIds.map(edgeID => edges.find(element => element.id == edgeID));
-  // if edge cannot be found, type script placed undefined in the list
+  // if edge cannot be found,type script placed undefined in the list
   if (!channelEdges.includes(undefined)) {
     return channelEdges as Edge[]
   }
