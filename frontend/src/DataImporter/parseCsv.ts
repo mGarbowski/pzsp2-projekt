@@ -77,7 +77,7 @@ const remapChannelWidth = (frequency: number): number => {
 export const parseEdgeSpectrum = (data: string): EdgeSpectrumDataRow[] => {
   const lines = parseCsv(data);
   return lines.map(([edgeId, channelId, frequency, channelWidth, _wavelength, _channelLabel]) => {
-    if (edgeId === '' || channelId === '' || frequency === '' || channelWidth === '') {
+    if (edgeId === '' || channelId === '' || frequency === '' || channelWidth === '' ) {
       return null;
     }
 
