@@ -19,12 +19,12 @@ export interface ChannelEdge {
  * Remove rows which ids are not in the edges list
  *
  *
- * Check if, each edge from EdgeSpectrumData exists in the edges list
- * An edge is removed from spectrum data if no mach is found in edges
+ * Check if each edge from EdgeSpectrumData exists in the edges list
+ * An edge is removed from spectrum data if no match is found in edges
  * Should be called after MergeEdges
  *
  * @param edgeSpectrumData - EdgeSpectrumDataRow list
- * @param edges - non redundant Edge list
+ * @param edges - non-redundant Edge list
  * @returns - non redundant EdgeSpectrumDataRow list
 */
 export const removeRedundantSpectrumRows = (edgeSpectrumData: EdgeSpectrumDataRow[], edges: Edge[]):EdgeSpectrumDataRow[] =>{
