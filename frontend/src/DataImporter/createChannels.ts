@@ -23,7 +23,7 @@ export interface ChannelEdges {
  * An edge is removed from spectrum data if no mach is found in edges
  * Should be called after MergeEdges
  *
- * @param edgeSpectrumData - EdgeSpectrumDataRow list
+ * @param edgeSpectrumData - EdgeSpectrumDataRow list with redundancies
  * @param edges - non redundant Edge list
  * @returns - non redundant EdgeSpectrumDataRow list
 */
