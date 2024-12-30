@@ -78,7 +78,7 @@ export const discardRedundantEdges = (edges: EdgeDataRow[]): EdgeDataRow[] =>{
       const pair = edges.find(element => element.node1 == edge.node2 && element.node2 == edge.node1)
       // check if corresponding edge exists
       if (pair) {
-        // check if corresponding edge has been written in merged - if not push - if yes ignore
+        // check if corresponding edge has been written in merged - if not, push to list - if yes, ignore
         if (!merged.find(element => element.id == pair.id)) {
           merged.push(edge)
         }
@@ -98,12 +98,12 @@ export const handleNode = (nodesData: NodeDataRow[]): Node[] => {
 }
 
 /**
- * Check if edge id from edgeSpectrum data row exists in EdgeDataRow
+ * Check if all edge ids from edgeSpectrum data row list exists in EdgeDataRow list
  *
  * @param edgeSpectrumsData - unfiltered edgeSpectrumDataRow list
  * @param edgeDataRows - list of edge data rows for spectrum data to be compared against
 */
-export const checkIfEdgeExists = (edgeSpectrumsData: EdgeSpectrumDataRow[], edgeDataRows: EdgeDataRow[]): void => {
+export const checkIfEdgesExist = (edgeSpectrumsData: EdgeSpectrumDataRow[], edgeDataRows: EdgeDataRow[]): void => {
   const edgeIDs: string[] = edgeDataRows.map(element => element.id)
   edgeSpectrumsData.forEach(spectrumData => {
     if (!edgeIDs.includes(spectrumData.edgeId)) {
@@ -127,7 +127,7 @@ export const buildNetwork = (nodesData: NodeDataRow[], edgesData: EdgeDataRow[],
   let nodes: Node[] = handleNode(nodesData)
 
   //check data integrity
-  checkIfEdgeExists(channelData, edgesData)
+  checkIfEdgesExist(channelData, edgesData)
 
   // pair directional edges in handle edge
   const edgesMerged = discardRedundantEdges(edgesData);
