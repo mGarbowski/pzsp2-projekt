@@ -130,9 +130,9 @@ export const buildNetwork = (nodesData: NodeDataRow[], edgesData: EdgeDataRow[],
   checkIfEdgesExist(channelData, edgesData)
 
   // pair directional edges in handle edge
-  const edgesMerged = discardRedundantEdges(edgesData);
+  const dataRowsMerged = discardRedundantEdges(edgesData);
 
-  const edges = edgesMerged.map((edgeData) => handleEdge(edgeData, nodes));
+  const edges = dataRowsMerged.map((edgeData) => handleEdge(edgeData, nodes));
 
   nodes = removeIsolatedNodes(nodes)
 
