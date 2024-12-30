@@ -9,7 +9,7 @@ import {
 export interface ChannelEdges {
   id: string;
   channel_label: string;
-  edges: string[];
+  edgeIds: string[];
   frequency: number;
   width: number;
 }
@@ -54,12 +54,12 @@ export const getChannel = (channelData: EdgeSpectrumDataRow, channels: ChannelEd
   const cur_id = channelData.channelId;
   const found = channels.find((channel) => channel.id == cur_id)
   if (found) {
-    found.edges.push(channelData.edgeId);
+    found.edgeIds.push(channelData.edgeId);
   } else {
     const channel: ChannelEdges = {
       id: channelData.channelId,
       channel_label: channelData.channel_label,
-      edges: [channelData.edgeId],
+      edgeIds: [channelData.edgeId],
       frequency: channelData.frequency,
       width: channelData.channelWidth
     }
@@ -72,7 +72,7 @@ export const getChannel = (channelData: EdgeSpectrumDataRow, channels: ChannelEd
  * Reads through parsed csv data and creates channel objects from it
  *
  * @param channelData - all EdgeSpectrumDataRow rows
- * @returns - list of channel objects
+ * @returns - list of channelEdges objects
 */
 export const groupSpectrumByChannel = (channelData: EdgeSpectrumDataRow[]): ChannelEdges[] => {
   let channel_edges: ChannelEdges[] = [];
@@ -92,7 +92,7 @@ export const groupSpectrumByChannel = (channelData: EdgeSpectrumDataRow[]): Chan
 export const changeChannelEdgesToNodes = (channel: ChannelEdges, edges: Edge[]): string[] =>{
   let channelEdges: Edge[] = []
   try{
-    channelEdges = getEdgesFromChannel(channel.edges, edges)
+    channelEdges = getEdgesFromChannel(channel.edgeIds, edges)
   }
   catch{
     // throw more descriptive error
