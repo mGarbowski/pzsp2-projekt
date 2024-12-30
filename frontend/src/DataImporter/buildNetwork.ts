@@ -100,12 +100,12 @@ export const handleNode = (nodesData: NodeDataRow[]): Node[] => {
 /**
  * Check if edge id from edgeSpectrum data row exists in EdgeDataRow
  *
- * @param edgeSpectrumData - unfiltered edgeSpectrumDataRow list
+ * @param edgeSpectrumsData - unfiltered edgeSpectrumDataRow list
  * @param edgeDataRows - list of edge data rows for spectrum data to be compared against
 */
-export const checkIfEdgeExists = (edgeSpectrumData: EdgeSpectrumDataRow[], edgeDataRows: EdgeDataRow[]): void => {
+export const checkIfEdgeExists = (edgeSpectrumsData: EdgeSpectrumDataRow[], edgeDataRows: EdgeDataRow[]): void => {
   const edgeIDs: string[] = edgeDataRows.map(element => element.id)
-  edgeSpectrumData.forEach(spectrumData => {
+  edgeSpectrumsData.forEach(spectrumData => {
     if (!edgeIDs.includes(spectrumData.edgeId)) {
       throw new Error(`Edge does not exists: ${JSON.stringify(spectrumData)} edge id does not appear in EdgeDataRow`);
     }
