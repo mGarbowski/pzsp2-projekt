@@ -29,7 +29,7 @@ export interface ChannelEdges {
 */
 export const removeRedundantSpectrumRows = (edgeSpectrumData: EdgeSpectrumDataRow[], edges: Edge[]):EdgeSpectrumDataRow[] =>{
   const channelMerged: EdgeSpectrumDataRow[] = []
-  const edgeIDs: string[] = edges.map(element => element.id)
+  const edgeIDs: string[] = edges.map(edge => edge.id)
   for (const channel of edgeSpectrumData) {
     if (edgeIDs.includes(channel.edgeId)) {
       channelMerged.push(channel)
@@ -76,8 +76,8 @@ export const getChannel = (channelData: EdgeSpectrumDataRow, channels: ChannelEd
 */
 export const groupSpectrumByChannel = (channelData: EdgeSpectrumDataRow[]): ChannelEdges[] => {
   let channel_edges: ChannelEdges[] = [];
-  for (const element of channelData) {
-    channel_edges = getChannel(element, channel_edges);
+  for (const spectrumDataRow of channelData) {
+    channel_edges = getChannel(spectrumDataRow, channel_edges);
   }
   return channel_edges
 }
@@ -158,7 +158,7 @@ export const getEdgesFromChannel = (edgeIds: string[], edges: Edge[]): Edge[] =>
     return []
   }
   // get list of edges
-  const channelEdges = edgeIds.map(edgeID => edges.find(element => element.id == edgeID));
+  const channelEdges = edgeIds.map(edgeID => edges.find(edge => edge.id == edgeID));
   // if edge cannot be found,type script placed undefined in the list
   if (!channelEdges.includes(undefined)) {
     return channelEdges as Edge[]
