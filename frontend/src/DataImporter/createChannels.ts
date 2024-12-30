@@ -6,7 +6,7 @@ import {
   EdgeSpectrumDataRow
 } from "./parseCsv"
 
-export interface ChannelEdge {
+export interface ChannelEdges {
   id: string;
   channel_label: string;
   edges: string[];
@@ -48,15 +48,15 @@ export const removeRedundantSpectrumRows = (edgeSpectrumData: EdgeSpectrumDataRo
  *
  * @param channelData - single EdgeSpectrumDataRow row
  * @param channels - a list of all created Channels
- * @returns updated ChannelEdge list
+ * @returns updated ChannelEdges list
 */
-export const getChannel = (channelData: EdgeSpectrumDataRow, channels: ChannelEdge[]): ChannelEdge[] => {
+export const getChannel = (channelData: EdgeSpectrumDataRow, channels: ChannelEdges[]): ChannelEdges[] => {
   const cur_id = channelData.channelId;
   const found = channels.find((channel) => channel.id == cur_id)
   if (found) {
     found.edges.push(channelData.edgeId);
   } else {
-    const channel: ChannelEdge = {
+    const channel: ChannelEdges = {
       id: channelData.channelId,
       channel_label: channelData.channel_label,
       edges: [channelData.edgeId],
@@ -74,8 +74,8 @@ export const getChannel = (channelData: EdgeSpectrumDataRow, channels: ChannelEd
  * @param channelData - all EdgeSpectrumDataRow rows
  * @returns - list of channel objects
 */
-export const groupSpectrumByChannel = (channelData: EdgeSpectrumDataRow[]): ChannelEdge[] => {
-  let channel_edges: ChannelEdge[] = [];
+export const groupSpectrumByChannel = (channelData: EdgeSpectrumDataRow[]): ChannelEdges[] => {
+  let channel_edges: ChannelEdges[] = [];
   for (const element of channelData) {
     channel_edges = getChannel(element, channel_edges);
   }
@@ -85,11 +85,11 @@ export const groupSpectrumByChannel = (channelData: EdgeSpectrumDataRow[]): Chan
 /**
  * Replaces a list of edge ids with a list of node ids for a given channel
  *
- * @param channel - ChannelEdge object containing a list of edge ids
+ * @param channel - ChannelEdges object containing a list of edge ids
  * @param edges - a list of edges in the network, needed to get node ids
  * @returns - a list of Node ids that channel goes though
 */
-export const changeChannelEdgesToNodes = (channel: ChannelEdge, edges: Edge[]): string[] =>{
+export const changeChannelEdgesToNodes = (channel: ChannelEdges, edges: Edge[]): string[] =>{
   let channelEdges: Edge[] = []
   try{
     channelEdges = getEdgesFromChannel(channel.edges, edges)
