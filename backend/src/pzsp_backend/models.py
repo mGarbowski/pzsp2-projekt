@@ -36,17 +36,21 @@ class Network(BaseModel):
     nodes: list[Node]
     edges: list[Edge]
 
+    def find_edge_by_node_ids(self, node1_id: str, node2_id: str) -> Edge:
+        """Find an edge by node ids"""
+        for edge in self.edges:
+            if edge.node1_id == node1_id and edge.node2_id == node2_id:
+                return edge
+            elif edge.node1_id == node2_id and edge.node2_id == node1_id:
+                return edge
+        raise ValueError(f"Edge between {node1_id} and {node2_id} not found")
+
 
 class Channel(BaseModel):
     """Represents a channel in the network"""
 
-    edge: Edge
+    edges: list[Edge]
     slice_range: SliceRange
-
-    @classmethod
-    def from_cbc_result(cls, result: SolverResults) -> Channel:
-        # TODO: implement
-        raise NotImplementedError()
 
 
 class Slice(BaseModel):

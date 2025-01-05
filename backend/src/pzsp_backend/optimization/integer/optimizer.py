@@ -1,8 +1,9 @@
 from typing import Any, cast
 import pyomo.environ as pyo
 from attrs import define
+from pyomo.opt import Solution, SolverResults
 
-from src.pzsp_backend.models import Channel, ChannelDescription, Edge
+from src.pzsp_backend.models import Channel, ChannelDescription, Edge, SliceRange
 from src.pzsp_backend.optimization.base import Optimizer
 from src.pzsp_backend.optimization.integer.abstract import model
 
@@ -21,7 +22,7 @@ class IntegerProgrammingOptimizer(Optimizer):
         model = self.instantiate_model(description)
         solver = pyo.SolverFactory("cbc")
         result = solver.solve(model, tee=self.debug)
-        return Channel.from_solver_result(result)
+        return self.channel_from_solved_instance(result)
 
     def _generate_solver_input(self, description: ChannelDescription):
         """Transforms the network object into a dictionary that can be later
@@ -60,3 +61,27 @@ class IntegerProgrammingOptimizer(Optimizer):
         data = self._generate_solver_input(description)
         instance = model.create_instance(data)
         return cast(pyo.ConcreteModel, instance)
+
+    def validate_solver_result(self, result: SolverResults):
+        """Checks whether the solver exited succesfully and found a solution
+        and whines if it didn't"""
+        if status := result.solver.status != "ok":
+            # TODO: dump solver output
+            raise RuntimeError(f"Solver terminated unsuccesfully: {status}")
+
+        term_cond = str(result.solver.termination_condition).lower()
+        if "optimal" not in term_cond:
+            raise RuntimeError(
+                f"No optimal solution found. Solver termination condition: {term_cond}"
+            )
+
+    def channel_from_solved_instance(self, model: pyo.ConcreteModel) -> Channel:
+        """Creates a channel object from the solver's result"""
+        edge_node_ids: list[tuple[str, str]] = [e for e in model.Edges]  # type: ignore
+        edges = [self.network.find_edge_by_node_ids(*ids) for ids in edge_node_ids]
+
+        sr = SliceRange(
+            slices=[]
+        )  # TODO: create the object after refactoring slice structure
+
+        return Channel(edges=edges, slice_range=sr)
