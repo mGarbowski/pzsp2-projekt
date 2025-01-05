@@ -60,9 +60,17 @@ export const OptimizerForm = () => {
   }
 
   useEffect(() => {
+    if (!lastMessage) {
+      return;
+    }
+
     const response = JSON.parse(JSON.parse(lastMessage!)) as OptimizerResponse;
     console.info(response);
-  }, [lastMessage]);
+    if (response.type === "success") {
+      // TODO setNetwork(...)
+      setHighlightedChannelId(response.channel.id);
+    }
+  }, [lastMessage, setHighlightedChannelId]);
 
   const mockHandleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
