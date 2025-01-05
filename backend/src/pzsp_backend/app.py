@@ -7,6 +7,8 @@ from starlette.websockets import WebSocket, WebSocketDisconnect, WebSocketState
 
 from src.pzsp_backend.optimization.integer.model_demo import ModelParams, solve_instance
 
+from src.pzsp_backend.dtos import Network
+
 app = FastAPI()
 
 app.add_middleware(
@@ -51,3 +53,10 @@ async def websocket_endpoint(websocket: WebSocket):
         if websocket.client_state != WebSocketState.DISCONNECTED:
             await websocket.close()
         print("Finished")
+
+@app.post("/network/upload")
+def test_network_upload(network: Network):
+    print("Network: ", network)
+
+    print("Node N1", network.nodes["N1"].latitude)
+

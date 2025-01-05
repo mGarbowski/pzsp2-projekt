@@ -39,6 +39,19 @@ export const DataImporterPage = () => {
     }
   }, [nodesCsv, edgesCsv, spectrumCsv, setNetwork]);
 
+  const handleTestUpload = () => {
+    fetch("http://localhost:8000/network/upload", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+      },
+      body: JSON.stringify(demoNetwork),
+    }).then((response) => {
+      console.log(response);
+    });
+  }
+
   return (
     <ImporterOuterContainer>
       <Card className="mx-4 mb-16 w-min-9/12">
@@ -58,6 +71,7 @@ export const DataImporterPage = () => {
             <p className="font-bold">Spektrum kanały</p>
             <CsvUpload onUpload={(data) => setSpectrumCsv(data)} />
           </ImporterUploadContainer>
+          <button onClick={handleTestUpload}>Test upload</button>
           <p className="text-center font-bold text-green-200">{message}</p> {/* FIXME: should be red when incorrect data is loaded */}
         </CardContent>
 
