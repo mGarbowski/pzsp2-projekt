@@ -1,4 +1,4 @@
-import {Channel} from "../NetworkModel/network.ts";
+import {Channel} from "../NetworkModel/network";
 
 export const generateDemoReport = () => {
   return "Channel ID,Slice #1,Slice #2,Slice #3,Slice #4,Slice #5\n" +
@@ -16,8 +16,8 @@ export const generateChannelsReport = (channels: Channel[]): string => {
 
   const generateChannelRow = (channel: Channel) : string => {
     let row = ""
-    const beginning_freq = channel.frequency*100_000 - channel.width/2
-    const ending_freq = channel.frequency*100_000 + channel.width/2
+    const beginning_freq = channel.frequency*100_000 - channel.width*100/2
+    const ending_freq = channel.frequency*100_000 + channel.width*100/2
     for (let slice_begin = LOWEST_BEGINNING_FREQUENCY; slice_begin <= HIGHEST_BEGINNING_FREQUENCY; slice_begin += 625 ){
       if (slice_begin < ending_freq && slice_begin >= beginning_freq){
         row += ",1"
