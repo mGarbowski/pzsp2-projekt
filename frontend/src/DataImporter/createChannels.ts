@@ -1,6 +1,6 @@
 import {
-  Channel,
-  Edge
+  ImportedChannel,
+  ImportedEdge
 } from "./buildNetwork";
 import {
   EdgeSpectrumDataRow
@@ -27,7 +27,7 @@ export interface ChannelEdges {
  * @param edges - non-redundant Edge list
  * @returns - non-redundant EdgeSpectrumDataRow list
 */
-export const removeRedundantSpectrumRows = (edgeSpectrumData: EdgeSpectrumDataRow[], edges: Edge[]):EdgeSpectrumDataRow[] =>{
+export const removeRedundantSpectrumRows = (edgeSpectrumData: EdgeSpectrumDataRow[], edges: ImportedEdge[]):EdgeSpectrumDataRow[] =>{
   const channelMerged: EdgeSpectrumDataRow[] = []
   const edgeIDs: string[] = edges.map(edge => edge.id)
   for (const channel of edgeSpectrumData) {
@@ -89,8 +89,8 @@ export const groupSpectrumByChannel = (channelData: EdgeSpectrumDataRow[]): Chan
  * @param edges - a list of edges in the network, needed to get node ids
  * @returns - a list of Node ids that channel goes though
 */
-export const changeChannelEdgesToNodes = (channel: ChannelEdges, edges: Edge[]): string[] =>{
-  let channelEdges: Edge[] = []
+export const changeChannelEdgesToNodes = (channel: ChannelEdges, edges: ImportedEdge[]): string[] =>{
+  let channelEdges: ImportedEdge[] = []
   try{
     channelEdges = getEdgesFromChannel(channel.edgeIds, edges)
   }
@@ -118,7 +118,7 @@ export const changeChannelEdgesToNodes = (channel: ChannelEdges, edges: Edge[]):
  * @param channelEdges - a list of edges which nodes should be arranged into a path
  * @returns - a list of strings containing node ids arranged into a path
 */
-export const arrangeEdgesNodesIntoPath = (channelEdges: Edge[]): string[] =>{
+export const arrangeEdgesNodesIntoPath = (channelEdges: ImportedEdge[]): string[] =>{
   const max_attempts = channelEdges.length
   let attempts = 0
   const nodeIdList = [channelEdges[0]!.node1Id, channelEdges[0]!.node2Id]
@@ -153,7 +153,7 @@ export const arrangeEdgesNodesIntoPath = (channelEdges: Edge[]): string[] =>{
  * @param edges - a list of edges in the network, needed to get node ids
  * @returns - a list of Edge objects
 */
-export const getEdgesFromChannel = (edgeIds: string[], edges: Edge[]): Edge[] => {
+export const getEdgesFromChannel = (edgeIds: string[], edges: ImportedEdge[]): ImportedEdge[] => {
   if(edgeIds.length == 0){
     return []
   }
@@ -161,16 +161,16 @@ export const getEdgesFromChannel = (edgeIds: string[], edges: Edge[]): Edge[] =>
   const channelEdges = edgeIds.map(edgeID => edges.find(edge => edge.id == edgeID));
   // if edge cannot be found,type script placed undefined in the list
   if (!channelEdges.includes(undefined)) {
-    return channelEdges as Edge[]
+    return channelEdges as ImportedEdge[]
   }
   throw new Error(`Edge does not exist`)
 }
 
-export const createChannels = (channelData: EdgeSpectrumDataRow[], edges: Edge[]): Channel[]=>{
+export const createChannels = (channelData: EdgeSpectrumDataRow[], edges: ImportedEdge[]): ImportedChannel[]=>{
   channelData = removeRedundantSpectrumRows(channelData, edges)
   const channelEdges = groupSpectrumByChannel(channelData);
 
-  const channels: Channel[] = channelEdges.map(channelE => {
+  return channelEdges.map(channelE => {
     return {
       id: channelE.id,
       width: channelE.width,
@@ -178,8 +178,5 @@ export const createChannels = (channelData: EdgeSpectrumDataRow[], edges: Edge[]
       channel_label: channelE.channel_label,
       nodes: changeChannelEdgesToNodes(channelE, edges)
     }
-  }
-  )
-
-  return channels
+  })
 }

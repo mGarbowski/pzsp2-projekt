@@ -1,11 +1,11 @@
 import {
   buildNetwork,
-  Edge,
+  ImportedEdge,
   handleEdge,
   handleNode,
   discardRedundantEdges,
-  Network,
-  Node,
+  ImportedNetwork,
+  ImportedNode,
   removeIsolatedNodes,
   checkIfEdgesExist
 } from "./buildNetwork";
@@ -17,7 +17,7 @@ describe('Nodes', () => {
     it('should create 1 node', () => {
       const csvData = 'LOCATION,LATITUDE,LONGITUDE\n1,34.05,-118.25\n';
       const parsed = parseNodes(csvData);
-      const expected: Node[] = [
+      const expected: ImportedNode[] = [
         {id: '1', latitude: 34.05, longitude: -118.25, neighbors: [],}
       ]
 
@@ -27,7 +27,7 @@ describe('Nodes', () => {
     it('should create 2 nodes', () => {
       const csvData = 'LOCATION,LATITUDE,LONGITUDE\n1,34.05,-118.25\n2,40.71,-74.01\n';
       const parsed = parseNodes(csvData);
-      const expected: Node[] = [
+      const expected: ImportedNode[] = [
         {id: '1', latitude: 34.05, longitude: -118.25, neighbors: [],},
         {id: '2', latitude: 40.71, longitude: -74.01, neighbors: [],}
       ]
@@ -36,15 +36,15 @@ describe('Nodes', () => {
   })
   describe("removeIsolatedNodes",()=>{
     it("should remove nodes without neighbors from list", () =>{
-      const edge: Edge = {id:'1', node1Id:'1', node2Id:'3', totalCapacity:"4.8Thz", provisionedCapacity:10}
-      const nodes: Node[] = [
+      const edge: ImportedEdge = {id:'1', node1Id:'1', node2Id:'3', totalCapacity:"4.8Thz", provisionedCapacity:10}
+      const nodes: ImportedNode[] = [
         {id: '1', latitude: 34.05, longitude: -118.25, neighbors: [],},
         {id: '2', latitude: 40.71, longitude: -74.01, neighbors: [],},
         {id: '3', latitude: 12.71, longitude: -60.01, neighbors: [],}
       ]
       nodes[0].neighbors.push({node: nodes[2] , edge})
       nodes[2].neighbors.push({node: nodes[1] , edge})
-      const expected: Node[] = []
+      const expected: ImportedNode[] = []
       expected.push(nodes[0])
       expected.push(nodes[2])
 
@@ -63,14 +63,14 @@ describe("Edges", () => {
       const csvData_e = 'id,Endpoint 1,Endpoint 2,Total capacity,Provisioned capacity (%)\n1,1,2,4.8 THz,50';
       const parsed_e = parseEdges(csvData_e)
 
-      const edge_e: Edge = {id: '1', node1Id: '1', node2Id: '2', totalCapacity: '4.8 THz', provisionedCapacity: 50,}
-      const node_1_e: Node = {id: '1', latitude: 34.05, longitude: -118.25, neighbors: [],}
-      const node_2_e: Node = {id: '2', latitude: 40.71, longitude: -74.01, neighbors: [],}
+      const edge_e: ImportedEdge = {id: '1', node1Id: '1', node2Id: '2', totalCapacity: '4.8 THz', provisionedCapacity: 50,}
+      const node_1_e: ImportedNode = {id: '1', latitude: 34.05, longitude: -118.25, neighbors: [],}
+      const node_2_e: ImportedNode = {id: '2', latitude: 40.71, longitude: -74.01, neighbors: [],}
 
       node_1_e.neighbors.push({node: node_2_e, edge: edge_e})
       node_2_e.neighbors.push({node: node_1_e, edge: edge_e})
 
-      const expected_nodes: Node[] = [node_1_e, node_2_e,]
+      const expected_nodes: ImportedNode[] = [node_1_e, node_2_e,]
 
       expect(handleEdge(parsed_e[0], nodes)).toEqual(edge_e)
       expect(nodes).toEqual(expected_nodes)
@@ -166,19 +166,19 @@ describe("Build Network", () => {
       {id: '2', latitude: 54.3593940734863, longitude: 18.645393371582},
     ]
     it("should merge edges before adding neighbors to nodes", () => {
-      const expectedEdges: Edge[] = [
+      const expectedEdges: ImportedEdge[] = [
         {id: '1', node1Id: '1', node2Id: '2', totalCapacity: '4.8 THz', provisionedCapacity: 10,},
       ]
 
-      const expectedNode1: Node = {id: '1', latitude: 54.40027054, longitude: 18.58406944, neighbors: []}
-      const expectedNode2: Node = {id: '2', latitude: 54.3593940734863, longitude: 18.645393371582, neighbors: []}
+      const expectedNode1: ImportedNode = {id: '1', latitude: 54.40027054, longitude: 18.58406944, neighbors: []}
+      const expectedNode2: ImportedNode = {id: '2', latitude: 54.3593940734863, longitude: 18.645393371582, neighbors: []}
       expectedNode1.neighbors.push({node: expectedNode2, edge: expectedEdges[0]})
       expectedNode2.neighbors.push({node: expectedNode1, edge: expectedEdges[0]})
-      const expectedNodes: Node[] = [expectedNode1, expectedNode2]
+      const expectedNodes: ImportedNode[] = [expectedNode1, expectedNode2]
 
       const channelData: EdgeSpectrumDataRow[] = []
 
-      const network: Network = buildNetwork(nodes, edges, channelData)
+      const network: ImportedNetwork = buildNetwork(nodes, edges, channelData)
       expect(network.nodes).toEqual(expectedNodes)
       expect(network.edges).toEqual(expectedEdges)
 

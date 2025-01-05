@@ -9,7 +9,7 @@ import {
   parseEdgeSpectrum
 } from "./parseCsv"
 import {
-  Edge
+  ImportedEdge
 } from "./buildNetwork"
 
 
@@ -83,7 +83,7 @@ describe('Channels', () => {
         {edgeId: '1', channelId: '1', frequency: 195, channelWidth: 50, channel_label: "CH-1"},
         {edgeId: '2', channelId: '1', frequency: 195, channelWidth: 50, channel_label: "CH-1"}
       ]
-      const edges: Edge[] = [
+      const edges: ImportedEdge[] = [
         {id: '1', node1Id: '1', node2Id: '2', totalCapacity: '4.8 THz', provisionedCapacity: 10}
       ]
 
@@ -98,7 +98,7 @@ describe('Channels', () => {
         {edgeId: '1', channelId: '1', frequency: 195, channelWidth: 50, channel_label: "CH-1"},
         {edgeId: '2', channelId: '3', frequency: 195, channelWidth: 50, channel_label: "CH-1"}
       ]
-      const edges: Edge[] = [
+      const edges: ImportedEdge[] = [
         {id: '1', node1Id: '1', node2Id: '2', totalCapacity: '4.8 THz', provisionedCapacity: 10},
         {id: '2', node1Id: '1', node2Id: '3', totalCapacity: '4.8 THz', provisionedCapacity: 10}
       ]
@@ -113,7 +113,7 @@ describe('Channels', () => {
 
   describe("changeChannelEdgesToNodes", () => {
     it("Should return channel with a list of nodes instead of edges", () => {
-      const edges: Edge[] = [
+      const edges: ImportedEdge[] = [
         {id: '1', node1Id: '1', node2Id: '2', totalCapacity: '4.8 THz', provisionedCapacity: 10,},
         {id: '2', node1Id: '2', node2Id: '3', totalCapacity: '4.8 THz', provisionedCapacity: 17,},
       ]
@@ -123,19 +123,19 @@ describe('Channels', () => {
       expect(changeChannelEdgesToNodes(channel, edges)).toEqual(expectedNodes)
     })
     it("Should throw an error if there are no edges in the network", () => {
-      const edges: Edge[] = []
+      const edges: ImportedEdge[] = []
       const channel: ChannelEdges = {id: '1', channel_label: 'CH-1', width: 50, frequency: 195, edgeIds: ['1', '2']}
       expect(() => changeChannelEdgesToNodes(channel, edges)).toThrow("Edge does not exist")
     })
     it("should throw an error if channel has a non existent edge", () => {
-      const edges: Edge[] = [
+      const edges: ImportedEdge[] = [
         {id: '3', node1Id: '1', node2Id: '2', totalCapacity: '4.8 THz', provisionedCapacity: 10,},
       ]
       const channel: ChannelEdges = {id: '1', channel_label: 'CH-1', width: 50, frequency: 195, edgeIds: ['1', '2']}
       expect(() => changeChannelEdgesToNodes(channel, edges)).toThrow("Edge does not exist")
     })
     it("Should handle edges with out of order nodes", () => {
-      const edges: Edge[] = [
+      const edges: ImportedEdge[] = [
         {id: '1', node1Id: '1', node2Id: '2', totalCapacity: '4.8 THz', provisionedCapacity: 10,},
         {id: '2', node1Id: '3', node2Id: '4', totalCapacity: '4.8 THz', provisionedCapacity: 17,},
         {id: '3', node1Id: '2', node2Id: '3', totalCapacity: '4.8 THz', provisionedCapacity: 17,},
@@ -147,7 +147,7 @@ describe('Channels', () => {
       expect(changeChannelEdgesToNodes(channel, edges)).toEqual(expectedNodes)
     })
     it("Should handle out of order edges", () => {
-      const edges: Edge[] = [
+      const edges: ImportedEdge[] = [
         {id: '1', node1Id: '1', node2Id: '2', totalCapacity: '4.8 THz', provisionedCapacity: 10,},
         {id: '2', node1Id: '2', node2Id: '3', totalCapacity: '4.8 THz', provisionedCapacity: 17,},
         {id: '3', node1Id: '3', node2Id: '4', totalCapacity: '4.8 THz', provisionedCapacity: 17,},
@@ -158,7 +158,7 @@ describe('Channels', () => {
       expect(changeChannelEdgesToNodes(channel, edges)).toEqual(expectedNodes)
     })
     it("Should handle out of order edges 2", () => {
-      const edges: Edge[] = [
+      const edges: ImportedEdge[] = [
         {id: '1', node1Id: '1', node2Id: '2', totalCapacity: '4.8 THz', provisionedCapacity: 10,},
         {id: '2', node1Id: '2', node2Id: '3', totalCapacity: '4.8 THz', provisionedCapacity: 17,},
         {id: '3', node1Id: '3', node2Id: '4', totalCapacity: '4.8 THz', provisionedCapacity: 17,},
@@ -171,7 +171,7 @@ describe('Channels', () => {
       expect(changeChannelEdgesToNodes(channel, edges)).toEqual(expectedNodes)
     })
     it("Should ignore the edge that can't be connected", () => {
-      const edges: Edge[] = [
+      const edges: ImportedEdge[] = [
         {id: '1', node1Id: '1', node2Id: '2', totalCapacity: '4.8 THz', provisionedCapacity: 10,},
         {id: '2', node1Id: '2', node2Id: '3', totalCapacity: '4.8 THz', provisionedCapacity: 17,},
         {id: '3', node1Id: '3', node2Id: '4', totalCapacity: '4.8 THz', provisionedCapacity: 17,},

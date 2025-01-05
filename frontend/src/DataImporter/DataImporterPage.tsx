@@ -5,7 +5,8 @@ import { CsvUpload } from "./CsvUpload.tsx";
 import { parseEdges, parseEdgeSpectrum, parseNodes } from "./parseCsv.ts";
 import { buildNetwork } from "./buildNetwork.ts";
 import { useNetwork } from "../NetworkModel/NetworkContext.tsx";
-import { demoNetwork } from "../NetworkModel/demoNetwork.ts";
+// import { demoNetwork } from "../NetworkModel/demoNetwork.ts";
+import {convertToRenderable} from "../NetworkModel/convertToRenderable.ts";
 
 export const DataImporterPage = () => {
   const { setNetwork } = useNetwork();
@@ -18,9 +19,6 @@ export const DataImporterPage = () => {
   useEffect(() => {
     if (nodesCsv && edgesCsv && spectrumCsv) {
       try {
-        setNetwork(demoNetwork);
-        console.log("Set demo network");
-
         const nodesData = parseNodes(nodesCsv);
         const edgesData = parseEdges(edgesCsv);
         const spectrumData = parseEdgeSpectrum(spectrumCsv);
@@ -29,6 +27,7 @@ export const DataImporterPage = () => {
         console.log("Spectrum", spectrumData);
         const network = buildNetwork(nodesData, edgesData, spectrumData);
         console.log("Network", network);
+        setNetwork(convertToRenderable(network))
         setMessage("Dane zaimportowane pomyślnie");
       } catch (e) {
         console.error(e);
