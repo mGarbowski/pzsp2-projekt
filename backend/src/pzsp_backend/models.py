@@ -45,3 +45,23 @@ class Network(BaseModel):
             elif edge.node1Id == node2_id and edge.node2Id == node1_id:
                 return edge
         raise ValueError(f"Edge between {node1_id} and {node2_id} not found")
+
+
+class OptimisationRequest(BaseModel):
+    """Optimisation request model"""
+
+    network: Network
+    source: str
+    target: str
+    bandwidth: float
+    optimizer: str
+    distanceWeight: float
+    evenLoadWeight: float
+
+
+class OptimisationResponse(BaseModel):
+    """Optimisation response model"""
+
+    type: str
+    channel: Channel | None
+    message: str | None
