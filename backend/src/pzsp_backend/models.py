@@ -1,4 +1,6 @@
+from __future__ import annotations
 from pydantic import BaseModel
+from geopy import distance
 
 
 class Edge(BaseModel):
@@ -18,6 +20,14 @@ class Node(BaseModel):
     latitude: float
     longitude: float
     neighbors: list[str]
+
+    def location(self) -> tuple[float, float]:
+        """Returns tuple (self.latitude, self.longitude)"""
+        return self.latitude, self.longitude
+
+    def distance(self, other: Node) -> float:
+        """Calculates the distance between two nodes in a straight line in kilometers"""
+        return distance.geodesic(self.location(), other.location()).km
 
 
 class Channel(BaseModel):

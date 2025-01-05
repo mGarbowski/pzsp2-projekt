@@ -5,7 +5,7 @@
 groups = ["default", "lint", "test"]
 strategy = ["inherit_metadata"]
 lock_version = "4.5.0"
-content_hash = "sha256:306cdc317609e4b127a772b56de465436de79ffa752a4528cd494280018408b3"
+content_hash = "sha256:5a163708ab9b22aa0931d309bca26a9879be4153766cdd8600ad160258abc800"
 
 [[metadata.targets]]
 requires_python = "==3.12.*"
@@ -39,20 +39,6 @@ dependencies = [
 files = [
     {file = "anyio-4.7.0-py3-none-any.whl", hash = "sha256:ea60c3723ab42ba6fff7e8ccb0488c898ec538ff4df1f1d5e642c3601d07e352"},
     {file = "anyio-4.7.0.tar.gz", hash = "sha256:2f834749c602966b7d456a7567cafcb309f96482b5081d14ac93ccd457f9dd48"},
-]
-
-[[package]]
-name = "attrs"
-version = "24.2.0"
-requires_python = ">=3.7"
-summary = "Classes Without Boilerplate"
-groups = ["default"]
-dependencies = [
-    "importlib-metadata; python_version < \"3.8\"",
-]
-files = [
-    {file = "attrs-24.2.0-py3-none-any.whl", hash = "sha256:81921eb96de3191c8258c199618104dd27ac608d9366f5e35d011eae1867ede2"},
-    {file = "attrs-24.2.0.tar.gz", hash = "sha256:5cfb1b9148b5b086569baec03f20d7b6bf3bcacc9a42bebf87ffaaca362f6346"},
 ]
 
 [[package]]
@@ -285,6 +271,31 @@ dependencies = [
 files = [
     {file = "flake8-7.1.1-py2.py3-none-any.whl", hash = "sha256:597477df7860daa5aa0fdd84bf5208a043ab96b8e96ab708770ae0364dd03213"},
     {file = "flake8-7.1.1.tar.gz", hash = "sha256:049d058491e228e03e67b390f311bbf88fce2dbaa8fa673e7aea87b7198b8d38"},
+]
+
+[[package]]
+name = "geographiclib"
+version = "2.0"
+requires_python = ">=3.7"
+summary = "The geodesic routines from GeographicLib"
+groups = ["default"]
+files = [
+    {file = "geographiclib-2.0-py3-none-any.whl", hash = "sha256:6b7225248e45ff7edcee32becc4e0a1504c606ac5ee163a5656d482e0cd38734"},
+    {file = "geographiclib-2.0.tar.gz", hash = "sha256:f7f41c85dc3e1c2d3d935ec86660dc3b2c848c83e17f9a9e51ba9d5146a15859"},
+]
+
+[[package]]
+name = "geopy"
+version = "2.4.1"
+requires_python = ">=3.7"
+summary = "Python Geocoding Toolbox"
+groups = ["default"]
+dependencies = [
+    "geographiclib<3,>=1.52",
+]
+files = [
+    {file = "geopy-2.4.1-py3-none-any.whl", hash = "sha256:ae8b4bc5c1131820f4d75fce9d4aaaca0c85189b3aa5d64c3dcaf5e3b7b882a7"},
+    {file = "geopy-2.4.1.tar.gz", hash = "sha256:50283d8e7ad07d89be5cb027338c6365a32044df3ae2556ad3f52f4840b3d0d1"},
 ]
 
 [[package]]
