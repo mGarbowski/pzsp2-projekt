@@ -7,7 +7,7 @@ from starlette.websockets import WebSocket, WebSocketDisconnect, WebSocketState
 
 from src.pzsp_backend.optimization.integer.model_demo import ModelParams, solve_instance
 
-from src.pzsp_backend.models import Network
+from src.pzsp_backend.models import Network, OptimisationRequest, OptimisationResponse
 
 app = FastAPI()
 
@@ -34,7 +34,7 @@ def get_message_length(msg: Message):
     return {"length": len(msg.message)}
 
 
-@app.websocket("/ws/optimizer")
+@app.websocket("/ws/demo-optimizer")
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
     try:
@@ -73,6 +73,30 @@ async def test_network_upload_ws(websocket: WebSocket):
         print("Network: ", network)
 
         await websocket.send_json(network.channels["C2"].model_dump_json())
+    except WebSocketDisconnect:
+        print("Client disconnected")
+    finally:
+        if websocket.client_state != WebSocketState.DISCONNECTED:
+            await websocket.close()
+        print("Finished")
+
+@app.websocket("/ws/optimizer")
+async def optimizer_endpoint(websocket: WebSocket):
+    await websocket.accept()
+    try:
+        request = await websocket.receive_json()
+        request = OptimisationRequest.model_validate(request)
+
+        print("Request: ", request)
+
+        network = request.network
+        response = OptimisationResponse(
+            type="success",
+            channel=network.channels["C2"],
+            message="Optimizer found a solution",
+        )
+
+        await websocket.send_json(response.model_dump_json())
     except WebSocketDisconnect:
         print("Client disconnected")
     finally:

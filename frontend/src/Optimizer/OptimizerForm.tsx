@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, {useEffect, useState} from "react"
 import styled from '@emotion/styled'
 import { Button } from "../Components/UI/button";
 import {
@@ -12,10 +12,13 @@ import { Input } from "../Components/UI/input";
 import { Label } from "../Components/UI/label";
 import { useNetwork } from "../NetworkModel/NetworkContext";
 import { Loader2 } from "lucide-react";
+import {useOptimizer} from "./useOptimizer.ts";
 
 
 export const OptimizerForm = () => {
   const { network, setHighlightedChannelId } = useNetwork();
+  const { sendQuery, lastMessage } = useOptimizer("ws://localhost:8000/ws/optimizer", (_) => false);
+
   const [counter, setCounter] = useState(0);
   const [startNode, setStartNode] = useState<string | null>(null);
   const [endNode, setEndNode] = useState<string | null>(null);
@@ -34,6 +37,33 @@ export const OptimizerForm = () => {
     setEvenLoadWeight(1);
   }
 
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    if (!network) {
+      return;
+    }
+
+    resetForm();
+    setLoading(true);
+
+    const request = {
+      network: network,
+      source: startNode,
+      target: endNode,
+      bandwidth: bandwidth,
+      optimizer: optimizer,
+      distanceWeight: distanceWeight,
+      evenLoadWeight: evenLoadWeight,
+    };
+    sendQuery(JSON.stringify(request));
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    const response = JSON.parse(JSON.parse(lastMessage));
+    console.info(response);
+  }, [lastMessage]);
+
   const mockHandleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     if (!network) {
@@ -51,7 +81,7 @@ export const OptimizerForm = () => {
     }, 3000);
   }
 
-  return <StyledForm onSubmit={mockHandleSubmit}>
+  return <StyledForm onSubmit={handleSubmit}>
     <Label>
       Węzeł startowy
       <StyledTextInput

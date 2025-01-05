@@ -53,7 +53,7 @@ class OptimisationRequest(BaseModel):
     network: Network
     source: str
     target: str
-    bandwidth: float
+    bandwidth: str
     optimizer: str
     distanceWeight: float
     evenLoadWeight: float
