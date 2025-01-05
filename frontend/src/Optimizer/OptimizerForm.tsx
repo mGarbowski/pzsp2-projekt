@@ -13,7 +13,6 @@ export const OptimizerForm = () => {
   const {network, setHighlightedChannelId} = useNetwork();
   const {sendQuery, lastMessage} = useOptimizer("ws://localhost:8000/ws/optimizer", (_) => false);
 
-  const [counter, setCounter] = useState(0);
   const [startNode, setStartNode] = useState<string | null>(null);
   const [endNode, setEndNode] = useState<string | null>(null);
   const [bandwidth, setBandwidth] = useState<string | null>(null);
