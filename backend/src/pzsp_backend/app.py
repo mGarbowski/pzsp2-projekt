@@ -1,4 +1,5 @@
 import asyncio
+import json
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -59,4 +60,22 @@ def test_network_upload(network: Network):
     print("Network: ", network)
 
     print("Node N1", network.nodes["N1"].latitude)
+
+@app.websocket("/ws/network/upload")
+async def test_network_upload_ws(websocket: WebSocket):
+    await websocket.accept()
+    try:
+        data = await websocket.receive_json()
+        print("Data: ", data)
+
+        network = Network.parse_obj(data)
+        print("Network: ", network)
+
+        await websocket.send_json(network.channels["C2"].json())
+    except WebSocketDisconnect:
+        print("Client disconnected")
+    finally:
+        if websocket.client_state != WebSocketState.DISCONNECTED:
+            await websocket.close()
+        print("Finished")
 

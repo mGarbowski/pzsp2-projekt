@@ -6,6 +6,8 @@ import { parseEdges, parseEdgeSpectrum, parseNodes } from "./parseCsv.ts";
 import { buildNetwork } from "./buildNetwork.ts";
 import { useNetwork } from "../NetworkModel/NetworkContext.tsx";
 import { demoNetwork } from "../NetworkModel/demoNetwork.ts";
+import {useOptimizer} from "../Optimizer/useOptimizer.ts";
+import {Channel} from "../NetworkModel/network.ts";
 
 export const DataImporterPage = () => {
   const { setNetwork } = useNetwork();
@@ -14,6 +16,8 @@ export const DataImporterPage = () => {
   const [nodesCsv, setNodesCsv] = useState<string | null>(null);
   const [edgesCsv, setEdgesCsv] = useState<string | null>(null);
   const [spectrumCsv, setSpectrumCsv] = useState<string | null>(null);
+
+  const {sendQuery, lastMessage} = useOptimizer("ws://localhost:8000/ws/network/upload", (msg) => msg === "DISCONNECT");
 
   useEffect(() => {
     if (nodesCsv && edgesCsv && spectrumCsv) {
@@ -40,16 +44,13 @@ export const DataImporterPage = () => {
   }, [nodesCsv, edgesCsv, spectrumCsv, setNetwork]);
 
   const handleTestUpload = () => {
-    fetch("http://localhost:8000/network/upload", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json",
-      },
-      body: JSON.stringify(demoNetwork),
-    }).then((response) => {
-      console.log(response);
-    });
+    sendQuery(JSON.stringify(demoNetwork));
+  }
+
+  const handleSeeLastMessage = () => {
+    const channel = JSON.parse(JSON.parse(lastMessage!)) as Channel;
+    console.log(channel);
+    console.log(typeof channel);
   }
 
   return (
@@ -72,6 +73,7 @@ export const DataImporterPage = () => {
             <CsvUpload onUpload={(data) => setSpectrumCsv(data)} />
           </ImporterUploadContainer>
           <button onClick={handleTestUpload}>Test upload</button>
+          <button onClick={handleSeeLastMessage}>See last message</button>
           <p className="text-center font-bold text-green-200">{message}</p> {/* FIXME: should be red when incorrect data is loaded */}
         </CardContent>
 
