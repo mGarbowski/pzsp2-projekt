@@ -1,15 +1,16 @@
 import styled from "@emotion/styled";
-import {Card, CardContent, CardHeader, CardTitle} from "../Components/UI/card.tsx";
-import {useEffect, useState} from "react";
-import {CsvUpload} from "./CsvUpload.tsx";
-import {parseEdges, parseEdgeSpectrum, parseNodes} from "./parseCsv.ts";
-import {buildNetwork} from "./buildNetwork.ts";
-import {useNetwork} from "../NetworkModel/NetworkContext.tsx";
-import {demoNetwork} from "../NetworkModel/demoNetwork.ts";
+import { Card, CardContent, CardHeader, CardTitle } from "../Components/UI/card.tsx";
+import { useEffect, useState } from "react";
+import { CsvUpload } from "./CsvUpload.tsx";
+import { parseEdges, parseEdgeSpectrum, parseNodes } from "./parseCsv.ts";
+import { buildNetwork } from "./buildNetwork.ts";
+import { useNetwork } from "../NetworkModel/NetworkContext.tsx";
+import { demoNetwork } from "../NetworkModel/demoNetwork.ts";
+import {convertToRenderable} from "../NetworkModel/convertToRenderable.ts";
 import {Button} from "../Components/UI/button.tsx";
 
 export const DataImporterPage = () => {
-  const {setNetwork} = useNetwork();
+  const { setNetwork } = useNetwork();
 
   const [message, setMessage] = useState<string | null>("");
   const [nodesCsv, setNodesCsv] = useState<string | null>(null);
@@ -27,6 +28,7 @@ export const DataImporterPage = () => {
         console.log("Spectrum", spectrumData);
         const network = buildNetwork(nodesData, edgesData, spectrumData);
         console.log("Network", network);
+        setNetwork(convertToRenderable(network))
         setMessage("Dane zaimportowane pomyślnie");
       } catch (e) {
         console.error(e);
@@ -36,7 +38,6 @@ export const DataImporterPage = () => {
       }
     }
   }, [nodesCsv, edgesCsv, spectrumCsv, setNetwork]);
-
 
   return (
     <ImporterOuterContainer>
@@ -51,17 +52,16 @@ export const DataImporterPage = () => {
 
           <ImporterUploadContainer>
             <p className="font-bold">Węzły</p>
-            <CsvUpload onUpload={(data) => setNodesCsv(data)}/>
+            <CsvUpload onUpload={(data) => setNodesCsv(data)} />
             <p className="font-bold">Zajętość</p>
-            <CsvUpload onUpload={(data) => setEdgesCsv(data)}/>
+            <CsvUpload onUpload={(data) => setEdgesCsv(data)} />
             <p className="font-bold">Spektrum kanały</p>
             <CsvUpload onUpload={(data) => setSpectrumCsv(data)}/>
             <Button className="mb-3" variant={"outline"} onClick={(_) => setNetwork(demoNetwork)}>
               Wczytaj demo
             </Button>
           </ImporterUploadContainer>
-          <p
-            className="text-center font-bold text-green-200">{message}</p> {/* FIXME: should be red when incorrect data is loaded */}
+          <p className="text-center font-bold text-green-200">{message}</p> {/* FIXME: should be red when incorrect data is loaded */}
         </CardContent>
 
       </Card>
