@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pydantic import BaseModel
+from pyomo.opt import SolverResults
 
 
 class Edge(BaseModel):
@@ -41,6 +42,11 @@ class Channel(BaseModel):
 
     edge: Edge
     slice_range: SliceRange
+
+    @classmethod
+    def from_cbc_result(cls, result: SolverResults) -> Channel:
+        # TODO: implement
+        raise NotImplementedError()
 
 
 class Slice(BaseModel):
