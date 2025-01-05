@@ -1,4 +1,4 @@
-import {generateChannelsReport} from "./generateReport";
+import {generateChannelsReport, HIGHEST_BEGINNING_FREQUENCY, LOWEST_BEGINNING_FREQUENCY} from "./generateReport";
 import {Channel} from "../NetworkModel/network"
 
 describe('calcNodeDistance', () => {
@@ -11,8 +11,6 @@ describe('calcNodeDistance', () => {
       frequency: 191.33125,
       width: 12.5
     }
-    const LOWEST_BEGINNING_FREQUENCY = 19132500
-    const HIGHEST_BEGINNING_FREQUENCY = 19608750
 
     let expectedReport = "Channel ID"
 

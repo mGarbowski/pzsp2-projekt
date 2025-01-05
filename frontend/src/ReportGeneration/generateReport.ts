@@ -1,5 +1,7 @@
 import {Channel} from "../NetworkModel/network";
 
+export const LOWEST_BEGINNING_FREQUENCY = 19_132_500
+export const HIGHEST_BEGINNING_FREQUENCY = 19_611_875
 export const generateDemoReport = () => {
   return "Channel ID,Slice #1,Slice #2,Slice #3,Slice #4,Slice #5\n" +
     "1234,1,0,0,0,0\n" +
@@ -11,8 +13,7 @@ export const generateDemoReport = () => {
 }
 
 export const generateChannelsReport = (channels: Channel[]): string => {
-  const LOWEST_BEGINNING_FREQUENCY = 19132500
-  const HIGHEST_BEGINNING_FREQUENCY = 19608750
+
 
   const generateChannelRow = (channel: Channel) : string => {
     let row = ""
