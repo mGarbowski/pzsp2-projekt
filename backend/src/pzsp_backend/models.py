@@ -1,24 +1,14 @@
-from __future__ import annotations
-
 from pydantic import BaseModel
-from pyomo.opt import SolverResults
 
 
 class Edge(BaseModel):
     """Network edge model"""
 
     id: str
-    node1_id: str
-    node2_id: str
-    total_capacity: str
-    provisioned_capacity: float
-
-
-class Neighbor(BaseModel):
-    """Node neighbor model"""
-
-    node: Node
-    edge: Edge
+    node1Id: str
+    node2Id: str
+    totalCapacity: str
+    provisionedCapacity: float
 
 
 class Node(BaseModel):
@@ -27,49 +17,31 @@ class Node(BaseModel):
     id: str
     latitude: float
     longitude: float
-    neighbors: list[Neighbor]
-
-
-class Network(BaseModel):
-    """Network model"""
-
-    nodes: list[Node]
-    edges: list[Edge]
-
-    def find_edge_by_node_ids(self, node1_id: str, node2_id: str) -> Edge:
-        """Find an edge by node ids"""
-        for edge in self.edges:
-            if edge.node1_id == node1_id and edge.node2_id == node2_id:
-                return edge
-            elif edge.node1_id == node2_id and edge.node2_id == node1_id:
-                return edge
-        raise ValueError(f"Edge between {node1_id} and {node2_id} not found")
+    neighbors: list[str]
 
 
 class Channel(BaseModel):
     """Represents a channel in the network"""
 
-    edges: list[Edge]
-    slice_range: SliceRange
+    id: str
+    nodes: list[str]
+    edges: list[str]
+    frequency: float
+    width: float
 
 
-class Slice(BaseModel):
-    """Represents a slice in the network"""
+class Network(BaseModel):
+    """Network model"""
 
-    start: float
-    end: float
+    nodes: dict[str, Node]
+    edges: dict[str, Edge]
+    channels: dict[str, Channel]
 
-
-class SliceRange(BaseModel):
-    """Represents a slice range in the network"""
-
-    slices: list[Slice]
-
-
-class ChannelDescription(BaseModel):
-    """Represents a description of a channel that gets
-    passed to the optimizer"""
-
-    start: Node
-    end: Node
-    throughput: float
+    def find_edge_by_node_ids(self, node1_id: str, node2_id: str) -> Edge:
+        """Find an edge by node ids"""
+        for _, edge in self.edges.items():
+            if edge.node1Id == node1_id and edge.node2Id == node2_id:
+                return edge
+            elif edge.node1Id == node2_id and edge.node2Id == node1_id:
+                return edge
+        raise ValueError(f"Edge between {node1_id} and {node2_id} not found")

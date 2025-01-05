@@ -1,5 +1,4 @@
 import asyncio
-import json
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -8,7 +7,7 @@ from starlette.websockets import WebSocket, WebSocketDisconnect, WebSocketState
 
 from src.pzsp_backend.optimization.integer.model_demo import ModelParams, solve_instance
 
-from src.pzsp_backend.dtos import Network
+from src.pzsp_backend.models import Network
 
 app = FastAPI()
 
@@ -55,11 +54,13 @@ async def websocket_endpoint(websocket: WebSocket):
             await websocket.close()
         print("Finished")
 
+
 @app.post("/network/upload")
 def test_network_upload(network: Network):
     print("Network: ", network)
 
     print("Node N1", network.nodes["N1"].latitude)
+
 
 @app.websocket("/ws/network/upload")
 async def test_network_upload_ws(websocket: WebSocket):
@@ -78,4 +79,3 @@ async def test_network_upload_ws(websocket: WebSocket):
         if websocket.client_state != WebSocketState.DISCONNECTED:
             await websocket.close()
         print("Finished")
-
