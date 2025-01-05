@@ -19,9 +19,6 @@ export const DataImporterPage = () => {
   useEffect(() => {
     if (nodesCsv && edgesCsv && spectrumCsv) {
       try {
-        // setNetwork(demoNetwork);
-        // console.log("Set demo network");
-
         const nodesData = parseNodes(nodesCsv);
         const edgesData = parseEdges(edgesCsv);
         const spectrumData = parseEdgeSpectrum(spectrumCsv);
