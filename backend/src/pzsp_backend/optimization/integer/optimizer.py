@@ -1,9 +1,9 @@
 from typing import Any, cast
 import pyomo.environ as pyo
 from attrs import define
-from pyomo.opt import Solution, SolverResults
+from pyomo.opt import SolverResults
 
-from src.pzsp_backend.models import Channel, ChannelDescription, Edge, SliceRange
+from src.pzsp_backend.models import Channel, Edge, OptimisationRequest
 from src.pzsp_backend.optimization.base import Optimizer
 from src.pzsp_backend.optimization.integer.abstract import model
 
@@ -18,13 +18,13 @@ class IntegerProgrammingOptimizer(Optimizer):
     all_around_load_weight: int
     even_load_weight: int
 
-    def find_channel(self, description: ChannelDescription) -> Channel:
-        model = self.instantiate_model(description)
+    def find_channel(self, request: OptimisationRequest) -> Channel:
+        model = self.instantiate_model(request)
         solver = pyo.SolverFactory("cbc")
         result = solver.solve(model, tee=self.debug)
         return self.channel_from_solved_instance(result)
 
-    def _generate_solver_input(self, description: ChannelDescription):
+    def _generate_solver_input(self, request: OptimisationRequest):
         """Transforms the network object into a dictionary that can be later
         treated as the solver's input"""
 
@@ -35,16 +35,16 @@ class IntegerProgrammingOptimizer(Optimizer):
 
         return {
             "S": int(
-                description.throughput
+                request.bandwidth
             ),  # TODO: calculate number of slices needed based on throughput
-            "Nodes": [n.id for n in self.network.nodes],
-            "Edges": [(e.node1_id, e.node2_id) for e in self.network.edges],
+            "Nodes": list(self.network.nodes.keys()),
+            "Edges": [(e.node1Id, e.node2Id) for e in self.network.edges.values()],
             "Weights": {
-                (e.node1_id, e.node2_id): self.calculate_edge_weight(e)
-                for e in self.network.edges
+                (e.node1Id, e.node2Id): self.calculate_edge_weight(e)
+                for e in self.network.edges.values()
             },
-            "Source": pyo_mapping(description.start.id),
-            "Target": pyo_mapping(description.end.id),
+            "Source": pyo_mapping(request.source),
+            "Target": pyo_mapping(request.target),
             "Slices": list(range(768)),
             "Occupied": {
                 # TODO: rethink slice occupancy representation
@@ -55,10 +55,10 @@ class IntegerProgrammingOptimizer(Optimizer):
         """Calculates the weights of an edge based on the optimizer's params"""
         raise NotImplementedError()
 
-    def instantiate_model(self, description: ChannelDescription) -> pyo.ConcreteModel:
+    def instantiate_model(self, request: OptimisationRequest) -> pyo.ConcreteModel:
         """Creates a concrete model based on the network and
         weights"""
-        data = self._generate_solver_input(description)
+        data = self._generate_solver_input(request)
         instance = model.create_instance(data)
         return cast(pyo.ConcreteModel, instance)
 
@@ -80,8 +80,4 @@ class IntegerProgrammingOptimizer(Optimizer):
         edge_node_ids: list[tuple[str, str]] = [e for e in model.Edges]  # type: ignore
         edges = [self.network.find_edge_by_node_ids(*ids) for ids in edge_node_ids]
 
-        sr = SliceRange(
-            slices=[]
-        )  # TODO: create the object after refactoring slice structure
-
-        return Channel(edges=edges, slice_range=sr)
+        raise NotImplementedError()

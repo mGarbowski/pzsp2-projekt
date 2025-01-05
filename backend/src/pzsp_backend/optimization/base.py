@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 from attrs import define
 
-from src.pzsp_backend.models import Channel, ChannelDescription, Edge, Network
+from src.pzsp_backend.models import Channel, Edge, Network, OptimisationRequest
 
 
 @define
@@ -14,7 +14,7 @@ class Optimizer(ABC):
     debug: bool
 
     @abstractmethod
-    def find_channel(self, description: ChannelDescription) -> Channel:
+    def find_channel(self, request: OptimisationRequest) -> Channel:
         """Find a channel that satisfies the desscription in an
         optimaly way for the given network."""
 
