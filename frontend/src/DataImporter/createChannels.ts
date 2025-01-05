@@ -170,7 +170,7 @@ export const createChannels = (channelData: EdgeSpectrumDataRow[], edges: Import
   channelData = removeRedundantSpectrumRows(channelData, edges)
   const channelEdges = groupSpectrumByChannel(channelData);
 
-  const channels: ImportedChannel[] = channelEdges.map(channelE => {
+  return channelEdges.map(channelE => {
     return {
       id: channelE.id,
       width: channelE.width,
@@ -178,8 +178,5 @@ export const createChannels = (channelData: EdgeSpectrumDataRow[], edges: Import
       channel_label: channelE.channel_label,
       nodes: changeChannelEdgesToNodes(channelE, edges)
     }
-  }
-  )
-
-  return channels
+  })
 }

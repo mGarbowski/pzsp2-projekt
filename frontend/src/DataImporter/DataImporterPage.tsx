@@ -5,7 +5,7 @@ import { CsvUpload } from "./CsvUpload.tsx";
 import { parseEdges, parseEdgeSpectrum, parseNodes } from "./parseCsv.ts";
 import { buildNetwork } from "./buildNetwork.ts";
 import { useNetwork } from "../NetworkModel/NetworkContext.tsx";
-import { demoNetwork } from "../NetworkModel/demoNetwork.ts";
+// import { demoNetwork } from "../NetworkModel/demoNetwork.ts";
 import {convertToRenderable} from "../NetworkModel/convertToRenderable.ts";
 
 export const DataImporterPage = () => {

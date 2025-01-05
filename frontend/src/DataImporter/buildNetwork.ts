@@ -119,8 +119,7 @@ export const checkIfEdgesExist = (edgeSpectrumsData: EdgeSpectrumDataRow[], edge
  * @returns - new list without isolated nodes
  */
 export const removeIsolatedNodes = (nodes: ImportedNode[]): ImportedNode[] =>{
-  const new_nodes: ImportedNode[] = nodes.filter((node) => node.neighbors.length > 0)
-  return new_nodes
+  return nodes.filter((node) => node.neighbors.length > 0)
 }
 
 export const buildNetwork = (nodesData: NodeDataRow[], edgesData: EdgeDataRow[], channelData: EdgeSpectrumDataRow[]): ImportedNetwork => {
