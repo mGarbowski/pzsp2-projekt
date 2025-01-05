@@ -56,6 +56,18 @@ class Network(BaseModel):
                 return edge
         raise ValueError(f"Edge between {node1_id} and {node2_id} not found")
 
+    def channel_capacity_sum(self, ch: Channel) -> float:
+        """Calculates the sum of provisioned capacities of edges in a channel.
+        The larger the sum, the more bloated the channel is."""
+        edges = [self.edges[id] for id in ch.edges]
+        return sum([e.provisionedCapacity for e in edges])
+
+    def edge_length(self, e_id: str) -> float:
+        """Calculates the length of an edge"""
+        edge = self.edges[e_id]
+        start, end = self.nodes[edge.node1Id], self.nodes[edge.node2Id]
+        return start.distance(end)
+
 
 class OptimisationRequest(BaseModel):
     """Optimisation request model"""
