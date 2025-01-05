@@ -1,22 +1,18 @@
-import React, { useState } from "react"
+import React, {useEffect, useState} from "react"
 import styled from '@emotion/styled'
-import { Button } from "../Components/UI/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../Components/UI/select"
-import { Input } from "../Components/UI/input";
-import { Label } from "../Components/UI/label";
-import { useNetwork } from "../NetworkModel/NetworkContext";
-import { Loader2 } from "lucide-react";
+import {Button} from "../Components/UI/button";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue,} from "../Components/UI/select"
+import {Input} from "../Components/UI/input";
+import {Label} from "../Components/UI/label";
+import {useNetwork} from "../NetworkModel/NetworkContext";
+import {Loader2} from "lucide-react";
+import {OptimizerRequest, OptimizerResponse, useOptimizer} from "./useOptimizer.ts";
 
 
 export const OptimizerForm = () => {
-  const { network, setHighlightedChannelId } = useNetwork();
-  const [counter, setCounter] = useState(0);
+  const {network, setHighlightedChannelId} = useNetwork();
+  const {sendQuery, lastMessage} = useOptimizer("ws://localhost:8000/ws/optimizer", (_) => false);
+
   const [startNode, setStartNode] = useState<string | null>(null);
   const [endNode, setEndNode] = useState<string | null>(null);
   const [bandwidth, setBandwidth] = useState<string | null>(null);
@@ -34,7 +30,7 @@ export const OptimizerForm = () => {
     setEvenLoadWeight(1);
   }
 
-  const mockHandleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     if (!network) {
       return;
@@ -42,16 +38,35 @@ export const OptimizerForm = () => {
 
     resetForm();
     setLoading(true);
-    setTimeout(() => {
-      const channelIdx = counter % Object.keys(network.channels).length;
-      const channel = Object.keys(network.channels)[channelIdx];
-      setCounter(counter + 1);
-      setHighlightedChannelId(channel);
-      setLoading(false);
-    }, 3000);
+
+    const request: OptimizerRequest = {
+      network: network,
+      source: startNode!,
+      target: endNode!,
+      bandwidth: bandwidth!,
+      optimizer: optimizer!,
+      distanceWeight: distanceWeight,
+      evenLoadWeight: evenLoadWeight,
+    };
+    sendQuery(JSON.stringify(request));
+    setLoading(false);
   }
 
-  return <StyledForm onSubmit={mockHandleSubmit}>
+  useEffect(() => {
+    if (!lastMessage) {
+      return;
+    }
+
+    const response = JSON.parse(JSON.parse(lastMessage!)) as OptimizerResponse;
+    console.info(response);
+    if (response.type === "success") {
+      // TODO setNetwork(...)
+      setHighlightedChannelId(response.channel.id);
+    }
+  }, [lastMessage, setHighlightedChannelId]);
+
+
+  return <StyledForm onSubmit={handleSubmit}>
     <Label>
       Węzeł startowy
       <StyledTextInput
@@ -82,7 +97,7 @@ export const OptimizerForm = () => {
         required
       >
         <SelectTrigger aria-label="Bandwidth">
-          <SelectValue placeholder="Wybierz opcję" />
+          <SelectValue placeholder="Wybierz opcję"/>
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="10Gb/s">10Gb/s</SelectItem>
@@ -101,7 +116,7 @@ export const OptimizerForm = () => {
         required
       >
         <SelectTrigger aria-label="Optimizer">
-          <SelectValue placeholder="Wybierz optymalizator" />
+          <SelectValue placeholder="Wybierz optymalizator"/>
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="dijkstra">Algorytm Dijkstry</SelectItem>
@@ -132,18 +147,17 @@ export const OptimizerForm = () => {
       />
     </Label>
 
-    <Button disabled={loading} variant={"outline"} type="submit" className="py-6" >
+    <Button disabled={loading} variant={"outline"} type="submit" className="py-6">
       {
         loading ?
-          <> < Loader2 className="animate-spin" />Ładowanie kanału </>
+          <> < Loader2 className="animate-spin"/>Ładowanie kanału </>
           : "Dodaj kanał"
       }
-    </Button >
+    </Button>
 
 
   </StyledForm>
 }
-
 
 
 const StyledForm = styled.form({
