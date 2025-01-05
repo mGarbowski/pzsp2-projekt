@@ -1,5 +1,5 @@
-import {generateChannelsReport} from "./generateReport.ts";
-import {Channel} from "../NetworkModel/network.ts"
+import {generateChannelsReport} from "./generateReport";
+import {Channel} from "../NetworkModel/network"
 
 describe('calcNodeDistance', () => {
   it('should calculate the distance between Warsaw and Krakow', () => {
@@ -9,7 +9,7 @@ describe('calcNodeDistance', () => {
       nodes: ["1", "2", "3"],
       edges: ["1", "5", "13"],
       frequency: 191.33125,
-      width: 13.0
+      width: 12.5
     }
     const LOWEST_BEGINNING_FREQUENCY = 19132500
     const HIGHEST_BEGINNING_FREQUENCY = 19608750
