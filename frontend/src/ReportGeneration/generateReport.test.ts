@@ -11,8 +11,15 @@ describe('calcNodeDistance', () => {
       frequency: 191.33125,
       width: 13.0
     }
-    let expectedReport = "Channel ID,Slice #1,Slice #2,Slice #3,Slice #4,Slice #5\n" +
-      "id1,1,1"
+    const LOWEST_BEGINNING_FREQUENCY = 19132500
+    const HIGHEST_BEGINNING_FREQUENCY = 19608750
+
+    let expectedReport = "Channel ID"
+
+    for (let slice_begin = LOWEST_BEGINNING_FREQUENCY; slice_begin <= HIGHEST_BEGINNING_FREQUENCY; slice_begin += 625 ){
+      expectedReport += "," + slice_begin.toString()
+    }
+    expectedReport += "\n" + "id1,1,1"
     for (let i = 0; i < 766; i++){
       expectedReport += ",0"
     }
