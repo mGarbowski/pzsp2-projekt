@@ -19,5 +19,5 @@ class Optimizer(ABC):
         optimaly way for the given network."""
 
     @abstractmethod
-    def calculate_edge_weight(self, e: Edge):
+    def calculate_edge_weight(self, e: Edge) -> float:
         """Calculates the weights of an edge based on the optimizer's params"""

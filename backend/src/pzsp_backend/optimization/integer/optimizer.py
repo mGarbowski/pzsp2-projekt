@@ -15,7 +15,7 @@ class IntegerProgrammingOptimizer(Optimizer):
     # The weights we've discussed so far. Probably should add up to 1,
     # etc, but this is just a rough outline of how it's going to look like.
     # We might take in different params at the end of the day after all.
-    all_around_load_weight: int
+    distance_weight: int
     even_load_weight: int
 
     def find_channel(self, request: OptimisationRequest) -> Channel:
@@ -51,9 +51,12 @@ class IntegerProgrammingOptimizer(Optimizer):
             },
         }
 
-    def calculate_edge_weight(self, e: Edge):
+    def calculate_edge_weight(self, e: Edge) -> float:
         """Calculates the weights of an edge based on the optimizer's params"""
-        raise NotImplementedError()
+        return (
+            self.distance_weight * self.network.edge_length(e)
+            + self.even_load_weight * e.provisionedCapacity
+        )
 
     def instantiate_model(self, request: OptimisationRequest) -> pyo.ConcreteModel:
         """Creates a concrete model based on the network and
