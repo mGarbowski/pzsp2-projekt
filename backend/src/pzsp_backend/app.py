@@ -69,10 +69,10 @@ async def test_network_upload_ws(websocket: WebSocket):
         data = await websocket.receive_json()
         print("Data: ", data)
 
-        network = Network.parse_obj(data)
+        network = Network.model_validate(data)
         print("Network: ", network)
 
-        await websocket.send_json(network.channels["C2"].json())
+        await websocket.send_json(network.channels["C2"].model_dump_json())
     except WebSocketDisconnect:
         print("Client disconnected")
     finally:
