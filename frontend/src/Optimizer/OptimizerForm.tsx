@@ -12,7 +12,7 @@ import { Input } from "../Components/UI/input";
 import { Label } from "../Components/UI/label";
 import { useNetwork } from "../NetworkModel/NetworkContext";
 import { Loader2 } from "lucide-react";
-import {useOptimizer} from "./useOptimizer.ts";
+import {OptimizerRequest, OptimizerResponse, useOptimizer} from "./useOptimizer.ts";
 
 
 export const OptimizerForm = () => {
@@ -46,12 +46,12 @@ export const OptimizerForm = () => {
     resetForm();
     setLoading(true);
 
-    const request = {
+    const request: OptimizerRequest = {
       network: network,
-      source: startNode,
-      target: endNode,
-      bandwidth: bandwidth,
-      optimizer: optimizer,
+      source: startNode!,
+      target: endNode!,
+      bandwidth: bandwidth!,
+      optimizer: optimizer!,
       distanceWeight: distanceWeight,
       evenLoadWeight: evenLoadWeight,
     };
@@ -60,7 +60,7 @@ export const OptimizerForm = () => {
   }
 
   useEffect(() => {
-    const response = JSON.parse(JSON.parse(lastMessage));
+    const response = JSON.parse(JSON.parse(lastMessage!)) as OptimizerResponse;
     console.info(response);
   }, [lastMessage]);
 
