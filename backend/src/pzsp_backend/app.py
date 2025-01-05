@@ -30,9 +30,10 @@ async def optimizer_endpoint(websocket: WebSocket):
         print("Request: ", request)
 
         network = request.network
+        random_channel_id = list(network.channels.keys())[0]
         response = OptimisationResponse(
             type="success",
-            channel=network.channels["C2"],
+            channel=network.channels[random_channel_id],
             message="Optimizer found a solution",
         )
 
