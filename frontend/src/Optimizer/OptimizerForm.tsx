@@ -22,15 +22,19 @@ export const OptimizerForm = () => {
   const [bandwidth, setBandwidth] = useState<string | null>(null);
   const [optimizer, setOptimizer] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [distanceWeight, setDistanceWeight] = useState<number>(1);
+  const [evenLoadWeight, setEvenLoadWeight] = useState<number>(1);
 
   const resetForm = () => {
     setStartNode(null);
     setEndNode(null);
     setBandwidth(null);
     setOptimizer(null);
+    setDistanceWeight(1);
+    setEvenLoadWeight(1);
   }
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const mockHandleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     if (!network) {
       return;
@@ -47,7 +51,7 @@ export const OptimizerForm = () => {
     }, 3000);
   }
 
-  return <StyledForm onSubmit={handleSubmit}>
+  return <StyledForm onSubmit={mockHandleSubmit}>
     <Label>
       Węzeł startowy
       <StyledTextInput
@@ -104,6 +108,28 @@ export const OptimizerForm = () => {
           <SelectItem value="integer">Model całkowitoliczbowy</SelectItem>
         </SelectContent>
       </Select>
+    </Label>
+
+    <Label>
+      Waga długości krawędzi
+      <StyledTextInput
+        type="text"
+        placeholder="1"
+        value={distanceWeight || "1"}
+        onChange={(e) => setDistanceWeight(parseInt(e.target.value))}
+        required={true}
+      />
+    </Label>
+
+    <Label>
+      Waga obciążenia krawędzi
+      <StyledTextInput
+        type="text"
+        placeholder="1"
+        value={evenLoadWeight || "1"}
+        onChange={(e) => setEvenLoadWeight(parseInt(e.target.value))}
+        required={true}
+      />
     </Label>
 
     <Button disabled={loading} variant={"outline"} type="submit" className="py-6" >
