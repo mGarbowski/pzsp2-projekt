@@ -6,6 +6,8 @@ export const GraphVisualisationDemo = () => {
   const [text, setText] = useState("");
   const { network, highlightedChannelId } = useNetwork();
 
+  const nodeSize = 2;
+
   if (!network) {
     return <p className="flex justify-center align-middle font-bold">Dane sieci niezaładowane</p>;
   }
@@ -65,6 +67,8 @@ export const GraphVisualisationDemo = () => {
           edgeArrowPosition={"none"}
           layoutType={"custom"}
           layoutOverrides={({ getNodePosition: calcNodeCoordinates })}
+          minNodeSize={nodeSize}
+          maxNodeSize={nodeSize}
         />
       </div>
     </>
