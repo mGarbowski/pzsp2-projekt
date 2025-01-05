@@ -6,7 +6,7 @@ import {
   createChannels
 } from "./createChannels"
 
-export interface Edge {
+export interface ImportedEdge {
   id: string;
   node1Id: string;
   node2Id: string;
@@ -14,17 +14,17 @@ export interface Edge {
   provisionedCapacity: number;
 }
 
-export interface Node {
+export interface ImportedNode {
   id: string;
   latitude: number;
   longitude: number;
   neighbors: {
-    node: Node;
-    edge: Edge;
+    node: ImportedNode;
+    edge: ImportedEdge;
   }[];
 }
 
-export interface Channel {
+export interface ImportedChannel {
   id: string;
   channel_label: string;
   nodes: string[];
@@ -32,13 +32,13 @@ export interface Channel {
   width: number;
 }
 
-export interface Network {
-  nodes: Node[];
-  edges: Edge[];
-  channels: Channel[];
+export interface ImportedNetwork {
+  nodes: ImportedNode[];
+  edges: ImportedEdge[];
+  channels: ImportedChannel[];
 }
 
-export const handleEdge = (edgeData: EdgeDataRow, nodes: Node[]): Edge => {
+export const handleEdge = (edgeData: EdgeDataRow, nodes: ImportedNode[]): ImportedEdge => {
   const node1 = nodes.find(node => node.id === edgeData.node1);
   const node2 = nodes.find(node => node.id === edgeData.node2);
 
@@ -46,7 +46,7 @@ export const handleEdge = (edgeData: EdgeDataRow, nodes: Node[]): Edge => {
     throw new Error(`Edge ${edgeData.id} references non-existing nodes`);
   }
 
-  const edge: Edge = {
+  const edge: ImportedEdge = {
     id: edgeData.id,
     node1Id: node1.id,
     node2Id: node2.id,
@@ -88,7 +88,7 @@ export const discardRedundantEdges = (edges: EdgeDataRow[]): EdgeDataRow[] =>{
   return merged;
 }
 
-export const handleNode = (nodesData: NodeDataRow[]): Node[] => {
+export const handleNode = (nodesData: NodeDataRow[]): ImportedNode[] => {
   return nodesData.map(nodeData => ({
     id: nodeData.id,
     latitude: nodeData.latitude,
@@ -118,13 +118,13 @@ export const checkIfEdgesExist = (edgeSpectrumsData: EdgeSpectrumDataRow[], edge
  * @param nodes - list of nodes
  * @returns - new list without isolated nodes
  */
-export const removeIsolatedNodes = (nodes: Node[]): Node[] =>{
-  const new_nodes: Node[] = nodes.filter((node) => node.neighbors.length > 0)
+export const removeIsolatedNodes = (nodes: ImportedNode[]): ImportedNode[] =>{
+  const new_nodes: ImportedNode[] = nodes.filter((node) => node.neighbors.length > 0)
   return new_nodes
 }
 
-export const buildNetwork = (nodesData: NodeDataRow[], edgesData: EdgeDataRow[], channelData: EdgeSpectrumDataRow[]): Network => {
-  let nodes: Node[] = handleNode(nodesData)
+export const buildNetwork = (nodesData: NodeDataRow[], edgesData: EdgeDataRow[], channelData: EdgeSpectrumDataRow[]): ImportedNetwork => {
+  let nodes: ImportedNode[] = handleNode(nodesData)
 
   //check data integrity
   checkIfEdgesExist(channelData, edgesData)
