@@ -13,7 +13,7 @@ export const convertToRenderable = (importedNetwork: ImportedNetwork): Network =
     for (let i= 0; i < nodeIds.length - 1; i++){
       let firstNodeId = nodeIds[i]
       let secondNodeId = nodeIds[i+1]
-      let edge = edges.find((edge) => {return edge.node1Id == firstNodeId && edge.node2Id == secondNodeId })
+      let edge = edges.find((edge) => {return (edge.node1Id == firstNodeId && edge.node2Id == secondNodeId) || (edge.node1Id == secondNodeId && edge.node2Id == firstNodeId)  })
       if (edge){
         collectedEdges.push(edge)
       } else {
