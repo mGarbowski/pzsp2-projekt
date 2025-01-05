@@ -33,23 +33,21 @@ class IntegerProgrammingOptimizer(Optimizer):
         def pyo_mapping(v: Any):
             return {None: {v}}
 
-        return {
-            "S": int(
-                request.bandwidth
-            ),  # TODO: calculate number of slices needed based on throughput
-            "Nodes": list(self.network.nodes.keys()),
-            "Edges": [(e.node1Id, e.node2Id) for e in self.network.edges.values()],
-            "Weights": {
-                (e.node1Id, e.node2Id): self.calculate_edge_weight(e)
-                for e in self.network.edges.values()
-            },
-            "Source": pyo_mapping(request.source),
-            "Target": pyo_mapping(request.target),
-            "Slices": list(range(768)),
-            "Occupied": {
-                # TODO: rethink slice occupancy representation
-            },
-        }
+        return pyo_mapping(
+            {
+                "S": self.num_slices_from_bandwidth(request.bandwidth),
+                "Nodes": list(self.network.nodes.keys()),
+                "Edges": [(e.node1Id, e.node2Id) for e in self.network.edges.values()],
+                "Weights": {
+                    (e.node1Id, e.node2Id): self.calculate_edge_weight(e)
+                    for e in self.network.edges.values()
+                },
+                "Source": pyo_mapping(request.source),
+                "Target": pyo_mapping(request.target),
+                "Slices": list(range(768)),
+                "Occupied": self.network.edge_slice_occupancy_map(),
+            }
+        )
 
     def calculate_edge_weight(self, e: Edge) -> float:
         """Calculates the weights of an edge based on the optimizer's params"""
