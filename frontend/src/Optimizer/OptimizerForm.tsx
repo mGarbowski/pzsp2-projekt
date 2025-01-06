@@ -49,7 +49,6 @@ export const OptimizerForm = () => {
       evenLoadWeight: evenLoadWeight,
     };
     sendQuery(JSON.stringify(request));
-    setLoading(false);
   }
 
   useEffect(() => {
@@ -60,6 +59,7 @@ export const OptimizerForm = () => {
     const response = JSON.parse(JSON.parse(lastMessage!)) as OptimizerResponse;
     console.info(response);
     if (response.type === "Success") {
+      setLoading(false);
       const updatedNetwork = {
         ...network!,
         channels: {
