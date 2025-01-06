@@ -1,15 +1,14 @@
-import {Edge} from "../NetworkModel/network.ts";
 import {Card, CardContent, CardHeader, CardTitle} from "../Components/UI/card.tsx";
 import {useNetwork} from "../NetworkModel/NetworkContext.tsx";
 import {calcNodeDistance} from "../NetworkModel/calcNodeDistance.ts";
 
-interface EdgeStatsProps {
-  edge: Edge;
-}
 
-export const EdgeStats = (props: EdgeStatsProps) => {
-  const {edge} = props;
-  const {network} = useNetwork();
+export const EdgeStats = () => {
+  const {network, selectedEdgeId} = useNetwork();
+  if (!network || !selectedEdgeId) {
+    return null;
+  }
+  const edge = network.edges[selectedEdgeId];
   const length = calcNodeDistance(network!.nodes[edge.node1Id], network!.nodes[edge.node2Id]);
 
   return <Card>

@@ -3,7 +3,6 @@ import {DownloadReport} from "../ReportGeneration/DownloadReport.tsx";
 import {useNavigate} from 'react-router-dom';
 import {Button} from "../Components/UI/button.tsx";
 import {MainContainer} from "../StyledComponents/MainContainer.tsx";
-import {useNetwork} from "../NetworkModel/NetworkContext.tsx";
 import {NodeStats} from "./NodeStats.tsx";
 import {EdgeStats} from "./EdgeStats.tsx";
 import {NetworkStats} from "./NetworkStats.tsx";
@@ -12,8 +11,6 @@ import {ChannelStats} from "./ChannelStats.tsx";
 
 export const StatsPage = () => {
   const navigate = useNavigate();
-  const {network, selectedEdgeId} = useNetwork();
-  const selectedEdge = selectedEdgeId ? network?.edges[selectedEdgeId] : null;
 
   return (
     <MainContainer>
@@ -25,8 +22,7 @@ export const StatsPage = () => {
           <ChannelSelectionCard/>
           <ChannelStats/>
           <NodeStats/>
-
-          {selectedEdge && (<EdgeStats edge={selectedEdge}/>)}
+          <EdgeStats/>
         </StatCardsContainer>
 
         <ButtonContainer>
