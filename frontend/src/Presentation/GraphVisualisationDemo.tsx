@@ -4,7 +4,7 @@ import { useNetwork } from "../NetworkModel/NetworkContext.tsx";
 
 export const GraphVisualisationDemo = () => {
   const [text, setText] = useState("");
-  const { network, highlightedChannelId } = useNetwork();
+  const { network, highlightedChannelId, setSelectedNodeId } = useNetwork();
 
   const nodeSize = 2;
 
@@ -38,6 +38,7 @@ export const GraphVisualisationDemo = () => {
   const handleNodeClick = (node: InternalGraphNode) => {
     console.log(node);
     setText("Node " + node.id + " clicked");
+    setSelectedNodeId(node.id);
   };
 
   const handleEdgeClick = (edge: InternalGraphEdge) => {
