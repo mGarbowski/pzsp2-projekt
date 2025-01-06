@@ -1,3 +1,4 @@
+import uuid
 from abc import ABC, abstractmethod
 from collections import defaultdict
 from typing import Literal
@@ -96,3 +97,7 @@ class Optimizer(ABC):
                     rv[(edge.node1Id, edge.node2Id, slice_idx)] = 1
 
         return rv
+
+    def generate_channel_id(self) -> str:
+        """Generate a unique channel ID"""
+        return str(uuid.uuid4())

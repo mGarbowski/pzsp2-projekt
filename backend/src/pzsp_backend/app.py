@@ -89,6 +89,7 @@ def dispatch_optimizer(request: OptimisationRequest) -> OptimisationResponse:
         )
 
     ch = optimizer.find_channel(request)
+    logger.info("Channel: ", ch)
     return OptimisationResponse(
         type=SUCCESS, channel=ch, message="Optimizer found a solution"
     )
