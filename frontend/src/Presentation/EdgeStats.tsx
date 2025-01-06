@@ -1,10 +1,11 @@
 import {Card, CardContent, CardHeader, CardTitle} from "../Components/UI/card.tsx";
 import {useNetwork} from "../NetworkModel/NetworkContext.tsx";
 import {calcNodeDistance} from "../NetworkModel/calcNodeDistance.ts";
+import styled from "@emotion/styled";
 
 
 export const EdgeStats = () => {
-  const {network, selectedEdgeId} = useNetwork();
+  const {network, selectedEdgeId, setSelectedNodeId} = useNetwork();
   if (!network || !selectedEdgeId) {
     return null;
   }
@@ -17,9 +18,17 @@ export const EdgeStats = () => {
     </CardHeader>
     <CardContent>
       <p>ID: {edge.id}</p>
-      <p>Łączy węzły: {edge.node1Id}, {edge.node2Id}</p>
       <p>Zajęte pasmo: {edge.provisionedCapacity}%</p>
       <p>Długość: {Math.round(length)}km</p>
+      <p>Łączy węzły:</p>
+      <List>
+        <li><button onClick={() => setSelectedNodeId(edge.node1Id)}>{edge.node1Id}</button></li>
+        <li><button onClick={() => setSelectedNodeId(edge.node2Id)}>{edge.node2Id}</button></li>
+      </List>
     </CardContent>
   </Card>
 }
+
+const List = styled.ul({
+  marginLeft: "1rem",
+});
