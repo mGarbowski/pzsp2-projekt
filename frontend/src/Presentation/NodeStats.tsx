@@ -1,12 +1,14 @@
 import {Card, CardContent, CardHeader, CardTitle} from "../Components/UI/card.tsx";
-import {Node} from "../NetworkModel/network.ts";
+import {useNetwork} from "../NetworkModel/NetworkContext.tsx";
 
-interface NodeStatsProps {
-  node: Node;
-}
 
-export const NodeStats = (props: NodeStatsProps) => {
-  const {node} = props;
+export const NodeStats = () => {
+  const {network, selectedNodeId} = useNetwork();
+  if (!network || !selectedNodeId) {
+    return null;
+  }
+
+  const node = network.nodes[selectedNodeId];
 
   const neighbors = node.neighbors.join(", ");
 
