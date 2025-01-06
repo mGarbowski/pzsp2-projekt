@@ -4,12 +4,12 @@ import {calcNodeDistance} from "../NetworkModel/calcNodeDistance.ts";
 
 
 export const ChannelStats = () => {
-  const {network, highlightedChannelId} = useNetwork();
-  if (!network || !highlightedChannelId) {
+  const {network, selectedChannelId} = useNetwork();
+  if (!network || !selectedChannelId) {
     return null;
   }
 
-  const channel = network.channels[highlightedChannelId];
+  const channel = network.channels[selectedChannelId];
 
   const edges = Object.values(channel.edges).join(", ");
   const nodes = Object.values(channel.nodes).join(", ");

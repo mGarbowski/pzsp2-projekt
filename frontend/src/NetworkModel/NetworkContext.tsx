@@ -4,8 +4,8 @@ import {Network} from "./network.ts";
 interface NetworkContextType {
   network: Network | null;
   setNetwork: (network: Network | null) => void;
-  highlightedChannelId: string | null;
-  setHighlightedChannelId: (channelId: string | null) => void;
+  selectedChannelId: string | null;
+  setSelectedChannelId: (channelId: string | null) => void;
   selectedNodeId: string | null;
   setSelectedNodeId: (nodeId: string | null) => void;
   selectedEdgeId: string | null;
@@ -16,7 +16,7 @@ const NetworkContext = createContext<NetworkContextType | undefined>(undefined);
 
 export const NetworkProvider = ({children}: { children: ReactNode }) => {
   const [network, setNetwork] = useState<Network | null>(null);
-  const [highlightedChannelId, setHighlightedChannelId] = useState<string | null>(null);
+  const [selectedChannelId, setSelectedChannelId] = useState<string | null>(null);
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
   const [selectedEdgeId, setSelectedEdgeId] = useState<string | null>(null);
 
@@ -24,8 +24,8 @@ export const NetworkProvider = ({children}: { children: ReactNode }) => {
     <NetworkContext.Provider value={{
       network,
       setNetwork,
-      highlightedChannelId,
-      setHighlightedChannelId,
+      selectedChannelId,
+      setSelectedChannelId,
       selectedNodeId,
       setSelectedNodeId,
       selectedEdgeId,

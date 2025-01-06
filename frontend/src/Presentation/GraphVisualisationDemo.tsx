@@ -4,7 +4,7 @@ import { useNetwork } from "../NetworkModel/NetworkContext.tsx";
 
 export const GraphVisualisationDemo = () => {
   const [text, setText] = useState("");
-  const { network, highlightedChannelId, setSelectedNodeId, setSelectedEdgeId } = useNetwork();
+  const { network, selectedChannelId, setSelectedNodeId, setSelectedEdgeId } = useNetwork();
 
   const nodeSize = 2;
 
@@ -12,7 +12,7 @@ export const GraphVisualisationDemo = () => {
     return <p className="flex justify-center align-middle font-bold">Dane sieci niezaładowane</p>;
   }
 
-  const highlightedChannel = highlightedChannelId ? network.channels[highlightedChannelId] : null;
+  const highlightedChannel = selectedChannelId ? network.channels[selectedChannelId] : null;
 
   const visNodes = Object.values(network.nodes).map(node => {
     return {

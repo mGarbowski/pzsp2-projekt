@@ -32,7 +32,7 @@ const overallNetworkLoad = (network: Network) => {
 }
 
 export const NetworkStats = () => {
-  const {network, setHighlightedChannelId} = useNetwork();
+  const {network, setSelectedChannelId} = useNetwork();
   if (!network) {
     return null;
   }
@@ -56,7 +56,7 @@ export const NetworkStats = () => {
       <p>Całkowite obciążenie: {overallNetworkLoad(network)}%</p>
       <p>Najbardziej obciążony kanał:
         <button
-          onClick={() => setHighlightedChannelId(maxLoadChannelId)}>
+          onClick={() => setSelectedChannelId(maxLoadChannelId)}>
           {maxLoadChannelId}
         </button></p>
     </CardContent>

@@ -3,7 +3,7 @@ import {useNetwork} from "../NetworkModel/NetworkContext.tsx";
 import styled from "@emotion/styled";
 
 export const ChannelSelectionCard = () => {
-  const {network, setHighlightedChannelId} = useNetwork();
+  const {network, setSelectedChannelId} = useNetwork();
   if (!network) {
     return null;
   }
@@ -18,7 +18,7 @@ export const ChannelSelectionCard = () => {
       <List>
         {channelIds.map((id) => (
           <li key={id}>
-            <button onClick={() => setHighlightedChannelId(id)}>{id}</button>
+            <button onClick={() => setSelectedChannelId(id)}>{id}</button>
           </li>
         ))}
       </List>
