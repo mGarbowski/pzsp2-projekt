@@ -8,6 +8,8 @@ interface NodeStatsProps {
 export const NodeStats = (props: NodeStatsProps) => {
   const {node} = props;
 
+  const neighbors = node.neighbors.join(", ");
+
   return <Card>
     <CardHeader>
       <CardTitle className="text-xl">Wybrany węzeł</CardTitle>
@@ -17,6 +19,7 @@ export const NodeStats = (props: NodeStatsProps) => {
       <p>Szerokość: {node.latitude}</p>
       <p>Długość: {node.longitude}</p>
       <p>Stopień: {node.neighbors.length}</p>
+      <p>Sąsiedzi: {neighbors}</p>
     </CardContent>
   </Card>
 }
