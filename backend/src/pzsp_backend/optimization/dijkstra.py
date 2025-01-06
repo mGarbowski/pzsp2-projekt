@@ -57,11 +57,14 @@ class DijkstraOptimizer(Optimizer):
 
         return path
 
+    def edges_from_node_ids(self, node_ids: list[str]) -> list[Edge]:
+        return [
+            self.network.find_edge_by_node_ids(a, b)
+            for a, b in zip(node_ids[:-1], node_ids[1:])
+        ]
+
     def reconstruct_channel(self, node_ids: list[str]) -> Channel:
-        edges = []
-        for i in range(len(node_ids) - 1):
-            edge = self.network.find_edge_by_node_ids(node_ids[i], node_ids[i + 1])
-            edges.append(edge)
+        edges = self.edges_from_node_ids(node_ids)
 
         return Channel(
             id=self.generate_channel_id(),
