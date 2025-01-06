@@ -1,4 +1,4 @@
-from typing import Any, cast, Literal
+from typing import Any, Literal, cast
 
 import pyomo.environ as pyo
 from attrs import define

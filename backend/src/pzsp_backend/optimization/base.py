@@ -33,8 +33,8 @@ class Optimizer(ABC):
     def calculate_edge_weight(self, e: Edge) -> float:
         """Calculates the weights of an edge based on the optimizer's params"""
         return (
-                self.distance_weight * self.network.edge_length(e)
-                + self.even_load_weight * e.provisionedCapacity
+            self.distance_weight * self.network.edge_length(e)
+            + self.even_load_weight * e.provisionedCapacity
         )
 
     @staticmethod
@@ -79,9 +79,7 @@ class Optimizer(ABC):
 
         return (
             round((start_freq + end_freq) / 2, 5),
-            len(slices)
-            * single_slice_bandwidth
-            * WIDTH_NORMALIZATION_FACTOR,
+            len(slices) * single_slice_bandwidth * WIDTH_NORMALIZATION_FACTOR,
             # denormalize, so that channel of width 0.05GHz
             # has a value of 50, as in the excel
         )

@@ -70,9 +70,7 @@ def dispatch_optimizer(request: OptimisationRequest) -> OptimisationResponse:
             )
         elif request.optimizer == DIJKSTRA:
             logger.info("Dispatching DijkstraOptimizer")
-            optimizer = DijkstraOptimizer(
-                network, True, dist_weight, even_load_weight
-            )
+            optimizer = DijkstraOptimizer(network, True, dist_weight, even_load_weight)
         else:
             return OptimisationResponse(
                 type=INVALID_REQUEST,
