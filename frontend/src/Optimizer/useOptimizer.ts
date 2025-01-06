@@ -1,5 +1,29 @@
 import { useState } from "react";
 import useWebSocket from "react-use-websocket";
+import {Channel, Network} from "../NetworkModel/network.ts";
+
+export interface OptimizerRequest {
+  network: Network;
+  source: string;
+  target: string;
+  bandwidth: string;
+  optimizer: string;
+  distanceWeight: number;
+  evenLoadWeight: number;
+}
+
+type OptimizerSuccessResponse = {
+  type: "Success";
+  channel: Channel;
+  message?: string;
+}
+
+type OptimizerErrorResponse = {
+  type: "Failure";
+  message: string;
+}
+
+export type OptimizerResponse = OptimizerSuccessResponse | OptimizerErrorResponse;
 
 export const useOptimizer = (apiUrl: string, isDisconnetMessage: (msg: string) => boolean) => {
   const [lastMessage, setLastMessage] = useState<string | null>(null);

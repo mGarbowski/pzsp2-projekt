@@ -12,6 +12,8 @@ dependencies = [
     "websockets>=14.1",
     "attrs>=24.2.0",
     "pyomo>=6.8.2",
+    "geopy>=2.4.1",
+    "loguru>=0.7.3",
 ]
 requires-python = "==3.12.*"
 readme = "README.md"
@@ -30,6 +32,9 @@ lint = [
     "black>=24.10.0",
     "isort>=5.13.2",
     "flake8>=7.1.1",
+]
+maksym = [
+    "debugpy>=1.8.11",
 ]
 
 [tool.pdm.scripts]

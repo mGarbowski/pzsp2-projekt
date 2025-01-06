@@ -1,33 +1,33 @@
-import React, { useState } from "react"
+import React, {useEffect, useState} from "react"
 import styled from '@emotion/styled'
-import { Button } from "../Components/UI/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../Components/UI/select"
-import { Input } from "../Components/UI/input";
-import { Label } from "../Components/UI/label";
-import { useNetwork } from "../NetworkModel/NetworkContext";
-import { Loader2 } from "lucide-react";
+import {Button} from "../Components/UI/button";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue,} from "../Components/UI/select"
+import {Input} from "../Components/UI/input";
+import {Label} from "../Components/UI/label";
+import {useNetwork} from "../NetworkModel/NetworkContext";
+import {Loader2} from "lucide-react";
+import {OptimizerRequest, OptimizerResponse, useOptimizer} from "./useOptimizer.ts";
 
 
 export const OptimizerForm = () => {
-  const { network, setHighlightedChannelId } = useNetwork();
-  const [counter, setCounter] = useState(0);
+  const {network, setNetwork, setHighlightedChannelId} = useNetwork();
+  const {sendQuery, lastMessage} = useOptimizer("ws://localhost:8000/ws/optimizer", (_) => false);
+
   const [startNode, setStartNode] = useState<string | null>(null);
   const [endNode, setEndNode] = useState<string | null>(null);
   const [bandwidth, setBandwidth] = useState<string | null>(null);
   const [optimizer, setOptimizer] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [distanceWeight, setDistanceWeight] = useState<number>(1);
+  const [evenLoadWeight, setEvenLoadWeight] = useState<number>(1);
 
   const resetForm = () => {
     setStartNode(null);
     setEndNode(null);
     setBandwidth(null);
     setOptimizer(null);
+    setDistanceWeight(1);
+    setEvenLoadWeight(1);
   }
 
   const handleSubmit = (event: React.FormEvent) => {
@@ -38,14 +38,41 @@ export const OptimizerForm = () => {
 
     resetForm();
     setLoading(true);
-    setTimeout(() => {
-      const channelIdx = counter % Object.keys(network.channels).length;
-      const channel = Object.keys(network.channels)[channelIdx];
-      setCounter(counter + 1);
-      setHighlightedChannelId(channel);
-      setLoading(false);
-    }, 3000);
+
+    const request: OptimizerRequest = {
+      network: network,
+      source: startNode!,
+      target: endNode!,
+      bandwidth: bandwidth!,
+      optimizer: optimizer!,
+      distanceWeight: distanceWeight,
+      evenLoadWeight: evenLoadWeight,
+    };
+    sendQuery(JSON.stringify(request));
+    setLoading(false);
   }
+
+  useEffect(() => {
+    if (!lastMessage) {
+      return;
+    }
+
+    const response = JSON.parse(JSON.parse(lastMessage!)) as OptimizerResponse;
+    console.info(response);
+    if (response.type === "Success") {
+      const updatedNetwork = {
+        ...network!,
+        channels: {
+          ...network!.channels,
+          [response.channel.id]: response.channel,
+        }
+      }
+      setNetwork(updatedNetwork);
+      setHighlightedChannelId(response.channel.id);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lastMessage, setNetwork, setHighlightedChannelId]);
+
 
   return <StyledForm onSubmit={handleSubmit}>
     <Label>
@@ -78,7 +105,7 @@ export const OptimizerForm = () => {
         required
       >
         <SelectTrigger aria-label="Bandwidth">
-          <SelectValue placeholder="Wybierz opcję" />
+          <SelectValue placeholder="Wybierz opcję"/>
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="10Gb/s">10Gb/s</SelectItem>
@@ -97,7 +124,7 @@ export const OptimizerForm = () => {
         required
       >
         <SelectTrigger aria-label="Optimizer">
-          <SelectValue placeholder="Wybierz optymalizator" />
+          <SelectValue placeholder="Wybierz optymalizator"/>
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="dijkstra">Algorytm Dijkstry</SelectItem>
@@ -106,18 +133,39 @@ export const OptimizerForm = () => {
       </Select>
     </Label>
 
-    <Button disabled={loading} variant={"outline"} type="submit" className="py-6" >
+    <Label>
+      Waga długości krawędzi
+      <StyledTextInput
+        type="text"
+        placeholder="1"
+        value={distanceWeight || "1"}
+        onChange={(e) => setDistanceWeight(parseInt(e.target.value))}
+        required={true}
+      />
+    </Label>
+
+    <Label>
+      Waga obciążenia krawędzi
+      <StyledTextInput
+        type="text"
+        placeholder="1"
+        value={evenLoadWeight || "1"}
+        onChange={(e) => setEvenLoadWeight(parseInt(e.target.value))}
+        required={true}
+      />
+    </Label>
+
+    <Button disabled={loading} variant={"outline"} type="submit" className="py-6">
       {
         loading ?
-          <> < Loader2 className="animate-spin" />Ładowanie kanału </>
+          <> < Loader2 className="animate-spin"/>Ładowanie kanału </>
           : "Dodaj kanał"
       }
-    </Button >
+    </Button>
 
 
   </StyledForm>
 }
-
 
 
 const StyledForm = styled.form({

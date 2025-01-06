@@ -1,11 +1,19 @@
-import asyncio
-
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from loguru import logger
 from pydantic import BaseModel
 from starlette.websockets import WebSocket, WebSocketDisconnect, WebSocketState
 
-from src.pzsp_backend.optimization.integer.model_demo import ModelParams, solve_instance
+from src.pzsp_backend.models import OptimisationRequest, OptimisationResponse
+from src.pzsp_backend.optimization.constants import (
+    DIJKSTRA,
+    FAILURE,
+    INTEGER_MODEL,
+    INVALID_REQUEST,
+    SUCCESS,
+)
+from src.pzsp_backend.optimization.dijkstra import DijkstraOptimizer
+from src.pzsp_backend.optimization.integer.optimizer import IntegerProgrammingOptimizer
 
 app = FastAPI()
 
@@ -22,32 +30,66 @@ class Message(BaseModel):
     message: str
 
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
-
-
-@app.post("/message-length")
-def get_message_length(msg: Message):
-    return {"length": len(msg.message)}
-
-
 @app.websocket("/ws/optimizer")
-async def websocket_endpoint(websocket: WebSocket):
+async def optimizer_endpoint(websocket: WebSocket):
     await websocket.accept()
+    logger.info("Client connected")
+
     try:
-        data = await websocket.receive_text()
-        params = ModelParams.model_validate_json(data)
-        print(f"Received params: {params}")
-        await websocket.send_text(f"Received params: {params}, processing...")
-        await asyncio.sleep(3)
-        x, y = solve_instance(params)
-        await websocket.send_text(
-            f"Optimization finished. x: {round(x, 2)}, y: {round(y, 2)}"
-        )
+        logger.info("Validating request")
+        request = await websocket.receive_json()
+        request = OptimisationRequest.model_validate(request)
+
+        print("Request: ", request)
+
+        response = dispatch_optimizer(request)
+        print("Response: ", response)
+
+        await websocket.send_json(response.model_dump_json())
     except WebSocketDisconnect:
         print("Client disconnected")
     finally:
         if websocket.client_state != WebSocketState.DISCONNECTED:
             await websocket.close()
         print("Finished")
+
+
+def dispatch_optimizer(request: OptimisationRequest) -> OptimisationResponse:
+    """Dispatches the optimizer based on the request and returns a response"""
+
+    network, dist_weight, even_load_weight = (
+        request.network,
+        request.distanceWeight,
+        request.evenLoadWeight,
+    )
+    try:
+        if request.optimizer == INTEGER_MODEL:
+            logger.info("Dispatching IntegerProgrammingOptimizer")
+            optimizer = IntegerProgrammingOptimizer(
+                network, True, dist_weight, even_load_weight
+            )
+        elif request.optimizer == DIJKSTRA:
+            logger.info("Dispatching DijkstraOptimizer")
+            optimizer = DijkstraOptimizer(network, True, dist_weight, even_load_weight)
+        else:
+            return OptimisationResponse(
+                type=INVALID_REQUEST,
+                channel=None,
+                message="Invalid optimizer requested: " + request.optimizer,
+            )
+
+    except NotImplementedError:
+        return OptimisationResponse(
+            type=FAILURE, channel=None, message="Optimizer not implemented"
+        )
+
+    except Exception as e:
+        return OptimisationResponse(
+            type=FAILURE, channel=None, message="Optimizer failed: " + str(e)
+        )
+
+    ch = optimizer.find_channel(request)
+    logger.info("Channel: ", ch)
+    return OptimisationResponse(
+        type=SUCCESS, channel=ch, message="Optimizer found a solution"
+    )

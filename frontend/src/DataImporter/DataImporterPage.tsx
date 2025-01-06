@@ -5,7 +5,9 @@ import { CsvUpload } from "./CsvUpload.tsx";
 import { parseEdges, parseEdgeSpectrum, parseNodes } from "./parseCsv.ts";
 import { buildNetwork } from "./buildNetwork.ts";
 import { useNetwork } from "../NetworkModel/NetworkContext.tsx";
+import { demoNetwork } from "../NetworkModel/demoNetwork.ts";
 import {convertToRenderable} from "../NetworkModel/convertToRenderable.ts";
+import {Button} from "../Components/UI/button.tsx";
 
 export const DataImporterPage = () => {
   const { setNetwork } = useNetwork();
@@ -54,7 +56,10 @@ export const DataImporterPage = () => {
             <p className="font-bold">Zajętość</p>
             <CsvUpload onUpload={(data) => setEdgesCsv(data)} />
             <p className="font-bold">Spektrum kanały</p>
-            <CsvUpload onUpload={(data) => setSpectrumCsv(data)} />
+            <CsvUpload onUpload={(data) => setSpectrumCsv(data)}/>
+            <Button className="mb-3" variant={"outline"} onClick={(_) => setNetwork(demoNetwork)}>
+              Wczytaj demo
+            </Button>
           </ImporterUploadContainer>
           <p className="text-center font-bold text-green-200">{message}</p> {/* FIXME: should be red when incorrect data is loaded */}
         </CardContent>
