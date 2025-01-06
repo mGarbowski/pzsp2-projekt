@@ -20,11 +20,16 @@ class DijkstraOptimizer(Optimizer):
 
     def find_channel(self, request: OptimisationRequest) -> Channel:
         n_slices = self.num_slices_from_bandwidth(request.bandwidth)
-        node_ids, slice_idx = self.modified_dijkstra(
-            request.source, request.target, n_slices
-        )
-        logger.info("Node IDs: ", node_ids)
-        return self.reconstruct_channel(node_ids, slice_idx, n_slices)
+        node_ids = self.dijkstra(request.source, request.target)
+        logger.info("Node IDs in the cheapest path: ", node_ids)
+        first_slice_idx = self.verify_path(node_ids, n_slices)
+
+        if first_slice_idx is None:
+            logger.warning("No path with enough free slices found")
+            raise Exception("The cheapest does not have enough free slices to meet the request, path (nodes):", node_ids)
+
+
+        return self.reconstruct_channel(node_ids, first_slice_idx, n_slices)
 
     def modified_dijkstra(
         self, source: NodeId, target: NodeId, n_slices: int
@@ -93,6 +98,58 @@ class DijkstraOptimizer(Optimizer):
             logger.warning("The path is not continuous in the slice dimension")
 
         return path, slice_idx
+
+    def dijkstra(self, source: NodeId, target: NodeId) -> list[NodeId]:
+        """Dijkstra algorithm implementation for finding the lowest cost path."""
+        priority_queue = [(0, source)]
+        lowest_costs = {node_id: float("inf") for node_id in self.network.nodes}
+        lowest_costs[source] = 0
+
+        previous_nodes: dict[NodeId, NodeId | None] = {node_id: None for node_id in self.network.nodes}
+
+        while priority_queue:
+            current_cost, current_node = heapq.heappop(priority_queue)
+
+            if current_node == target:
+                break
+
+            for neighbor_id in self.network.nodes[current_node].neighbors:
+                edge = self.network.find_edge_by_node_ids(current_node, neighbor_id)
+                edge_cost = self.calculate_edge_weight(edge)
+                cost = current_cost + edge_cost
+
+                if cost < lowest_costs[neighbor_id]:
+                    lowest_costs[neighbor_id] = cost
+                    previous_nodes[neighbor_id] = current_node
+                    heapq.heappush(priority_queue, (cost, neighbor_id))
+
+        # Reconstruct the lowest cost path
+        path = []
+        current_node = target
+        while current_node is not None:
+            path.append(current_node)
+            current_node = previous_nodes[current_node]
+        path.reverse()
+
+        return path
+
+    def verify_path(self, path: list[NodeId], n_slices: int) -> SliceIdx | None:
+        """Check if the path has enough free slices
+
+        Return index of the first of n_slices free slices or None if not found.
+        """
+        occupancy = self.make_slice_occupancy_map()
+        slice_range = range(TOTAL_SLICES - n_slices + 1)
+        edges = self.edges_from_node_ids(path)
+
+        for first_slice_idx in slice_range:
+            if all(
+                self.are_slices_free(edge, first_slice_idx, n_slices, occupancy)
+                for edge in edges
+            ):
+                return first_slice_idx
+
+        return None
 
     @staticmethod
     def are_slices_free(
