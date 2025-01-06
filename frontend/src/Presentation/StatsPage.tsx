@@ -21,35 +21,37 @@ export const StatsPage = () => {
     <MainContainer>
       <StatsOuterContainer>
         <h1 className="text-3xl font-bold mb-16">Statystyki sieci</h1>
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-xl">Najwęższe wolne pasmo</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {ipsum}
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-xl">Najbardziej zajęte połączenie</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {ipsum}
-          </CardContent>
-        </Card>
+        <StatCardsContainer>
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-xl">Najwęższe wolne pasmo</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {ipsum}
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-xl">Najbardziej zajęte połączenie</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {ipsum}
+            </CardContent>
+          </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-xl">Ogólna zajętość sieci</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {ipsum}
-          </CardContent>
-        </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-xl">Ogólna zajętość sieci</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {ipsum}
+            </CardContent>
+          </Card>
 
-        {selectedNode && (<NodeStats node={selectedNode}/>)}
+          {selectedNode && (<NodeStats node={selectedNode}/>)}
 
-        {selectedEdge && (<EdgeStats edge={selectedEdge}/>)}
+          {selectedEdge && (<EdgeStats edge={selectedEdge}/>)}
+        </StatCardsContainer>
 
         <ButtonContainer>
           <DownloadReport/>
@@ -63,7 +65,16 @@ export const StatsPage = () => {
   )
 }
 
+const StatCardsContainer = styled.div({
+  height: "100%",
+  overflowY: "auto",
+  display: "flex",
+  flexDirection: "column",
+  gap: "1rem",
+})
+
 const StatsOuterContainer = styled.div({
+  height: "80vh",
   marginBottom: "10rem",
   marginLeft: "3rem",
   marginRight: "3rem",
