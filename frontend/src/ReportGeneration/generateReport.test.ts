@@ -5,7 +5,7 @@ const generateExpectedHeading = () : string => {
   // central frequencies
   let final = "";
   [112.5, 50, 75].forEach((frequency) => {
-    final += `Central frequency for ${frequency}`
+    final += `Central frequency for ${frequency}GHz grid`
     frequency = frequency*100
     let middle_freq = LOWEST_BEGINNING_FREQUENCY + frequency/2
     let next_step = LOWEST_BEGINNING_FREQUENCY + frequency
@@ -42,7 +42,8 @@ describe('generateReport', () => {
     let expectedReport = generateExpectedHeading()
     expectedReport += "id1,1,1"
     for (let i = 0; i < 768-(channel.width/6.25); i++) {
-      expectedReport += ",0"
+      expectedReport += ","
+
     }
     expectedReport += "\n"
     let generated = generateChannelsReport([channel])
@@ -50,7 +51,7 @@ describe('generateReport', () => {
     expect(generated).toBe(expectedReport)
   });
 
-  it("should report a 0 and six 1's for frequency: 191.35 width: 50", () => {
+  it("should report eight 1's for frequency: 191.35 width: 50", () => {
     const channel: Channel = {
       id: "id1",
       nodes: ["1", "2", "3"],
@@ -62,7 +63,7 @@ describe('generateReport', () => {
     let generated = generateChannelsReport([channel])
     expectedReport += "id1,1,1,1,1,1,1,1,1"
     for (let i = 0; i < 768-(channel.width/6.25); i++) {
-      expectedReport += ",0"
+      expectedReport += ","
     }
     expectedReport += "\n"
 
@@ -90,13 +91,13 @@ describe('generateReport', () => {
     expectedReport += "id1,1,1,1,1,1,1,1,1"
     // ones start from the beginning
     for (let i = 0; i < 768-(channel1.width/6.25); i++) {
-      expectedReport += ",0"
+      expectedReport += ","
     }
     // channel 2
-    expectedReport += "\n" + "id2,0,0,1,1,1,1,1,1,1,1,1,1,1,1"
-    //12 plus two zeros at the beginning
+    expectedReport += "\n" + "id2,,,1,1,1,1,1,1,1,1,1,1,1,1"
+    //12 plus two empty at the beginning
     for (let i = 0; i < 768-(channel2.width/6.25)-2; i++) {
-      expectedReport += ",0"
+      expectedReport += ","
     }
     //ending
     expectedReport += "\n"

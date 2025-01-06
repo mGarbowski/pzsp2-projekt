@@ -16,7 +16,7 @@ export const generateHeading = (): string => {
   // central frequencies
   let final = "";
   [112.5, 50, 75].forEach((frequency) => {
-    final += `Central frequency for ${frequency}`
+    final += `Central frequency for ${frequency}GHz grid`
     frequency = frequency*100
     let middle_freq = LOWEST_BEGINNING_FREQUENCY + frequency/2
     let next_step = LOWEST_BEGINNING_FREQUENCY + frequency
@@ -41,7 +41,6 @@ export const generateHeading = (): string => {
 export const generateChannelsReport = (channels: Channel[]): string => {
 
 
-
   const generateChannelRow = (channel: Channel) : string => {
     let row = ""
     const beginning_freq = channel.frequency*100_000 - channel.width*100/2
@@ -50,7 +49,7 @@ export const generateChannelsReport = (channels: Channel[]): string => {
       if (slice_begin < ending_freq && slice_begin >= beginning_freq){
         row += ",1"
       } else {
-        row += ",0"
+        row += ","
       }
     }
     return row + "\n"
