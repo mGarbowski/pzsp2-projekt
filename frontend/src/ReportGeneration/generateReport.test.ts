@@ -1,6 +1,34 @@
 import {generateChannelsReport, HIGHEST_BEGINNING_FREQUENCY, LOWEST_BEGINNING_FREQUENCY} from "./generateReport";
 import {Channel} from "../NetworkModel/network"
 
+const generateExpectedHeading = () : string => {
+  // central frequencies
+  let final = "";
+  [112.5, 50, 75].forEach((frequency) => {
+    final += `Central frequency for ${frequency}`
+    frequency = frequency*100
+    let middle_freq = LOWEST_BEGINNING_FREQUENCY + frequency/2
+    let next_step = LOWEST_BEGINNING_FREQUENCY + frequency
+    for (let slice_begin = LOWEST_BEGINNING_FREQUENCY; slice_begin <= HIGHEST_BEGINNING_FREQUENCY; slice_begin += 625 ){
+      if (slice_begin >=next_step){
+        next_step += frequency;
+        middle_freq += frequency
+      }
+      final += "," + middle_freq.toString()
+    }
+    final += "\n"
+  });
+  // 191325.00 GHz - 196087.50 GHz
+  // 6.25 GHz each
+  final += "Channel ID"
+  for (let slice_begin = LOWEST_BEGINNING_FREQUENCY; slice_begin <= HIGHEST_BEGINNING_FREQUENCY; slice_begin += 625 ){
+    final += "," + slice_begin.toString()
+  }
+  final += "\n"
+  return final
+}
+
+
 describe('generateReport', () => {
   it('should generate a row of two 1s for frequency: 191.33125, width: 12.5' , () => {
 
@@ -11,12 +39,8 @@ describe('generateReport', () => {
       frequency: 191.33125,
       width: 12.5
     }
-    let expectedReport = "Channel ID"
-
-    for (let slice_begin = LOWEST_BEGINNING_FREQUENCY; slice_begin <= HIGHEST_BEGINNING_FREQUENCY; slice_begin += 625) {
-      expectedReport += "," + slice_begin.toString()
-    }
-    expectedReport += "\n" + "id1,1,1"
+    let expectedReport = generateExpectedHeading()
+    expectedReport += "id1,1,1"
     for (let i = 0; i < 768-(channel.width/6.25); i++) {
       expectedReport += ",0"
     }
@@ -34,13 +58,9 @@ describe('generateReport', () => {
       frequency: 191.35,
       width: 50
     }
-    let expectedReport = "Channel ID"
+    let expectedReport = generateExpectedHeading()
     let generated = generateChannelsReport([channel])
-
-    for (let slice_begin = LOWEST_BEGINNING_FREQUENCY; slice_begin <= HIGHEST_BEGINNING_FREQUENCY; slice_begin += 625) {
-      expectedReport += "," + slice_begin.toString()
-    }
-    expectedReport += "\n" + "id1,1,1,1,1,1,1,1,1"
+    expectedReport += "id1,1,1,1,1,1,1,1,1"
     for (let i = 0; i < 768-(channel.width/6.25); i++) {
       expectedReport += ",0"
     }
@@ -63,14 +83,11 @@ describe('generateReport', () => {
       frequency: 191.375,
       width: 75
     }
-    let expectedReport = "Channel ID"
+    let expectedReport = generateExpectedHeading()
     let generated = generateChannelsReport([channel1, channel2])
 
-    for (let slice_begin = LOWEST_BEGINNING_FREQUENCY; slice_begin <= HIGHEST_BEGINNING_FREQUENCY; slice_begin += 625) {
-      expectedReport += "," + slice_begin.toString()
-    }
     // channel 1
-    expectedReport += "\n" + "id1,1,1,1,1,1,1,1,1"
+    expectedReport += "id1,1,1,1,1,1,1,1,1"
     // ones start from the beginning
     for (let i = 0; i < 768-(channel1.width/6.25); i++) {
       expectedReport += ",0"
