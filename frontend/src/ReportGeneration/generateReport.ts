@@ -39,7 +39,6 @@ export const generateChannelsReport = (channels: Channel[]): string => {
   channels.forEach((channel) => {
     let row = channel.id
     row += generateChannelRow(channel)
-    row += "\n"
     final += row
   })
 
