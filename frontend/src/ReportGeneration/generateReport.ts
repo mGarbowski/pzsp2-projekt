@@ -12,7 +12,18 @@ export const generateDemoReport = () => {
     "6789,0,0,0,0,1\n";
 }
 
+export const generateHeading = (): string => {
+  let final = "Channel ID"
+  // 191325.00 GHz - 196087.50 GHz
+  // 6.25 GHz each
+  for (let slice_begin = LOWEST_BEGINNING_FREQUENCY; slice_begin <= HIGHEST_BEGINNING_FREQUENCY; slice_begin += 625 ){
+    final += "," + slice_begin.toString()
+  }
+  final += "\n"
+  return final
+}
 export const generateChannelsReport = (channels: Channel[]): string => {
+
 
 
   const generateChannelRow = (channel: Channel) : string => {
@@ -29,13 +40,10 @@ export const generateChannelsReport = (channels: Channel[]): string => {
     return row + "\n"
 
   }
-  let final = "Channel ID"
+  let final = generateHeading()
   // 191325.00 GHz - 196087.50 GHz
   // 6.25 GHz each
-  for (let slice_begin = LOWEST_BEGINNING_FREQUENCY; slice_begin <= HIGHEST_BEGINNING_FREQUENCY; slice_begin += 625 ){
-    final += "," + slice_begin.toString()
-  }
-  final += "\n"
+
   channels.forEach((channel) => {
     let row = channel.id
     row += generateChannelRow(channel)
