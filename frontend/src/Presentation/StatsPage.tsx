@@ -7,6 +7,7 @@ import {MainContainer} from "../StyledComponents/MainContainer.tsx";
 import {useNetwork} from "../NetworkModel/NetworkContext.tsx";
 import {NodeStats} from "./NodeStats.tsx";
 import {EdgeStats} from "./EdgeStats.tsx";
+import {NetworkStats} from "./NetworkStats.tsx";
 
 export const StatsPage = () => {
   const navigate = useNavigate();
@@ -47,6 +48,8 @@ export const StatsPage = () => {
               {ipsum}
             </CardContent>
           </Card>
+
+          {network && (<NetworkStats/>)}
 
           {selectedNode && (<NodeStats node={selectedNode}/>)}
 
