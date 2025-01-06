@@ -7,7 +7,7 @@ import uuid
 
 from src.pzsp_backend.models import Channel, Edge, OptimisationRequest
 from src.pzsp_backend.optimization.base import Optimizer
-from src.pzsp_backend.optimization.integer.abstract import model
+from src.pzsp_backend.optimization.integer.abstract import canonical_edge, model
 
 
 @define
@@ -32,9 +32,11 @@ class IntegerProgrammingOptimizer(Optimizer):
 
         self.validate_solver_result(result)
 
+        logger.info(f"Objective value: {model.obj()}")  # type: ignore
+
         logger.info("Selected Edges in the Path:")
         for e in model.Edges:  # type: ignore
-            if pyo.value(model.x[e]) > 0.5:  # type: ignore
+            if pyo.value(model.x[canonical_edge(*e)]) > 0.5:  # type: ignore
                 logger.info(e)
 
         logger.info("Selected Slice Indices:")
@@ -53,19 +55,31 @@ class IntegerProgrammingOptimizer(Optimizer):
         def pyo_mapping(v: Any):
             return {None: v}
 
+        edges = [
+            canonical_edge(e.node1Id, e.node2Id) for e in self.network.edges.values()
+        ]
+        logger.warning(f"edges: { edges }")
+
+        nodes = list(self.network.nodes.keys())
+        logger.warning(f"nodes: { nodes }")
+        weights = {
+            canonical_edge(e.node1Id, e.node2Id): self.calculate_edge_weight(e)
+            for e in self.network.edges.values()
+        }
+        logger.warning(f"weights: { weights }")
+
+        occupied = self.edge_slice_occupancy_map()
+
         return pyo_mapping(
             {
                 "S": pyo_mapping(self.num_slices_from_bandwidth(request.bandwidth)),
-                "Nodes": list(self.network.nodes.keys()),
-                "Edges": [(e.node1Id, e.node2Id) for e in self.network.edges.values()],
-                "Weights": {
-                    (e.node1Id, e.node2Id): self.calculate_edge_weight(e)
-                    for e in self.network.edges.values()
-                },
+                "Nodes": nodes,
+                "Edges": edges,
+                "Weights": weights,
                 "Source": pyo_mapping(request.source),
                 "Target": pyo_mapping(request.target),
                 "Slices": list(range(768)),
-                "Occupied": self.edge_slice_occupancy_map(),
+                "Occupied": occupied,
             }
         )
 

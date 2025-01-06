@@ -1,9 +1,9 @@
 from abc import ABC, abstractmethod
-from collections import defaultdict
 from typing import Literal
 
 from attrs import define
 
+from src.pzsp_backend.optimization.integer.util import canonical_edge
 from src.pzsp_backend.optimization.constants import (
     MAX_FREQUENCY,
     MIN_FREQUENCY,
@@ -83,7 +83,8 @@ class Optimizer(ABC):
         # Populate the dictionary with all possible (node1, node2, slice_idx)
         for _, edge in self.network.edges.items():
             for slice_idx in slice_indices:
-                rv[(edge.node1Id, edge.node2Id, slice_idx)] = 0
+                e1, e2 = canonical_edge(edge.node1Id, edge.node2Id)
+                rv[(e1, e2, slice_idx)] = 0
 
         # Update the dictionary with occupied slices
         for _, ch in self.network.channels.items():
@@ -93,6 +94,7 @@ class Optimizer(ABC):
             edges = [self.network.edges[edge_id] for edge_id in ch.edges]
             for edge in edges:
                 for slice_idx in occupied_slice_indices:
-                    rv[(edge.node1Id, edge.node2Id, slice_idx)] = 1
+                    e1, e2 = canonical_edge(edge.node1Id, edge.node2Id)
+                    rv[(e1, e2, slice_idx)] = 1
 
         return rv

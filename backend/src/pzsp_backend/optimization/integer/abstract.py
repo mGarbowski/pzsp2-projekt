@@ -1,5 +1,7 @@
 import pyomo.environ as pyo
 
+from src.pzsp_backend.optimization.integer.util import canonical_edge
+
 # Define the abstract model
 model = pyo.AbstractModel()
 
@@ -18,21 +20,16 @@ model.Occupied = pyo.Param(
 model.S = pyo.Param(
     domain=pyo.NonNegativeIntegers,
     mutable=True,
-    default=2,  # TODO: how to initialize this
+    default=2,
 )  # Required consecutive free slices
 
 # Variables
-# Binary decision variables for edge selection
-model.x = pyo.Var(model.Edges, domain=pyo.Binary)
-
-# Binary variable to indicate if slice `s` is selected as the starting index
-model.y = pyo.Var(model.Slices, domain=pyo.Binary)
-
-# Auxiliary variable for linearization
-model.z = pyo.Var(model.Edges, model.Slices, domain=pyo.Binary)
+model.x = pyo.Var(model.Edges, domain=pyo.Binary)  # Edge selection
+model.y = pyo.Var(model.Slices, domain=pyo.Binary)  # Slice selection
+model.z = pyo.Var(model.Edges, model.Slices, domain=pyo.Binary)  # Auxiliary variable
 
 
-# Objective Function: Minimize the total weight of the path
+# Objective Function
 def obj_rule(model):
     return sum(model.Weights[e] * model.x[e] for e in model.Edges)
 
@@ -40,24 +37,36 @@ def obj_rule(model):
 model.obj = pyo.Objective(rule=obj_rule, sense=pyo.minimize)
 
 
-# Flow Conservation Constraints
 def flow_balance_rule(model, node):
-    inflow = sum(model.x[i, node] for i, j in model.Edges if j == node)
-    outflow = sum(model.x[node, j] for i, j in model.Edges if i == node)
-    if node == pyo.value(model.Source):
-        return outflow - inflow == 1  # Source node: net outflow = 1
-    elif node == pyo.value(model.Target):
-        return inflow - outflow == 1  # Target node: net inflow = 1
+    # All edges that connect to 'node' in an undirected sense:
+    edges_touching_node = [e for e in model.Edges if node in e]
+    # Because x[e] is a *binary* indicator for whether edge e is used,
+    # in an undirected path setting, "inflow" = "outflow" basically
+    # becomes "the number of edges used that touch node."
+    # For interior nodes, we want 2 edges used; for Source/Target, we want 1 edge used.
+
+    # But if you specifically want a flow interpretation:
+    #   inflow = outflow for an interior node
+    #   (outflow - inflow) = ±1 for source/target
+    # then we need to define outflow-inflow carefully.
+    # For an undirected edge, there's no inherent direction, so you can do e.g.:
+
+    inflow = sum(model.x[e] for e in edges_touching_node)  # treat them all as "inflow"
+
+    if node not in [pyo.value(model.Source), pyo.value(model.Target)]:
+        # interior node: number of used edges = 2
+        return inflow == 2
     else:
-        return inflow - outflow == 0  # Intermediate nodes: net flow = 0
+        # source or target: number of used edges = 1
+        return inflow == 1
 
 
 model.flow_balance = pyo.Constraint(model.Nodes, rule=flow_balance_rule)
 
 
 # Free Slices for Each Edge
-def free_slices_rule(model, src, tgt):
-    e = (src, tgt)
+def free_slices_rule(model, i, j):
+    e = canonical_edge(i, j)
     return (
         sum(
             model.y[s]
@@ -77,8 +86,8 @@ model.free_slices = pyo.Constraint(model.Edges, rule=free_slices_rule)
 
 
 # Consistency of Selected Slices Across Edges
-def consistency_rule(model, src, tgt, slice):
-    e = (src, tgt)
+def consistency_rule(model, i, j, slice):
+    e = canonical_edge(i, j)
     if slice + model.S.value - 1 > max(model.Slices):
         return pyo.Constraint.Skip
     return model.z[e, slice] <= 1 - model.Occupied[e, slice]
@@ -87,25 +96,25 @@ def consistency_rule(model, src, tgt, slice):
 model.consistency = pyo.Constraint(model.Edges, model.Slices, rule=consistency_rule)
 
 
-# Link z to the product of y[slice] and x[e]
-def link_z_rule1(model, src, tgt, slice):
-    e = (src, tgt)
+# Linking z to y and x
+def link_z_rule1(model, i, j, slice):
+    e = canonical_edge(i, j)
     return model.z[e, slice] <= model.y[slice]
 
 
 model.link_z1 = pyo.Constraint(model.Edges, model.Slices, rule=link_z_rule1)
 
 
-def link_z_rule2(model, src, tgt, slice):
-    e = (src, tgt)
+def link_z_rule2(model, i, j, slice):
+    e = canonical_edge(i, j)
     return model.z[e, slice] <= model.x[e]
 
 
 model.link_z2 = pyo.Constraint(model.Edges, model.Slices, rule=link_z_rule2)
 
 
-def link_z_rule3(model, src, tgt, slice):
-    e = (src, tgt)
+def link_z_rule3(model, i, j, slice):
+    e = canonical_edge(i, j)
     return model.z[e, slice] >= model.y[slice] + model.x[e] - 1
 
 
