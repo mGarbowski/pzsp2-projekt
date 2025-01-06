@@ -12,6 +12,7 @@ NodeId = str
 EdgeId = str
 SliceIdx = int
 OccupancyMap = dict[EdgeId, list[bool]]
+PreviousNodes = dict[tuple[NodeId, SliceIdx], tuple[NodeId | None, SliceIdx | None]]
 
 
 @define
@@ -20,21 +21,26 @@ class DijkstraOptimizer(Optimizer):
 
     def find_channel(self, request: OptimisationRequest) -> Channel:
         n_slices = self.num_slices_from_bandwidth(request.bandwidth)
-        node_ids, slice_idx = self.modified_dijkstra(request.source, request.target, n_slices)
+        node_ids, slice_idx = self.modified_dijkstra(
+            request.source, request.target, n_slices
+        )
         logger.info("Node IDs: ", node_ids)
         return self.reconstruct_channel(node_ids, slice_idx, n_slices)
 
     def modified_dijkstra(
             self, source: NodeId, target: NodeId, n_slices: int
     ) -> tuple[list[NodeId], SliceIdx]:
-        """Modified Dijkstra algorithm for finding the lowest cost path in a graph with additional constraint.
+        """Modified Dijkstra algorithm
 
-        The path must be continuous in the slice dimension and the requested number of slices must be free on each edge.
+        Finds the lowest cost path in a graph with additional constraint.
+        The path must be continuous in the slice dimension and the requested
+        number of slices must be free on each edge.
         """
         occupancy = self.make_slice_occupancy_map()
         slice_range = range(TOTAL_SLICES - n_slices + 1)
 
-        priority_queue: list[tuple[float, NodeId, SliceIdx]] = [(0, source, 0)]  # cost, node_id, slice_idx
+        # cost, node_id, slice_idx
+        priority_queue: list[tuple[float, NodeId, SliceIdx]] = [(0, source, 0)]
 
         lowest_costs = {
             (node_id, slice_idx): float('inf')
@@ -43,7 +49,7 @@ class DijkstraOptimizer(Optimizer):
         }
         lowest_costs[(source, 0)] = 0
 
-        previous_nodes: dict[tuple[NodeId, SliceIdx], tuple[NodeId | None, SliceIdx | None]] = {
+        previous_nodes: PreviousNodes = {
             (node_id, slice_idx): (None, None)
             for node_id in self.network.nodes
             for slice_idx in slice_range

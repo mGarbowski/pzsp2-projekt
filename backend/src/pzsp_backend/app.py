@@ -1,9 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from loguru import logger
 from pydantic import BaseModel
 from starlette.websockets import WebSocket, WebSocketDisconnect, WebSocketState
-from loguru import logger
 
+from src.pzsp_backend.models import OptimisationRequest, OptimisationResponse
 from src.pzsp_backend.optimization.constants import (
     DIJKSTRA,
     FAILURE,
@@ -13,7 +14,6 @@ from src.pzsp_backend.optimization.constants import (
 )
 from src.pzsp_backend.optimization.dijkstra import DijkstraOptimizer
 from src.pzsp_backend.optimization.integer.optimizer import IntegerProgrammingOptimizer
-from src.pzsp_backend.models import OptimisationRequest, OptimisationResponse
 
 app = FastAPI()
 

@@ -43,7 +43,7 @@ class Optimizer(ABC):
         return int(s[:-4])
 
     def num_slices_from_bandwidth(self, bandwidth: str) -> int:
-        """Calculate the minimum number of slices needed to accomodate a given bandwidth"""
+        """Calculate the minimum number of slices needed for given bandwidth"""
         # TODO: more realistic mapping needed here
         mapping = {10: 1, 40: 4, 100: 10, 400: 40}
         bw_as_int = self.bandwidth_from_string(bandwidth)
@@ -67,7 +67,11 @@ class Optimizer(ABC):
 
     @staticmethod
     def get_frequency_and_width_from_slice_list(slices: list[int]):
-        """Based on a list of slice indices, return their central frequency and width that they take up"""
+        """Convert list of slice indices to frequency and width
+
+        Based on a list of slice indices, return their central frequency and width
+        that they take up
+        """
         min_frequency = 191.325
         single_slice_bandwidth = 0.00625
         start_freq = min_frequency + slices[0] * single_slice_bandwidth
@@ -78,7 +82,8 @@ class Optimizer(ABC):
             len(slices)
             * single_slice_bandwidth
             * WIDTH_NORMALIZATION_FACTOR,
-            # denormalize, so that channel of width 0.05GHz has a value of 50, as in the excel
+            # denormalize, so that channel of width 0.05GHz
+            # has a value of 50, as in the excel
         )
 
     @staticmethod
