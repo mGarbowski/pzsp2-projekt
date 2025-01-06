@@ -8,6 +8,7 @@ import {useNetwork} from "../NetworkModel/NetworkContext.tsx";
 import {NodeStats} from "./NodeStats.tsx";
 import {EdgeStats} from "./EdgeStats.tsx";
 import {NetworkStats} from "./NetworkStats.tsx";
+import {ChannelSelectionCard} from "./ChannelSelectionCard.tsx";
 
 export const StatsPage = () => {
   const navigate = useNavigate();
@@ -50,6 +51,8 @@ export const StatsPage = () => {
           </Card>
 
           {network && (<NetworkStats network={network}/>)}
+
+          <ChannelSelectionCard/>
 
           {selectedNode && (<NodeStats node={selectedNode}/>)}
 
