@@ -25,34 +25,36 @@ class DijkstraOptimizer(Optimizer):
 
     def find_shortest_path(self, source: str, target: str, request: OptimisationRequest, n_slices: int) -> tuple[list[str], int]:
         occupancy = self.make_slice_occupancy_map()
+        slice_range = range(768 - n_slices + 1)
 
-        # Initialize the priority queue with the source node and slice index 0
-        priority_queue = [(0, source, 0)]
-        # Dictionary to store the shortest distance to each node and slice index
-        shortest_distances = {(node_id, slice_idx): float('inf') for node_id in self.network.nodes for slice_idx in
-                              range(768 - n_slices + 1)}
+        priority_queue: list[tuple[float, str, int]] = [(0, source, 0)]  # cost, node_id, slice_idx
+
+        shortest_distances = {
+            (node_id, slice_idx): float('inf')
+            for node_id in self.network.nodes
+            for slice_idx in slice_range
+        }
         shortest_distances[(source, 0)] = 0
-        # Dictionary to store the previous node and slice index in the optimal path
-        previous_nodes = {(node_id, slice_idx): (None, None) for node_id in self.network.nodes for slice_idx in
-                          range(768 - n_slices + 1)}
+
+        previous_nodes: dict[tuple[str, int], tuple[str|None, int|None]] = {
+            (node_id, slice_idx): (None, None)
+            for node_id in self.network.nodes
+            for slice_idx in slice_range
+        }
 
         while priority_queue:
             current_distance, current_node, current_slice = heapq.heappop(priority_queue)
 
-            # If the current node is the target, we can stop
             if current_node == target:
                 break
 
-            # Explore neighbors
             for neighbor_id in self.network.nodes[current_node].neighbors:
                 edge = self.network.find_edge_by_node_ids(current_node, neighbor_id)
                 weight = self.calculate_edge_weight(edge, request)
                 distance = current_distance + weight
 
-                # Check for available slices
-                for slice_idx in range(768 - n_slices + 1):
+                for slice_idx in slice_range:
                     if self.are_slices_free(edge, slice_idx, n_slices, occupancy):
-                        # If a shorter path to the neighbor is found
                         if distance < shortest_distances[(neighbor_id, slice_idx)]:
                             shortest_distances[(neighbor_id, slice_idx)] = distance
                             previous_nodes[(neighbor_id, slice_idx)] = (current_node, current_slice)
