@@ -1,4 +1,5 @@
 import heapq
+from typing import Literal
 
 from attrs import define
 from loguru import logger
@@ -24,9 +25,6 @@ class DijkstraOptimizer(Optimizer):
         logger.info("Node IDs: ", node_ids)
         return self.reconstruct_channel(node_ids, slice_idx, n_slices)
 
-    def calculate_edge_weight(self, edge: Edge, request: OptimisationRequest) -> float:
-        distance = self.network.edge_length(edge)
-        return request.distanceWeight * distance + request.evenLoadWeight * edge.provisionedCapacity
 
     def modified_dijkstra(
             self, source: NodeId, target: NodeId, request: OptimisationRequest, n_slices: int
@@ -61,7 +59,7 @@ class DijkstraOptimizer(Optimizer):
 
             for neighbor_id in self.network.nodes[current_node].neighbors:
                 edge = self.network.find_edge_by_node_ids(current_node, neighbor_id)
-                edge_cost = self.calculate_edge_weight(edge, request)
+                edge_cost = self.calculate_edge_weight(edge)
                 cost = current_cost + edge_cost
 
                 for slice_idx in slice_range:
@@ -124,3 +122,27 @@ class DijkstraOptimizer(Optimizer):
             frequency=frequency,
             width=width,
         )
+
+    def edge_slice_occupancy_map(self) -> dict[tuple[str, str, int], Literal[0, 1]]:
+        """Create a dictionary (node_1_id, node_2_id, slice_idx): slice_occupancy
+        where slice_occupancy is binary (0 - free, 1 - occupied)."""
+        # Initialize the dictionary with all combinations defaulting to 0
+        rv: dict[tuple[str, str, int], Literal[0, 1]] = {}
+        slice_indices = range(768)  # Slice indices from 0 to 767
+
+        # Populate the dictionary with all possible (node1, node2, slice_idx)
+        for _, edge in self.network.edges.items():
+            for slice_idx in slice_indices:
+                rv[(edge.node1Id, edge.node2Id, slice_idx)] = 0
+
+        # Update the dictionary with occupied slices
+        for _, ch in self.network.channels.items():
+            occupied_slice_indices = self.get_slice_indices_from_freq_and_width(
+                ch.width, ch.frequency
+            )
+            edges = [self.network.edges[edge_id] for edge_id in ch.edges]
+            for edge in edges:
+                for slice_idx in occupied_slice_indices:
+                    rv[(edge.node1Id, edge.node2Id, slice_idx)] = 1
+
+        return rv
