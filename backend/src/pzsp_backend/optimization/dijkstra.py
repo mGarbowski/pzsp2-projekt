@@ -14,7 +14,7 @@ class DijkstraOptimizer(Optimizer):
     """Dijkstra's algorithm optimizer"""
 
     def find_channel(self, request: OptimisationRequest) -> Channel:
-        n_slices = 5  #TODO
+        n_slices = self.num_slices_from_bandwidth(request.bandwidth)
         node_ids, slice_idx = self.find_shortest_path(request.source, request.target, request, n_slices)
         logger.info("Node IDs: ", node_ids)
         return self.reconstruct_channel(node_ids, slice_idx, n_slices)
