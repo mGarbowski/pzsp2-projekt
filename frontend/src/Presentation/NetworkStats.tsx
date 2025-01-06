@@ -1,11 +1,12 @@
-import {useNetwork} from "../NetworkModel/NetworkContext.tsx";
 import {Card, CardContent, CardHeader, CardTitle} from "../Components/UI/card.tsx";
+import {Network} from "../NetworkModel/network.ts";
 
-export const NetworkStats = () => {
-  const {network} = useNetwork();
-  if (!network) {
-    return null;
-  }
+interface NetworkStatsProps {
+  network: Network;
+}
+
+export const NetworkStats = (props: NetworkStatsProps) => {
+  const {network} = props;
 
   const nodeCount = Object.values(network.nodes).length ?? 0;
   const edgeCount = Object.values(network.edges).length ?? 0;

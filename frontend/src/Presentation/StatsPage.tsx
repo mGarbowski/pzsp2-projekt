@@ -49,7 +49,7 @@ export const StatsPage = () => {
             </CardContent>
           </Card>
 
-          {network && (<NetworkStats/>)}
+          {network && (<NetworkStats network={network}/>)}
 
           {selectedNode && (<NodeStats node={selectedNode}/>)}
 
