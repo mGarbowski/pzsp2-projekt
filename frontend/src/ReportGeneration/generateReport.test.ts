@@ -6,10 +6,9 @@ const generateExpectedHeading = () : string => {
   let final = "";
   [112.5, 50, 75].forEach((frequency) => {
     final += `Central frequency for ${frequency}GHz grid`
-    frequency = frequency*100
     let middle_freq = LOWEST_BEGINNING_FREQUENCY + frequency/2
     let next_step = LOWEST_BEGINNING_FREQUENCY + frequency
-    for (let slice_begin = LOWEST_BEGINNING_FREQUENCY; slice_begin <= HIGHEST_BEGINNING_FREQUENCY; slice_begin += 625 ){
+    for (let slice_begin = LOWEST_BEGINNING_FREQUENCY; slice_begin <= HIGHEST_BEGINNING_FREQUENCY; slice_begin += 6.25 ){
       if (slice_begin >=next_step){
         next_step += frequency;
         middle_freq += frequency
@@ -21,7 +20,7 @@ const generateExpectedHeading = () : string => {
   // 191325.00 GHz - 196087.50 GHz
   // 6.25 GHz each
   final += "Channel ID"
-  for (let slice_begin = LOWEST_BEGINNING_FREQUENCY; slice_begin <= HIGHEST_BEGINNING_FREQUENCY; slice_begin += 625 ){
+  for (let slice_begin = LOWEST_BEGINNING_FREQUENCY; slice_begin <= HIGHEST_BEGINNING_FREQUENCY; slice_begin += 6.25 ){
     final += "," + slice_begin.toString()
   }
   final += "\n"
