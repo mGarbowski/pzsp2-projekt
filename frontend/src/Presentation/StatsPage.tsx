@@ -24,7 +24,8 @@ export const StatsPage = () => {
   return (
     <MainContainer>
       <StatsOuterContainer>
-        <h1 className="text-3xl font-bold mb-16">Statystyki sieci</h1>
+        <h1 className="text-3xl font-bold mb-8">Statystyki sieci</h1>
+        <h2 className="text-xl mb-8">Kliknij element na prezentacji żeby zobaczyć szczegółowe informacje</h2>
         <StatCardsContainer>
           <Card>
             <CardHeader>
