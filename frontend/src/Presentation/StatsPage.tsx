@@ -9,12 +9,14 @@ import {NodeStats} from "./NodeStats.tsx";
 import {EdgeStats} from "./EdgeStats.tsx";
 import {NetworkStats} from "./NetworkStats.tsx";
 import {ChannelSelectionCard} from "./ChannelSelectionCard.tsx";
+import {ChannelStats} from "./ChannelStats.tsx";
 
 export const StatsPage = () => {
   const navigate = useNavigate();
-  const {network, selectedNodeId, selectedEdgeId} = useNetwork();
+  const {network, selectedNodeId, selectedEdgeId, highlightedChannelId} = useNetwork();
   const selectedNode = selectedNodeId ? network?.nodes[selectedNodeId] : null;
   const selectedEdge = selectedEdgeId ? network?.edges[selectedEdgeId] : null;
+  const selectedChannel = highlightedChannelId ? network?.channels[highlightedChannelId] : null;
 
   const ipsum = `
             Explicabo nihil eligendi esse quia facere non. Unde accusantium ducimus sint.
@@ -53,6 +55,8 @@ export const StatsPage = () => {
           {network && (<NetworkStats network={network}/>)}
 
           <ChannelSelectionCard/>
+
+          {selectedChannel && (<ChannelStats channel={selectedChannel}/>)}
 
           {selectedNode && (<NodeStats node={selectedNode}/>)}
 
