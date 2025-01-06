@@ -6,11 +6,13 @@ import {Card, CardContent, CardHeader, CardTitle} from "../Components/UI/card.ts
 import {MainContainer} from "../StyledComponents/MainContainer.tsx";
 import {useNetwork} from "../NetworkModel/NetworkContext.tsx";
 import {NodeStats} from "./NodeStats.tsx";
+import {EdgeStats} from "./EdgeStats.tsx";
 
 export const StatsPage = () => {
   const navigate = useNavigate();
-  const {network, selectedNodeId} = useNetwork();
+  const {network, selectedNodeId, selectedEdgeId} = useNetwork();
   const selectedNode = selectedNodeId ? network?.nodes[selectedNodeId] : null;
+  const selectedEdge = selectedEdgeId ? network?.edges[selectedEdgeId] : null;
 
   const ipsum = `
             Explicabo nihil eligendi esse quia facere non. Unde accusantium ducimus sint.
@@ -46,6 +48,8 @@ export const StatsPage = () => {
         </Card>
 
         {selectedNode && (<NodeStats node={selectedNode}/>)}
+
+        {selectedEdge && (<EdgeStats edge={selectedEdge}/>)}
 
         <ButtonContainer>
           <DownloadReport/>
