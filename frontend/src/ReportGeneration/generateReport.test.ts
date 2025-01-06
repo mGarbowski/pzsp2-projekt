@@ -45,7 +45,7 @@ describe('generateReport', () => {
 
     }
     expectedReport += "\n"
-    let generated = generateChannelsReport([channel])
+    const generated = generateChannelsReport([channel])
 
     expect(generated).toBe(expectedReport)
   });
@@ -59,7 +59,7 @@ describe('generateReport', () => {
       width: 50
     }
     let expectedReport = generateExpectedHeading()
-    let generated = generateChannelsReport([channel])
+    const generated = generateChannelsReport([channel])
     expectedReport += "id1,1,1,1,1,1,1,1,1"
     for (let i = 0; i < 768-(channel.width/6.25); i++) {
       expectedReport += ","
@@ -84,7 +84,7 @@ describe('generateReport', () => {
       width: 75
     }
     let expectedReport = generateExpectedHeading()
-    let generated = generateChannelsReport([channel1, channel2])
+    const generated = generateChannelsReport([channel1, channel2])
 
     // channel 1
     expectedReport += "id1,1,1,1,1,1,1,1,1"
