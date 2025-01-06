@@ -2,6 +2,7 @@ import heapq
 
 from attrs import define
 from loguru import logger
+
 from src.pzsp_backend.models import Channel, Edge, OptimisationRequest
 from src.pzsp_backend.optimization.base import Optimizer
 from src.pzsp_backend.optimization.constants import TOTAL_SLICES
@@ -25,8 +26,10 @@ class DijkstraOptimizer(Optimizer):
 
         if first_slice_idx is None:
             logger.warning("No path with enough free slices found")
-            raise Exception("The cheapest does not have enough free slices to meet the request, path (nodes):",
-                            node_ids)
+            raise Exception(
+                "The cheapest does not have enough free slices to meet the request, path (nodes):",
+                node_ids,
+            )
 
         return self.reconstruct_channel(node_ids, first_slice_idx, n_slices)
 
@@ -36,7 +39,9 @@ class DijkstraOptimizer(Optimizer):
         lowest_costs = {node_id: float("inf") for node_id in self.network.nodes}
         lowest_costs[source] = 0
 
-        previous_nodes: dict[NodeId, NodeId | None] = {node_id: None for node_id in self.network.nodes}
+        previous_nodes: dict[NodeId, NodeId | None] = {
+            node_id: None for node_id in self.network.nodes
+        }
 
         while priority_queue:
             current_cost, current_node = heapq.heappop(priority_queue)
@@ -75,8 +80,8 @@ class DijkstraOptimizer(Optimizer):
 
         for first_slice_idx in slice_range:
             if all(
-                    self.are_slices_free(edge, first_slice_idx, n_slices, occupancy)
-                    for edge in edges
+                self.are_slices_free(edge, first_slice_idx, n_slices, occupancy)
+                for edge in edges
             ):
                 return first_slice_idx
 
@@ -84,7 +89,7 @@ class DijkstraOptimizer(Optimizer):
 
     @staticmethod
     def are_slices_free(
-            edge: Edge, start_slice: SliceIdx, n_slices: int, occupancy: OccupancyMap
+        edge: Edge, start_slice: SliceIdx, n_slices: int, occupancy: OccupancyMap
     ) -> bool:
         """Check if the sequence of slices is free on the edge."""
         return all(
@@ -114,7 +119,7 @@ class DijkstraOptimizer(Optimizer):
         ]
 
     def reconstruct_channel(
-            self, node_ids: list[str], slice_idx: SliceIdx, n_slices: int
+        self, node_ids: list[str], slice_idx: SliceIdx, n_slices: int
     ) -> Channel:
         edges = self.edges_from_node_ids(node_ids)
         occupied_slices = list(range(slice_idx, slice_idx + n_slices))
