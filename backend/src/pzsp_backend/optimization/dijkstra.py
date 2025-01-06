@@ -6,8 +6,13 @@ from loguru import logger
 from src.pzsp_backend.models import Channel, Edge
 from src.pzsp_backend.models import OptimisationRequest
 from src.pzsp_backend.optimization.base import Optimizer
+from src.pzsp_backend.optimization.constants import TOTAL_SLICES
 
-OccupancyMap = dict[str, list[bool]]
+NodeId = str
+EdgeId = str
+SliceIdx = int
+OccupancyMap = dict[EdgeId, list[bool]]
+
 
 @define
 class DijkstraOptimizer(Optimizer):
@@ -15,7 +20,7 @@ class DijkstraOptimizer(Optimizer):
 
     def find_channel(self, request: OptimisationRequest) -> Channel:
         n_slices = self.num_slices_from_bandwidth(request.bandwidth)
-        node_ids, slice_idx = self.find_shortest_path(request.source, request.target, request, n_slices)
+        node_ids, slice_idx = self.modified_dijkstra(request.source, request.target, request, n_slices)
         logger.info("Node IDs: ", node_ids)
         return self.reconstruct_channel(node_ids, slice_idx, n_slices)
 
@@ -23,11 +28,17 @@ class DijkstraOptimizer(Optimizer):
         distance = self.network.edge_length(edge)
         return request.distanceWeight * distance + request.evenLoadWeight * edge.provisionedCapacity
 
-    def find_shortest_path(self, source: str, target: str, request: OptimisationRequest, n_slices: int) -> tuple[list[str], int]:
-        occupancy = self.make_slice_occupancy_map()
-        slice_range = range(768 - n_slices + 1)
+    def modified_dijkstra(
+            self, source: NodeId, target: NodeId, request: OptimisationRequest, n_slices: int
+    ) -> tuple[list[NodeId], SliceIdx]:
+        """Modified Dijkstra algorithm for finding the lowest cost path in a graph with additional constraint.
 
-        priority_queue: list[tuple[float, str, int]] = [(0, source, 0)]  # cost, node_id, slice_idx
+        The path must be continuous in the slice dimension and the requested number of slices must be free on each edge.
+        """
+        occupancy = self.make_slice_occupancy_map()
+        slice_range = range(TOTAL_SLICES - n_slices + 1)
+
+        priority_queue: list[tuple[float, NodeId, SliceIdx]] = [(0, source, 0)]  # cost, node_id, slice_idx
 
         lowest_costs = {
             (node_id, slice_idx): float('inf')
@@ -36,7 +47,7 @@ class DijkstraOptimizer(Optimizer):
         }
         lowest_costs[(source, 0)] = 0
 
-        previous_nodes: dict[tuple[str, int], tuple[str|None, int|None]] = {
+        previous_nodes: dict[tuple[NodeId, SliceIdx], tuple[NodeId | None, SliceIdx | None]] = {
             (node_id, slice_idx): (None, None)
             for node_id in self.network.nodes
             for slice_idx in slice_range
@@ -77,14 +88,15 @@ class DijkstraOptimizer(Optimizer):
 
         return path, slice_idx
 
-    def are_slices_free(self, edge: Edge, start_slice: int, n_slices: int, occupancy: OccupancyMap) -> bool:
-        """Check if the slices from start_slice to start_slice + S - 1 are free on the edge."""
+    @staticmethod
+    def are_slices_free(edge: Edge, start_slice: SliceIdx, n_slices: int, occupancy: OccupancyMap) -> bool:
+        """Check if the sequence of slices is free on the edge."""
         return all(not occupancy[edge.id][i] for i in range(start_slice, start_slice + n_slices))
 
     def make_slice_occupancy_map(self) -> OccupancyMap:
         """Create a dictionary edge_id: slice_occupancy
         where slice_occupancy is a list of booleans (False - free, True - occupied)."""
-        occupancy = {edge_id: [False] * 768 for edge_id in self.network.edges}
+        occupancy = {edge_id: [False] * TOTAL_SLICES for edge_id in self.network.edges}
 
         for channel in self.network.channels.values():
             slice_idxs = self.get_slice_indices_from_freq_and_width(channel.width, channel.frequency)
@@ -100,11 +112,10 @@ class DijkstraOptimizer(Optimizer):
             for a, b in zip(node_ids[:-1], node_ids[1:])
         ]
 
-    def reconstruct_channel(self, node_ids: list[str], slice_idx: int, n_slices: int) -> Channel:
+    def reconstruct_channel(self, node_ids: list[str], slice_idx: SliceIdx, n_slices: int) -> Channel:
         edges = self.edges_from_node_ids(node_ids)
-        frequency, width = self.get_frequency_and_width_from_slice_list(
-            list(range(slice_idx, slice_idx + n_slices))
-        )
+        occupied_slices = list(range(slice_idx, slice_idx + n_slices))
+        frequency, width = self.get_frequency_and_width_from_slice_list(occupied_slices)
 
         return Channel(
             id=self.generate_channel_id(),
