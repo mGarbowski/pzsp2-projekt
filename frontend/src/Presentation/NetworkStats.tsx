@@ -2,9 +2,6 @@ import {Card, CardContent, CardHeader, CardTitle} from "../Components/UI/card.ts
 import {Channel, Network} from "../NetworkModel/network.ts";
 import {useNetwork} from "../NetworkModel/NetworkContext.tsx";
 
-interface NetworkStatsProps {
-  network: Network;
-}
 
 const channelWithMaxLoad = (network: Network): Channel => {
   let maxLoad = -Infinity;
@@ -34,9 +31,11 @@ const overallNetworkLoad = (network: Network) => {
   return Math.round(avgLoad);
 }
 
-export const NetworkStats = (props: NetworkStatsProps) => {
-  const {network} = props;
-  const {setHighlightedChannelId} = useNetwork();
+export const NetworkStats = () => {
+  const {network, setHighlightedChannelId} = useNetwork();
+  if (!network) {
+    return null;
+  }
 
   const edges = Object.values(network.edges);
   const channels = Object.values(network.channels);

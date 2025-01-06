@@ -24,7 +24,7 @@ export const StatsPage = () => {
         <h2 className="text-xl mb-8">Kliknij element na prezentacji żeby zobaczyć szczegółowe informacje</h2>
         <StatCardsContainer>
 
-          {network && (<NetworkStats network={network}/>)}
+          <NetworkStats />
 
           <ChannelSelectionCard/>
 
