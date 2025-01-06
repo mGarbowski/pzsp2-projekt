@@ -32,6 +32,9 @@ lint = [
     "isort>=5.13.2",
     "flake8>=7.1.1",
 ]
+maksym = [
+    "debugpy>=1.8.11",
+]
 
 [tool.pdm.scripts]
 start = {shell = "uvicorn src.pzsp_backend.app:app --host 0.0.0.0"}
