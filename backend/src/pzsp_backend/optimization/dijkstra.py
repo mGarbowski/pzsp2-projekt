@@ -29,12 +29,12 @@ class DijkstraOptimizer(Optimizer):
 
         priority_queue: list[tuple[float, str, int]] = [(0, source, 0)]  # cost, node_id, slice_idx
 
-        shortest_distances = {
+        lowest_costs = {
             (node_id, slice_idx): float('inf')
             for node_id in self.network.nodes
             for slice_idx in slice_range
         }
-        shortest_distances[(source, 0)] = 0
+        lowest_costs[(source, 0)] = 0
 
         previous_nodes: dict[tuple[str, int], tuple[str|None, int|None]] = {
             (node_id, slice_idx): (None, None)
@@ -43,24 +43,24 @@ class DijkstraOptimizer(Optimizer):
         }
 
         while priority_queue:
-            current_distance, current_node, current_slice = heapq.heappop(priority_queue)
+            current_cost, current_node, current_slice = heapq.heappop(priority_queue)
 
             if current_node == target:
                 break
 
             for neighbor_id in self.network.nodes[current_node].neighbors:
                 edge = self.network.find_edge_by_node_ids(current_node, neighbor_id)
-                weight = self.calculate_edge_weight(edge, request)
-                distance = current_distance + weight
+                edge_cost = self.calculate_edge_weight(edge, request)
+                cost = current_cost + edge_cost
 
                 for slice_idx in slice_range:
                     if self.are_slices_free(edge, slice_idx, n_slices, occupancy):
-                        if distance < shortest_distances[(neighbor_id, slice_idx)]:
-                            shortest_distances[(neighbor_id, slice_idx)] = distance
+                        if cost < lowest_costs[(neighbor_id, slice_idx)]:
+                            lowest_costs[(neighbor_id, slice_idx)] = cost
                             previous_nodes[(neighbor_id, slice_idx)] = (current_node, current_slice)
-                            heapq.heappush(priority_queue, (distance, neighbor_id, slice_idx))
+                            heapq.heappush(priority_queue, (cost, neighbor_id, slice_idx))
 
-        # Reconstruct the shortest path
+        # Reconstruct the lowest cost path
         path = []
         slice_indices = []
         current_node, current_slice = target, 0
