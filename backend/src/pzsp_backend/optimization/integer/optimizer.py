@@ -107,7 +107,7 @@ class IntegerProgrammingOptimizer(Optimizer):
         )
 
         return Channel(
-            id=str(uuid.uuid4()),
+            id=self.generate_channel_id(),
             edges=[e.id for e in edges],
             nodes=list(node_ids),
             frequency=freq,

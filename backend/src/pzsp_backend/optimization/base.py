@@ -81,6 +81,7 @@ class Optimizer(ABC):
             # denormalize, so that channel of width 0.05GHz has a value of 50, as in the excel
         )
 
-    def generate_channel_id(self) -> str:
+    @staticmethod
+    def generate_channel_id() -> str:
         """Generate a unique channel ID"""
         return str(uuid.uuid4())
