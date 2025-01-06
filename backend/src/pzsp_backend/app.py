@@ -72,7 +72,7 @@ def dispatch_optimizer(request: OptimisationRequest) -> OptimisationResponse:
             logger.info("Dispatching DijkstraOptimizer")
             optimizer = DijkstraOptimizer(
                 network, True, dist_weight, even_load_weight
-            )  # type: ignore TODO: implement abstract methods
+            )
         else:
             return OptimisationResponse(
                 type=INVALID_REQUEST,
