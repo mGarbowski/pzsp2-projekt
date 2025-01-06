@@ -78,26 +78,6 @@ class Network(BaseModel):
 
         return rv
 
-    @staticmethod
-    def get_slices_occupied_by_channel(ch: Channel) -> list[int]:
-        """Get a list of indices of slices occupied by a channel"""
-        # Frequencies in GHz multiplied by 10000 to avoid operating on floats extensively
-        min_frequency = 191.325
-        max_frequency = 196.125
-        single_slice_bandwidth = 0.00625
-        # you can never be too sure ;D
-        assert round((max_frequency - min_frequency) / single_slice_bandwidth) == 768
-
-        # for example: width of 50 = 8 slices -> 0.05 = 8 * 0.00625
-        ch_width_normalized = ch.width / 1000
-
-        num_slices_taken = round(ch_width_normalized / single_slice_bandwidth)
-        channel_start_frequency = ch.frequency - (ch_width_normalized / 2)
-        starting_idx = round(
-            (channel_start_frequency - min_frequency) / single_slice_bandwidth
-        )
-        return list(range(starting_idx, starting_idx + num_slices_taken))
-
 
 class OptimisationRequest(BaseModel):
     """Optimisation request model"""
