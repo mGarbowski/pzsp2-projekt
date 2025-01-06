@@ -4,7 +4,7 @@ import { useNetwork } from "../NetworkModel/NetworkContext.tsx";
 
 export const GraphVisualisationDemo = () => {
   const [text, setText] = useState("");
-  const { network, selectedChannelId, setSelectedNodeId, setSelectedEdgeId } = useNetwork();
+  const { network, selectedChannelId, setSelectedNodeId, setSelectedEdgeId, selectedEdgeId, selectedNodeId } = useNetwork();
 
   const nodeSize = 2;
 
@@ -14,13 +14,41 @@ export const GraphVisualisationDemo = () => {
 
   const highlightedChannel = selectedChannelId ? network.channels[selectedChannelId] : null;
 
+  const normalColor = "#0000FF";
+  const channelColor = "#FF0000";
+  const selectedColor = "#00FF00";
+
+  const nodeColor = (nodeId: string) => {
+    if (selectedNodeId === nodeId) {
+      return selectedColor;
+    }
+
+    if (highlightedChannel?.nodes.includes(nodeId)) {
+      return channelColor;
+    }
+
+    return normalColor;
+  }
+
+  const edgeColor = (edgeId: string) => {
+    if (selectedEdgeId === edgeId) {
+      return selectedColor;
+    }
+
+    if (highlightedChannel?.edges.includes(edgeId)) {
+      return channelColor;
+    }
+
+    return normalColor;
+  }
+
   const visNodes = Object.values(network.nodes).map(node => {
     return {
       id: node.id,
       label: node.id,
       x: node.longitude,
       y: node.latitude,
-      fill: highlightedChannel?.nodes.includes(node.id) ? "#FF0000" : "#0000FF"
+      fill: nodeColor(node.id),
     };
   });
 
@@ -30,7 +58,7 @@ export const GraphVisualisationDemo = () => {
       target: edge.node2Id,
       id: edge.id,
       label: `${edge.node1Id}-${edge.node2Id}`,
-      fill: highlightedChannel?.edges.includes(edge.id) ? "#FF0000" : "#0000FF"
+      fill: edgeColor(edge.id),
     };
   });
 
