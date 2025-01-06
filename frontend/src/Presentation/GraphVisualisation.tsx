@@ -1,10 +1,15 @@
-import { GraphCanvas, InternalGraphEdge, InternalGraphNode, InternalGraphPosition } from "reagraph";
-import { useState } from "react";
-import { useNetwork } from "../NetworkModel/NetworkContext.tsx";
+import {GraphCanvas, InternalGraphEdge, InternalGraphNode, InternalGraphPosition} from "reagraph";
+import {useNetwork} from "../NetworkModel/NetworkContext.tsx";
 
-export const GraphVisualisationDemo = () => {
-  const [text, setText] = useState("");
-  const { network, selectedChannelId, setSelectedNodeId, setSelectedEdgeId, selectedEdgeId, selectedNodeId } = useNetwork();
+export const GraphVisualisation = () => {
+  const {
+    network,
+    selectedChannelId,
+    setSelectedNodeId,
+    setSelectedEdgeId,
+    selectedEdgeId,
+    selectedNodeId
+  } = useNetwork();
 
   const nodeSize = 2;
 
@@ -65,30 +70,27 @@ export const GraphVisualisationDemo = () => {
 
   const handleNodeClick = (node: InternalGraphNode) => {
     console.log(node);
-    setText("Node " + node.id + " clicked");
     setSelectedNodeId(node.id);
   };
 
   const handleEdgeClick = (edge: InternalGraphEdge) => {
     console.log(edge);
-    setText("Edge " + edge.id + " clicked");
     setSelectedEdgeId(edge.id);
   }
 
   const calcNodeCoordinates = (id: string) => {
-    const center = { latitude: 52.2297, longitude: 21.0122 }; // Warsaw
+    const center = {latitude: 52.2297, longitude: 21.0122}; // Warsaw
     const scale = 50;
 
     const node = network.nodes[id];
     const x = (node.longitude - center.longitude) * scale;
     const y = (node.latitude - center.latitude) * scale;
-    return { x, y, z: 1 } as InternalGraphPosition;
+    return {x, y, z: 1} as InternalGraphPosition;
   }
 
   return (
     <>
-      <p>{text}</p>
-      <div style={{ position: "fixed", top: "27%", width: '45%', height: '50%', marginRight: "3rem" }}>
+      <div style={{position: "fixed", top: "27%", width: '45%', height: '50%', marginRight: "3rem"}}>
         <GraphCanvas
           nodes={visNodes}
           edges={visEdges}
@@ -96,7 +98,7 @@ export const GraphVisualisationDemo = () => {
           onEdgeClick={handleEdgeClick}
           edgeArrowPosition={"none"}
           layoutType={"custom"}
-          layoutOverrides={({ getNodePosition: calcNodeCoordinates })}
+          layoutOverrides={({getNodePosition: calcNodeCoordinates})}
           minNodeSize={nodeSize}
           maxNodeSize={nodeSize}
         />
