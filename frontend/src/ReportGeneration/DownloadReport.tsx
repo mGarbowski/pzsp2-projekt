@@ -3,24 +3,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFileExport } from '@fortawesome/free-solid-svg-icons'
 import { Button } from "../Components/UI/button.tsx";
 import {useNetwork} from "../NetworkModel/NetworkContext.tsx";
-import {Network} from "../NetworkModel/network.ts";
 export const DownloadReport = () => {
-
+  const {network} = useNetwork()
   const handleDownload = () => {
-    let networkState: Network
-    try {
-      const {network} = useNetwork()
-      if (!network){
-        return;
-      }
-      networkState = network
-    } catch (e){
-      console.error(e)
-      console.log("cannot use useNetwork here")
+    if (!network){
       return;
     }
-
-    const report = generateChannelsReport(Object.values(networkState.channels));
+    const report = generateChannelsReport(Object.values(network.channels));
     const blob = new Blob([report], { type: 'text/csv' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
