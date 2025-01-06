@@ -1,16 +1,15 @@
-import {Channel} from "../NetworkModel/network.ts";
 import {Card, CardContent, CardHeader, CardTitle} from "../Components/UI/card.tsx";
 import {useNetwork} from "../NetworkModel/NetworkContext.tsx";
 import {calcNodeDistance} from "../NetworkModel/calcNodeDistance.ts";
 
-interface ChannelStatsProps {
-  channel: Channel;
-}
 
-export const ChannelStats = (props: ChannelStatsProps) => {
-  const {network} = useNetwork();
-  const {channel} = props;
+export const ChannelStats = () => {
+  const {network, highlightedChannelId} = useNetwork();
+  if (!network || !highlightedChannelId) {
+    return null;
+  }
 
+  const channel = network.channels[highlightedChannelId];
 
   const edges = Object.values(channel.edges).join(", ");
   const nodes = Object.values(channel.nodes).join(", ");

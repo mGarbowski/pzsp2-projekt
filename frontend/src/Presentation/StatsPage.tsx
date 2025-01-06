@@ -12,10 +12,9 @@ import {ChannelStats} from "./ChannelStats.tsx";
 
 export const StatsPage = () => {
   const navigate = useNavigate();
-  const {network, selectedNodeId, selectedEdgeId, highlightedChannelId} = useNetwork();
+  const {network, selectedNodeId, selectedEdgeId} = useNetwork();
   const selectedNode = selectedNodeId ? network?.nodes[selectedNodeId] : null;
   const selectedEdge = selectedEdgeId ? network?.edges[selectedEdgeId] : null;
-  const selectedChannel = highlightedChannelId ? network?.channels[highlightedChannelId] : null;
 
   return (
     <MainContainer>
@@ -24,11 +23,11 @@ export const StatsPage = () => {
         <h2 className="text-xl mb-8">Kliknij element na prezentacji żeby zobaczyć szczegółowe informacje</h2>
         <StatCardsContainer>
 
-          <NetworkStats />
+          <NetworkStats/>
 
           <ChannelSelectionCard/>
 
-          {selectedChannel && (<ChannelStats channel={selectedChannel}/>)}
+          <ChannelStats/>
 
           {selectedNode && (<NodeStats node={selectedNode}/>)}
 
