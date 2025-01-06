@@ -1,5 +1,6 @@
 import {Card, CardContent, CardHeader, CardTitle} from "../Components/UI/card.tsx";
 import {useNetwork} from "../NetworkModel/NetworkContext.tsx";
+import styled from "@emotion/styled";
 
 export const ChannelSelectionCard = () => {
   const {network, setHighlightedChannelId} = useNetwork();
@@ -14,13 +15,19 @@ export const ChannelSelectionCard = () => {
     </CardHeader>
     <CardContent>
       <p>Wybierz aby zaznaczyć na podglądzie</p>
-      <ul>
+      <List>
         {channelIds.map((id) => (
           <li key={id}>
             <button onClick={() => setHighlightedChannelId(id)}>{id}</button>
           </li>
         ))}
-      </ul>
+      </List>
     </CardContent>
   </Card>
 }
+
+const List = styled.ul({
+  marginTop: "1rem",
+  height: "8rem",
+  overflowY: "auto",
+})
