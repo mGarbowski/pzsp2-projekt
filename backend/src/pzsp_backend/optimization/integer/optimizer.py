@@ -2,6 +2,7 @@ from typing import Any, cast
 import pyomo.environ as pyo
 from attrs import define
 from pyomo.opt import SolverResults
+import uuid
 
 from src.pzsp_backend.models import Channel, Edge, OptimisationRequest
 from src.pzsp_backend.optimization.base import Optimizer
@@ -45,7 +46,7 @@ class IntegerProgrammingOptimizer(Optimizer):
                 "Source": pyo_mapping(request.source),
                 "Target": pyo_mapping(request.target),
                 "Slices": list(range(768)),
-                "Occupied": self.network.edge_slice_occupancy_map(),
+                "Occupied": self.edge_slice_occupancy_map(),
             }
         )
 
@@ -81,4 +82,21 @@ class IntegerProgrammingOptimizer(Optimizer):
         edge_node_ids: list[tuple[str, str]] = [e for e in model.Edges]  # type: ignore
         edges = [self.network.find_edge_by_node_ids(*ids) for ids in edge_node_ids]
 
-        raise NotImplementedError()
+        node_ids = set()
+        for e in edges:
+            node_ids.add(e.node1Id)
+            node_ids.add(e.node2Id)
+
+        starting_slice = [s for s in model.Slices if pyo.value(model.y[s]) > 0.5][0]  # type: ignore
+        num_slices = pyo.value(model.S)
+        freq, width = self.get_frequency_and_width_from_slice_list(
+            list(range(starting_slice, starting_slice + num_slices - 1))
+        )
+
+        return Channel(
+            id=str(uuid.uuid4()),
+            edges=[e.id for e in edges],
+            nodes=list(node_ids),
+            frequency=freq,
+            width=width,
+        )

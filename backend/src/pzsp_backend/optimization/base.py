@@ -80,7 +80,9 @@ class Optimizer(ABC):
         rv: dict[tuple[str, str, int], Literal[0, 1]] = defaultdict(lambda: 0)
 
         for _, ch in self.network.channels.items():
-            occupied_slice_indices = self.get_slice_indices_from_freq_and_width(ch)
+            occupied_slice_indices = self.get_slice_indices_from_freq_and_width(
+                ch.width, ch.frequency
+            )
             edges = [self.network.edges[edge_id] for edge_id in ch.edges]
             for edge in edges:
                 for slice_idx in occupied_slice_indices:
