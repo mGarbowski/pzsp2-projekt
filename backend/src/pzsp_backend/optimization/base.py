@@ -1,17 +1,16 @@
 import uuid
 from abc import ABC, abstractmethod
-from collections import defaultdict
 from typing import Literal
 
 from attrs import define
 
+from src.pzsp_backend.models import Channel, Edge, Network, OptimisationRequest
 from src.pzsp_backend.optimization.constants import (
     MAX_FREQUENCY,
     MIN_FREQUENCY,
     SINGLE_SLICE_BANDWIDTH,
     WIDTH_NORMALIZATION_FACTOR,
 )
-from src.pzsp_backend.models import Channel, Edge, Network, OptimisationRequest
 
 
 @define
@@ -21,15 +20,23 @@ class Optimizer(ABC):
 
     network: Network
     debug: bool
+    # The weights we've discussed so far. Probably should add up to 1,
+    # etc, but this is just a rough outline of how it's going to look like.
+    # We might take in different params at the end of the day after all.
+    distance_weight: float
+    even_load_weight: float
 
     @abstractmethod
     def find_channel(self, request: OptimisationRequest) -> Channel:
         """Find a channel that satisfies the desscription in an
         optimaly way for the given network."""
 
-    @abstractmethod
     def calculate_edge_weight(self, e: Edge) -> float:
-        """Calculate the weights of an edge based on the optimizer's params"""
+        """Calculates the weights of an edge based on the optimizer's params"""
+        return (
+                self.distance_weight * self.network.edge_length(e)
+                + self.even_load_weight * e.provisionedCapacity
+        )
 
     @staticmethod
     def bandwidth_from_string(s: str) -> int:
@@ -71,7 +78,8 @@ class Optimizer(ABC):
             round((start_freq + end_freq) / 2, 5),
             len(slices)
             * single_slice_bandwidth
-            * WIDTH_NORMALIZATION_FACTOR,  # denormalize, so that channel of width 0.05GHz has a value of 50, as in the excel
+            * WIDTH_NORMALIZATION_FACTOR,
+            # denormalize, so that channel of width 0.05GHz has a value of 50, as in the excel
         )
 
     def edge_slice_occupancy_map(self) -> dict[tuple[str, str, int], Literal[0, 1]]:

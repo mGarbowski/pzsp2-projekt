@@ -1,11 +1,12 @@
+import uuid
 from typing import Any, cast
-from loguru import logger
+
 import pyomo.environ as pyo
 from attrs import define
+from loguru import logger
 from pyomo.opt import SolverResults
-import uuid
 
-from src.pzsp_backend.models import Channel, Edge, OptimisationRequest
+from src.pzsp_backend.models import Channel, OptimisationRequest
 from src.pzsp_backend.optimization.base import Optimizer
 from src.pzsp_backend.optimization.integer.abstract import model
 
@@ -13,12 +14,6 @@ from src.pzsp_backend.optimization.integer.abstract import model
 @define
 class IntegerProgrammingOptimizer(Optimizer):
     """Integer programming based optimizer backend."""
-
-    # The weights we've discussed so far. Probably should add up to 1,
-    # etc, but this is just a rough outline of how it's going to look like.
-    # We might take in different params at the end of the day after all.
-    distance_weight: float
-    even_load_weight: float
 
     def find_channel(self, request: OptimisationRequest) -> Channel:
         model = self.instantiate_model(request)
@@ -67,13 +62,6 @@ class IntegerProgrammingOptimizer(Optimizer):
                 "Slices": list(range(768)),
                 "Occupied": self.edge_slice_occupancy_map(),
             }
-        )
-
-    def calculate_edge_weight(self, e: Edge) -> float:
-        """Calculates the weights of an edge based on the optimizer's params"""
-        return (
-            self.distance_weight * self.network.edge_length(e)
-            + self.even_load_weight * e.provisionedCapacity
         )
 
     def instantiate_model(self, request: OptimisationRequest) -> pyo.ConcreteModel:
