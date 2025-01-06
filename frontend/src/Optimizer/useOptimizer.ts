@@ -13,13 +13,13 @@ export interface OptimizerRequest {
 }
 
 type OptimizerSuccessResponse = {
-  type: "success";
+  type: "Success";
   channel: Channel;
   message?: string;
 }
 
 type OptimizerErrorResponse = {
-  type: "error";
+  type: "Failure";
   message: string;
 }
 
