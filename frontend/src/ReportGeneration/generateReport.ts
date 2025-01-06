@@ -1,6 +1,6 @@
 import {Channel} from "../NetworkModel/network";
 
-export const LOWEST_BEGINNING_FREQUENCY = 19_132_500
+export const LOWEST_BEGINNING_FREQUENCY = 191.325*1000*100
 export const HIGHEST_BEGINNING_FREQUENCY = 19_611_875
 export const generateDemoReport = () => {
   return "Channel ID,Slice #1,Slice #2,Slice #3,Slice #4,Slice #5\n" +
@@ -13,9 +13,25 @@ export const generateDemoReport = () => {
 }
 
 export const generateHeading = (): string => {
-  let final = "Channel ID"
+  // central frequencies
+  let final = "";
+  [112.5, 50, 75].forEach((frequency) => {
+    final += `Central frequency for ${frequency}`
+    frequency = frequency*100
+    let middle_freq = LOWEST_BEGINNING_FREQUENCY + frequency/2
+    let next_step = LOWEST_BEGINNING_FREQUENCY + frequency
+    for (let slice_begin = LOWEST_BEGINNING_FREQUENCY; slice_begin <= HIGHEST_BEGINNING_FREQUENCY; slice_begin += 625 ){
+      if (slice_begin >=next_step){
+        next_step += frequency;
+        middle_freq += frequency
+      }
+      final += "," + middle_freq.toString()
+    }
+    final += "\n"
+  });
   // 191325.00 GHz - 196087.50 GHz
   // 6.25 GHz each
+  final += "Channel ID"
   for (let slice_begin = LOWEST_BEGINNING_FREQUENCY; slice_begin <= HIGHEST_BEGINNING_FREQUENCY; slice_begin += 625 ){
     final += "," + slice_begin.toString()
   }
