@@ -2,7 +2,6 @@ import styled from "@emotion/styled";
 import {DownloadReport} from "../ReportGeneration/DownloadReport.tsx";
 import {useNavigate} from 'react-router-dom';
 import {Button} from "../Components/UI/button.tsx";
-import {Card, CardContent, CardHeader, CardTitle} from "../Components/UI/card.tsx";
 import {MainContainer} from "../StyledComponents/MainContainer.tsx";
 import {useNetwork} from "../NetworkModel/NetworkContext.tsx";
 import {NodeStats} from "./NodeStats.tsx";
@@ -18,40 +17,12 @@ export const StatsPage = () => {
   const selectedEdge = selectedEdgeId ? network?.edges[selectedEdgeId] : null;
   const selectedChannel = highlightedChannelId ? network?.channels[highlightedChannelId] : null;
 
-  const ipsum = `
-            Explicabo nihil eligendi esse quia facere non. Unde accusantium ducimus sint.
-            `
   return (
     <MainContainer>
       <StatsOuterContainer>
         <h1 className="text-3xl font-bold mb-8">Statystyki sieci</h1>
         <h2 className="text-xl mb-8">Kliknij element na prezentacji żeby zobaczyć szczegółowe informacje</h2>
         <StatCardsContainer>
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-xl">Najwęższe wolne pasmo</CardTitle>
-            </CardHeader>
-            <CardContent>
-              {ipsum}
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-xl">Najbardziej zajęte połączenie</CardTitle>
-            </CardHeader>
-            <CardContent>
-              {ipsum}
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-xl">Ogólna zajętość sieci</CardTitle>
-            </CardHeader>
-            <CardContent>
-              {ipsum}
-            </CardContent>
-          </Card>
 
           {network && (<NetworkStats network={network}/>)}
 
