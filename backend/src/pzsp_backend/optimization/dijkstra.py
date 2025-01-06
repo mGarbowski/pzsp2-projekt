@@ -1,6 +1,6 @@
 from attrs import define
 
-from src.pzsp_backend.models import Channel, ChannelDescription
+from src.pzsp_backend.models import Channel, OptimisationRequest
 from src.pzsp_backend.optimization.base import Optimizer
 
 
@@ -8,5 +8,5 @@ from src.pzsp_backend.optimization.base import Optimizer
 class DijkstraOptimizer(Optimizer):
     """Dijkstra's algorithm optimizer"""
 
-    def find_channel(self, description: ChannelDescription) -> Channel:
+    def find_channel(self, request: OptimisationRequest) -> Channel:
         raise NotImplementedError()

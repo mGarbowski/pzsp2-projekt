@@ -1,4 +1,5 @@
 from typing import Any, cast
+from loguru import logger
 import pyomo.environ as pyo
 from attrs import define
 from pyomo.opt import SolverResults
@@ -16,14 +17,32 @@ class IntegerProgrammingOptimizer(Optimizer):
     # The weights we've discussed so far. Probably should add up to 1,
     # etc, but this is just a rough outline of how it's going to look like.
     # We might take in different params at the end of the day after all.
-    distance_weight: int
-    even_load_weight: int
+    distance_weight: float
+    even_load_weight: float
 
     def find_channel(self, request: OptimisationRequest) -> Channel:
         model = self.instantiate_model(request)
         solver = pyo.SolverFactory("cbc")
+
+        logger.info("Attempting to solve the model")
+
         result = solver.solve(model, tee=self.debug)
-        return self.channel_from_solved_instance(result)
+
+        logger.info("Solver finished")
+
+        self.validate_solver_result(result)
+
+        logger.info("Selected Edges in the Path:")
+        for e in model.Edges:  # type: ignore
+            if pyo.value(model.x[e]) > 0.5:  # type: ignore
+                logger.info(e)
+
+        logger.info("Selected Slice Indices:")
+        for s in model.Slices:  # type: ignore
+            if pyo.value(model.y[s]) > 0.5:  # type: ignore
+                logger.info(s)
+
+        return self.channel_from_solved_instance(model)
 
     def _generate_solver_input(self, request: OptimisationRequest):
         """Transforms the network object into a dictionary that can be later
@@ -32,11 +51,11 @@ class IntegerProgrammingOptimizer(Optimizer):
         # Helper function to reduce unreadable boilerplate.
         # Passing None as a dictionary key is the way of instantiating scalar & dict values in pyomo
         def pyo_mapping(v: Any):
-            return {None: {v}}
+            return {None: v}
 
         return pyo_mapping(
             {
-                "S": self.num_slices_from_bandwidth(request.bandwidth),
+                "S": pyo_mapping(self.num_slices_from_bandwidth(request.bandwidth)),
                 "Nodes": list(self.network.nodes.keys()),
                 "Edges": [(e.node1Id, e.node2Id) for e in self.network.edges.values()],
                 "Weights": {
@@ -67,12 +86,18 @@ class IntegerProgrammingOptimizer(Optimizer):
     def validate_solver_result(self, result: SolverResults):
         """Checks whether the solver exited succesfully and found a solution
         and whines if it didn't"""
+        logger.info("Validating solver result")
+
         if status := result.solver.status != "ok":
             # TODO: dump solver output
+            logger.error(f"Solver terminated unsuccesfully: {status}")
             raise RuntimeError(f"Solver terminated unsuccesfully: {status}")
 
         term_cond = str(result.solver.termination_condition).lower()
         if "optimal" not in term_cond:
+            logger.error(
+                f"No optimal solution found. Solver termination condition: {term_cond}"
+            )
             raise RuntimeError(
                 f"No optimal solution found. Solver termination condition: {term_cond}"
             )
@@ -90,7 +115,7 @@ class IntegerProgrammingOptimizer(Optimizer):
         starting_slice = [s for s in model.Slices if pyo.value(model.y[s]) > 0.5][0]  # type: ignore
         num_slices = pyo.value(model.S)
         freq, width = self.get_frequency_and_width_from_slice_list(
-            list(range(starting_slice, starting_slice + num_slices - 1))
+            list(range(starting_slice, starting_slice + num_slices))
         )
 
         return Channel(
