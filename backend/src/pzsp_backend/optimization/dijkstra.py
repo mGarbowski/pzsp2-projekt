@@ -2,7 +2,6 @@ import heapq
 
 from attrs import define
 from loguru import logger
-
 from src.pzsp_backend.models import Channel, Edge, OptimisationRequest
 from src.pzsp_backend.optimization.base import Optimizer
 from src.pzsp_backend.optimization.constants import TOTAL_SLICES
@@ -26,78 +25,10 @@ class DijkstraOptimizer(Optimizer):
 
         if first_slice_idx is None:
             logger.warning("No path with enough free slices found")
-            raise Exception("The cheapest does not have enough free slices to meet the request, path (nodes):", node_ids)
-
+            raise Exception("The cheapest does not have enough free slices to meet the request, path (nodes):",
+                            node_ids)
 
         return self.reconstruct_channel(node_ids, first_slice_idx, n_slices)
-
-    def modified_dijkstra(
-        self, source: NodeId, target: NodeId, n_slices: int
-    ) -> tuple[list[NodeId], SliceIdx]:
-        """Modified Dijkstra algorithm
-
-        Finds the lowest cost path in a graph with additional constraint.
-        The path must be continuous in the slice dimension and the requested
-        number of slices must be free on each edge.
-        """
-        occupancy = self.make_slice_occupancy_map()
-        slice_range = range(TOTAL_SLICES - n_slices + 1)
-
-        # cost, node_id, slice_idx
-        priority_queue: list[tuple[float, NodeId, SliceIdx]] = [(0, source, 0)]
-
-        lowest_costs = {
-            (node_id, slice_idx): float("inf")
-            for node_id in self.network.nodes
-            for slice_idx in slice_range
-        }
-        lowest_costs[(source, 0)] = 0
-
-        previous_nodes: PreviousNodes = {
-            (node_id, slice_idx): (None, None)
-            for node_id in self.network.nodes
-            for slice_idx in slice_range
-        }
-
-        while priority_queue:
-            current_cost, current_node, current_slice = heapq.heappop(priority_queue)
-
-            if current_node == target:
-                break
-
-            for neighbor_id in self.network.nodes[current_node].neighbors:
-                edge = self.network.find_edge_by_node_ids(current_node, neighbor_id)
-                edge_cost = self.calculate_edge_weight(edge)
-                cost = current_cost + edge_cost
-
-                for slice_idx in slice_range:
-                    if self.are_slices_free(edge, slice_idx, n_slices, occupancy):
-                        if cost < lowest_costs[(neighbor_id, slice_idx)]:
-                            lowest_costs[(neighbor_id, slice_idx)] = cost
-                            previous_nodes[(neighbor_id, slice_idx)] = (
-                                current_node,
-                                current_slice,
-                            )
-                            heapq.heappush(
-                                priority_queue, (cost, neighbor_id, slice_idx)
-                            )
-
-        # Reconstruct the lowest cost path
-        path = []
-        slice_indices = []
-        current_node, current_slice = target, 0
-        while current_node is not None:
-            path.append(current_node)
-            slice_indices.append(current_slice)
-            current_node, current_slice = previous_nodes[(current_node, current_slice)]
-        path.reverse()
-        slice_indices.reverse()
-
-        slice_idx = slice_indices[0]
-        if not all(s == slice_idx for s in slice_indices):
-            logger.warning("The path is not continuous in the slice dimension")
-
-        return path, slice_idx
 
     def dijkstra(self, source: NodeId, target: NodeId) -> list[NodeId]:
         """Dijkstra algorithm implementation for finding the lowest cost path."""
@@ -144,8 +75,8 @@ class DijkstraOptimizer(Optimizer):
 
         for first_slice_idx in slice_range:
             if all(
-                self.are_slices_free(edge, first_slice_idx, n_slices, occupancy)
-                for edge in edges
+                    self.are_slices_free(edge, first_slice_idx, n_slices, occupancy)
+                    for edge in edges
             ):
                 return first_slice_idx
 
@@ -153,7 +84,7 @@ class DijkstraOptimizer(Optimizer):
 
     @staticmethod
     def are_slices_free(
-        edge: Edge, start_slice: SliceIdx, n_slices: int, occupancy: OccupancyMap
+            edge: Edge, start_slice: SliceIdx, n_slices: int, occupancy: OccupancyMap
     ) -> bool:
         """Check if the sequence of slices is free on the edge."""
         return all(
@@ -183,7 +114,7 @@ class DijkstraOptimizer(Optimizer):
         ]
 
     def reconstruct_channel(
-        self, node_ids: list[str], slice_idx: SliceIdx, n_slices: int
+            self, node_ids: list[str], slice_idx: SliceIdx, n_slices: int
     ) -> Channel:
         edges = self.edges_from_node_ids(node_ids)
         occupied_slices = list(range(slice_idx, slice_idx + n_slices))
