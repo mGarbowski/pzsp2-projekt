@@ -21,13 +21,13 @@ class DijkstraOptimizer(Optimizer):
 
     def find_channel(self, request: OptimisationRequest) -> Channel:
         n_slices = self.num_slices_from_bandwidth(request.bandwidth)
-        node_ids, slice_idx = self.modified_dijkstra(request.source, request.target, request, n_slices)
+        node_ids, slice_idx = self.modified_dijkstra(request.source, request.target, n_slices)
         logger.info("Node IDs: ", node_ids)
         return self.reconstruct_channel(node_ids, slice_idx, n_slices)
 
 
     def modified_dijkstra(
-            self, source: NodeId, target: NodeId, request: OptimisationRequest, n_slices: int
+            self, source: NodeId, target: NodeId, n_slices: int
     ) -> tuple[list[NodeId], SliceIdx]:
         """Modified Dijkstra algorithm for finding the lowest cost path in a graph with additional constraint.
 
