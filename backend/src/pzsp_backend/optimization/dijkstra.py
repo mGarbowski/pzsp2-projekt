@@ -5,13 +5,14 @@ from src.pzsp_backend.models import Channel, Edge
 from src.pzsp_backend.models import OptimisationRequest
 from src.pzsp_backend.optimization.base import Optimizer
 
+OccupancyMap = dict[str, list[bool]]
 
 @define
 class DijkstraOptimizer(Optimizer):
     """Dijkstra's algorithm optimizer"""
 
     def find_channel(self, request: OptimisationRequest) -> Channel:
-        node_ids = self.find_shortest_path(request.source, request.target, request)
+        node_ids = self.find_shortest_path(request.source, request.target, request, 5)
         print("Node IDs: ", node_ids)
         return self.reconstruct_channel(node_ids)
 
@@ -19,17 +20,21 @@ class DijkstraOptimizer(Optimizer):
         distance = self.network.edge_length(edge)
         return request.distanceWeight * distance + request.evenLoadWeight * edge.provisionedCapacity
 
-    def find_shortest_path(self, source: str, target: str, request: OptimisationRequest) -> list[str]:
-        # Initialize the priority queue with the source node
-        priority_queue = [(0, source)]
-        # Dictionary to store the shortest distance to each node
-        shortest_distances = {node_id: float('inf') for node_id in self.network.nodes}
-        shortest_distances[source] = 0
-        # Dictionary to store the previous node in the optimal path
-        previous_nodes = {node_id: None for node_id in self.network.nodes}
+    def find_shortest_path(self, source: str, target: str, request: OptimisationRequest, S: int) -> list[str]:
+        occupancy = self.make_slice_occupancy_map()
+
+        # Initialize the priority queue with the source node and slice index 0
+        priority_queue = [(0, source, 0)]
+        # Dictionary to store the shortest distance to each node and slice index
+        shortest_distances = {(node_id, slice_idx): float('inf') for node_id in self.network.nodes for slice_idx in
+                              range(768 - S + 1)}
+        shortest_distances[(source, 0)] = 0
+        # Dictionary to store the previous node and slice index in the optimal path
+        previous_nodes = {(node_id, slice_idx): (None, None) for node_id in self.network.nodes for slice_idx in
+                          range(768 - S + 1)}
 
         while priority_queue:
-            current_distance, current_node = heapq.heappop(priority_queue)
+            current_distance, current_node, current_slice = heapq.heappop(priority_queue)
 
             # If the current node is the target, we can stop
             if current_node == target:
@@ -41,21 +46,41 @@ class DijkstraOptimizer(Optimizer):
                 weight = self.calculate_edge_weight(edge, request)
                 distance = current_distance + weight
 
-                # If a shorter path to the neighbor is found
-                if distance < shortest_distances[neighbor_id]:
-                    shortest_distances[neighbor_id] = distance
-                    previous_nodes[neighbor_id] = current_node
-                    heapq.heappush(priority_queue, (distance, neighbor_id))
+                # Check for available slices
+                for slice_idx in range(768 - S + 1):
+                    if self.are_slices_free(edge, slice_idx, S, occupancy):
+                        # If a shorter path to the neighbor is found
+                        if distance < shortest_distances[(neighbor_id, slice_idx)]:
+                            shortest_distances[(neighbor_id, slice_idx)] = distance
+                            previous_nodes[(neighbor_id, slice_idx)] = (current_node, current_slice)
+                            heapq.heappush(priority_queue, (distance, neighbor_id, slice_idx))
 
         # Reconstruct the shortest path
         path = []
-        current_node = target
+        current_node, current_slice = target, 0
         while current_node is not None:
             path.append(current_node)
-            current_node = previous_nodes[current_node]
+            current_node, current_slice = previous_nodes[(current_node, current_slice)]
         path.reverse()
 
         return path
+
+    def are_slices_free(self, edge: Edge, start_slice: int, S: int, occupancy: OccupancyMap) -> bool:
+        """Check if the slices from start_slice to start_slice + S - 1 are free on the edge."""
+        return all(not occupancy[edge.id][i] for i in range(start_slice, start_slice + S))
+
+    def make_slice_occupancy_map(self) -> OccupancyMap:
+        """Create a dictionary edge_id: slice_occupancy
+        where slice_occupancy is a list of booleans (False - free, True - occupied)."""
+        occupancy = {edge_id: [False] * 768 for edge_id in self.network.edges}
+
+        for channel in self.network.channels.values():
+            slice_idxs = self.get_slice_indices_from_freq_and_width(channel.width, channel.frequency)
+            for edge_id in channel.edges:
+                for slice_idx in slice_idxs:
+                    occupancy[edge_id][slice_idx] = True
+
+        return occupancy
 
     def edges_from_node_ids(self, node_ids: list[str]) -> list[Edge]:
         return [
