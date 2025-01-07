@@ -690,3 +690,26 @@ Podglądy widoków widoczne są na rysunkach \ref{fig:figma-importer}, \ref{fig:
   * `pdm cov` w katalogu `backend`
   * `npm run coverage` w katalogu `frontend`
 * Powyższe komendy wypisują w konsoli statystyki pokrycia całościowe oraz z podziałem na pliki
+
+
+\newpage
+# Wirtualizacja/konteneryzacja
+* W projekcie stosujemy konteneryzację, wykorzystujemy środowisko Docker
+* Schemat wdrożenia aplikacji jest przedstawiony na rysunku \ref{fig:physical-view}
+* Aplikacja składa się z dwóch kontenerów
+  * `web-server`
+  * `backend`
+* Kontenery są uruchamiane w jednej sieci `app-network` (Docker network)
+* Przygotowane są oddzielne pliki konfiguracyjne dla środowisk lokalnego i produkcyjnego
+  * `docker-compose.local.yml`
+  * `docker-compose.prod.yml`
+* `web-server`
+  * Serwer HTTP i reverse proxy
+  * Wykorzystuje obraz `nginx` oraz `node:18` (przy wieloetapowym budowaniu)
+  * Serwuje aplikację frontendową
+  * Przekierowuje zapytania do aplikacji backendowej (reverse proxy)
+  * Oddzielne Dockerfile i plik konfiguracyjny Nginx dla uruchomienia lokalnego i produkcyjnego
+* `backend`
+  * Aplikacja backendowa, API optymalizatora
+  * Wykorzystuje obraz `python:3.12-slim` oparty na systemie Debian
+  * Instaluje solwer `cbc` oraz uruchamia aplikację FastAPI
