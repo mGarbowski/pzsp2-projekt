@@ -437,7 +437,20 @@ Formaty plików wejściowych są opisane w punkcie \ref{requirements-analysis}.
   * Docker
 
 ## Diagram klas
-Dotyczy kolejnych etapów projektu.
+
+### Backend
+![Diagram klas modułu models](./diagrams/backend-models.drawio.png){#fig:backend-models}
+
+* Diagram \ref{fig:backend-models} przedstawia klasy z modułu `models`
+* Klasy modelują strukturę sieci teleinformatycznej oraz format zapytań i odpowiedzi API optymalizatora
+* W implementacji wykorzystujemy bibliotekę Pydantic do walidacji oraz serializacji JSON
+
+![Diagram klas modułu optimisation](./diagrams/backend-optimization.drawio.png){#fig:backend-optimization}
+
+* Diagram \ref{fig:backend-optimization} przedstawia klasy z modułu `optimisation`
+* `Optimizer` to abstrakcyjna klasa bazowa dla konkretnych modeli optymalizacyjnych
+* `DijkstraOptimizer` i `IntegerProgrammingOptimizer` to konkretne implementacje modeli optymalizacyjnych
+* Dla lepszej czytelności kodu źródłowego stosujemy aliasy typów, co jest widoczne w sygnaturach metod
 
 ## Statystyki
 <!--
