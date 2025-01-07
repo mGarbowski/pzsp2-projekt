@@ -118,7 +118,7 @@ class IntegerProgrammingOptimizer(Optimizer):
 
     def channel_from_solved_instance(self, model: pyo.ConcreteModel) -> Channel:
         """Creates a channel object from the solver's result"""
-        edge_node_ids: list[tuple[str, str]] = [e for e in model.Edges]  # type: ignore
+        edge_node_ids: list[tuple[str, str]] = [e for e in model.Edges if pyo.value(model.x[e]) > 0.5]  # type: ignore
         edges = [self.network.find_edge_by_node_ids(*ids) for ids in edge_node_ids]
 
         node_ids = set()
