@@ -1,11 +1,11 @@
-from typing import Any, cast
-from loguru import logger
+from typing import Any, Literal, cast
+
 import pyomo.environ as pyo
 from attrs import define
+from loguru import logger
 from pyomo.opt import SolverResults
-import uuid
 
-from src.pzsp_backend.models import Channel, Edge, OptimisationRequest
+from src.pzsp_backend.models import Channel, OptimisationRequest
 from src.pzsp_backend.optimization.base import Optimizer
 from src.pzsp_backend.optimization.integer.abstract import model
 
@@ -13,12 +13,6 @@ from src.pzsp_backend.optimization.integer.abstract import model
 @define
 class IntegerProgrammingOptimizer(Optimizer):
     """Integer programming based optimizer backend."""
-
-    # The weights we've discussed so far. Probably should add up to 1,
-    # etc, but this is just a rough outline of how it's going to look like.
-    # We might take in different params at the end of the day after all.
-    distance_weight: float
-    even_load_weight: float
 
     def find_channel(self, request: OptimisationRequest) -> Channel:
         model = self.instantiate_model(request)
@@ -133,9 +127,33 @@ class IntegerProgrammingOptimizer(Optimizer):
         )
 
         return Channel(
-            id=str(uuid.uuid4()),
+            id=self.generate_channel_id(),
             edges=[e.id for e in edges],
             nodes=list(node_ids),
             frequency=freq,
             width=width,
         )
+
+    def edge_slice_occupancy_map(self) -> dict[tuple[str, str, int], Literal[0, 1]]:
+        """Create a dictionary (node_1_id, node_2_id, slice_idx): slice_occupancy
+        where slice_occupancy is binary (0 - free, 1 - occupied)."""
+        # Initialize the dictionary with all combinations defaulting to 0
+        rv: dict[tuple[str, str, int], Literal[0, 1]] = {}
+        slice_indices = range(768)  # Slice indices from 0 to 767
+
+        # Populate the dictionary with all possible (node1, node2, slice_idx)
+        for _, edge in self.network.edges.items():
+            for slice_idx in slice_indices:
+                rv[(edge.node1Id, edge.node2Id, slice_idx)] = 0
+
+        # Update the dictionary with occupied slices
+        for _, ch in self.network.channels.items():
+            occupied_slice_indices = self.get_slice_indices_from_freq_and_width(
+                ch.width, ch.frequency
+            )
+            edges = [self.network.edges[edge_id] for edge_id in ch.edges]
+            for edge in edges:
+                for slice_idx in occupied_slice_indices:
+                    rv[(edge.node1Id, edge.node2Id, slice_idx)] = 1
+
+        return rv

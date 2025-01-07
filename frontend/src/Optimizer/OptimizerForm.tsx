@@ -10,7 +10,7 @@ import {OptimizerRequest, OptimizerResponse, useOptimizer} from "./useOptimizer.
 
 
 export const OptimizerForm = () => {
-  const {network, setHighlightedChannelId} = useNetwork();
+  const {network, setNetwork, setSelectedChannelId} = useNetwork();
   const {sendQuery, lastMessage} = useOptimizer("ws://localhost:8000/ws/optimizer", (_) => false);
 
   const [startNode, setStartNode] = useState<string | null>(null);
@@ -49,7 +49,6 @@ export const OptimizerForm = () => {
       evenLoadWeight: evenLoadWeight,
     };
     sendQuery(JSON.stringify(request));
-    setLoading(false);
   }
 
   useEffect(() => {
@@ -59,11 +58,20 @@ export const OptimizerForm = () => {
 
     const response = JSON.parse(JSON.parse(lastMessage!)) as OptimizerResponse;
     console.info(response);
-    if (response.type === "success") {
-      // TODO setNetwork(...)
-      setHighlightedChannelId(response.channel.id);
+    if (response.type === "Success") {
+      setLoading(false);
+      const updatedNetwork = {
+        ...network!,
+        channels: {
+          ...network!.channels,
+          [response.channel.id]: response.channel,
+        }
+      }
+      setNetwork(updatedNetwork);
+      setSelectedChannelId(response.channel.id);
     }
-  }, [lastMessage, setHighlightedChannelId]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lastMessage, setNetwork, setSelectedChannelId]);
 
 
   return <StyledForm onSubmit={handleSubmit}>

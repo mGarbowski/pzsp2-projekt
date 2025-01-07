@@ -1,6 +1,6 @@
 import { Link, Outlet } from "react-router-dom";
 import styled from '@emotion/styled'
-import { GraphVisualisationDemo } from "./Presentation/GraphVisualisationDemo";
+import { GraphVisualisation } from "./Presentation/GraphVisualisation.tsx";
 import { ModeToggle } from "./Components/modeToggle.tsx";
 import {
   NavigationMenu,
@@ -19,7 +19,7 @@ export const Layout = () => {
           <Outlet />
         </ContentContainer>
         <NetworkContainer>
-          <GraphVisualisationDemo />
+          <GraphVisualisation />
         </NetworkContainer>
       </MainContainer>
     </>

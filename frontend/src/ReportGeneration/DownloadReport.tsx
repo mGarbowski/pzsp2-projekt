@@ -1,12 +1,15 @@
-import { generateDemoReport } from "./generateReport.ts";
+import { generateChannelsReport } from "./generateReport.ts";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFileExport } from '@fortawesome/free-solid-svg-icons'
 import { Button } from "../Components/UI/button.tsx";
-
+import {useNetwork} from "../NetworkModel/NetworkContext.tsx";
 export const DownloadReport = () => {
-
+  const {network} = useNetwork()
   const handleDownload = () => {
-    const report = generateDemoReport();
+    if (!network){
+      return;
+    }
+    const report = generateChannelsReport(Object.values(network.channels));
     const blob = new Blob([report], { type: 'text/csv' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');

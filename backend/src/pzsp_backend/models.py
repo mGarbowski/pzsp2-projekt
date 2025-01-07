@@ -1,8 +1,10 @@
 from __future__ import annotations
+
 from collections import defaultdict
 from typing import Literal
-from pydantic import BaseModel
+
 from geopy import distance
+from pydantic import BaseModel
 
 
 class Edge(BaseModel):
