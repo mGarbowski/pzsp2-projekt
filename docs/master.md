@@ -440,7 +440,24 @@ Formaty plików wejściowych są opisane w punkcie \ref{requirements-analysis}.
 Dotyczy kolejnych etapów projektu.
 
 ## Statystyki
-Dotyczy kolejnych etapów projektu.
+<!--
+Liczba plików
+sum=$(( $(find backend/src -type f \( -name "*.py" \) | wc -l) + $(find backend/tests -type f \( -name "*.py" \) | wc -l) + $(find frontend/src -type f \( -name "*.ts" -o -name "*.tsx" \) | wc -l) ))
+echo $sum
+
+Liczba linii kodu
+find frontend/src -name "*.tsx" | xargs wc -l | tail -n 1
+find frontend/src -name "*.ts" | xargs wc -l | tail -n 1
+find backend/src -name "*.py" | xargs wc -l | tail -n 1
+
+Liczba testów
+npm test
+pdm test
+-->
+
+* Liczba plików z kodem źródłowym: 56
+* Liczba linii kodu źródłowego: 3715
+* Liczba testów jednostkowych: 33
 
 \newpage
 
