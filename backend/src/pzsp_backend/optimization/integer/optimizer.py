@@ -57,17 +57,31 @@ class IntegerProgrammingOptimizer(Optimizer):
             {
                 "S": pyo_mapping(self.num_slices_from_bandwidth(request.bandwidth)),
                 "Nodes": list(self.network.nodes.keys()),
-                "Edges": [(e.node1Id, e.node2Id) for e in self.network.edges.values()],
-                "Weights": {
-                    (e.node1Id, e.node2Id): self.calculate_edge_weight(e)
-                    for e in self.network.edges.values()
-                },
+                "Edges": self.generate_edge_list_for_solver(),
+                "Weights": self.generate_weights_for_solver(),
                 "Source": pyo_mapping(request.source),
                 "Target": pyo_mapping(request.target),
                 "Slices": list(range(768)),
                 "Occupied": self.edge_slice_occupancy_map(),
             }
         )
+
+    def generate_edge_list_for_solver(self) -> list[tuple[str, str]]:
+        """Generates a list of edges for the solver to use. Since the graph is not directed, we need to
+        include both directions of each edge"""
+        return [(e.node1Id, e.node2Id) for e in self.network.edges.values()] + [
+            (e.node2Id, e.node1Id) for e in self.network.edges.values()
+        ]
+
+    def generate_weights_for_solver(self) -> dict[tuple[str, str], float]:
+        """Generates a dictionary of edge weights for the solver to use,
+        storing both (node1, node2) and (node2, node1) for undirected edges."""
+        weights = {}
+        for edge in self.network.edges.values():
+            w = self.calculate_edge_weight(edge)
+            weights[(edge.node1Id, edge.node2Id)] = w
+            weights[(edge.node2Id, edge.node1Id)] = w
+        return weights
 
     def calculate_edge_weight(self, e: Edge) -> float:
         """Calculates the weights of an edge based on the optimizer's params"""

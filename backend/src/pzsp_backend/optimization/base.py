@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from collections import defaultdict
 from typing import Literal
 
 from attrs import define
@@ -75,7 +74,8 @@ class Optimizer(ABC):
 
     def edge_slice_occupancy_map(self) -> dict[tuple[str, str, int], Literal[0, 1]]:
         """Create a dictionary (node_1_id, node_2_id, slice_idx): slice_occupancy
-        where slice_occupancy is binary (0 - free, 1 - occupied)."""
+        where slice_occupancy is binary (0 - free, 1 - occupied) in both edge directions.
+        """
         # Initialize the dictionary with all combinations defaulting to 0
         rv: dict[tuple[str, str, int], Literal[0, 1]] = {}
         slice_indices = range(768)  # Slice indices from 0 to 767
@@ -84,6 +84,7 @@ class Optimizer(ABC):
         for _, edge in self.network.edges.items():
             for slice_idx in slice_indices:
                 rv[(edge.node1Id, edge.node2Id, slice_idx)] = 0
+                rv[(edge.node2Id, edge.node1Id, slice_idx)] = 0
 
         # Update the dictionary with occupied slices
         for _, ch in self.network.channels.items():
@@ -94,5 +95,6 @@ class Optimizer(ABC):
             for edge in edges:
                 for slice_idx in occupied_slice_indices:
                     rv[(edge.node1Id, edge.node2Id, slice_idx)] = 1
+                    rv[(edge.node2Id, edge.node1Id, slice_idx)] = 1
 
         return rv
