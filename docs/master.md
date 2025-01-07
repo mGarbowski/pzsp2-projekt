@@ -425,12 +425,16 @@ Formaty plików wejściowych są opisane w punkcie \ref{requirements-analysis}.
 [https://github.com/mGarbowski/pzsp2-projekt](https://github.com/mGarbowski/pzsp2-projekt)
 
 ## Wykorzystane technologie
-* React (Typescript)
-* FastAPI (Python)
-* Pyomo (Python)
-* Docker
-* Nginx
-* WebSockets
+* Języki programowania
+  * Python
+  * Typescript
+* Biblioteki
+  * FastAPI
+  * Pyomo
+  * React
+  * cbc
+* Środowiska
+  * Docker
 
 ## Diagram klas
 Dotyczy kolejnych etapów projektu.
