@@ -628,3 +628,9 @@ Makiety trzech proponowanych widoków w programie Figma dostępne są do podglą
 13. Na karcie "Wybrany kanał" widoczne są statystyki i atrybuty nowego kanału
 
 ## Miary jakości testów
+* Jako miarę jakości testów jednostkowych przyjmujemy pokrycie linii kodu testami
+* Do mierzenia pokrycia wykorzystujemy narzędzia dostarczone przez biblioteki testowe
+* Komendy do zmierzenia pokrycia testami:
+  * `pdm cov` w katalogu `backend`
+  * `npm run coverage` w katalogu `frontend`
+* Powyższe komendy wypisują w konsoli statystyki pokrycia całościowe oraz z podziałem na pliki
