@@ -5,7 +5,7 @@ from attrs import define
 from loguru import logger
 from pyomo.opt import SolverResults
 
-from src.pzsp_backend.models import Channel, OptimisationRequest
+from src.pzsp_backend.models import Channel, Edge, OptimisationRequest
 from src.pzsp_backend.optimization.base import Optimizer
 from src.pzsp_backend.optimization.integer.abstract import model
 
