@@ -522,3 +522,109 @@ Makiety trzech proponowanych widoków w programie Figma dostępne są do podglą
 ![Widok prezentacji sieci](./images/figma/general-info.png)
 
 ![Widok dodawania kanału (użycie modelu optymalizacyjnego)](./images/figma/add-channel.png)
+
+# Specyfikacja testów
+
+## Testy jednostkowe
+* W projekcie stosujemy testy jednostkowe do weryfikacji poprawności implementacji pojedynczych modułów w izolacji
+* Backend
+  * testy jednostkowe dla backendu są zaimplementowane w plikach `test_*.py` w katalogu `backend/tests`
+  * do testów wykorzystujemy bibliotekę `pytest`
+  * uruchomienie wszystkich testów: `pdm test` w katalogu `backend`
+* Frontend
+  * testy jednostkowe dla frontendu są zaimplementowane w plikach `*.test.ts`, obok plików `*.ts` które podlegają testowaniu
+  * do testów wykorzystujemy bibliotekę `Jest`
+  * uruchomienie wszystkich testów: `npm test` w katalogu `frontend`
+
+## Scenariusze testów manualnych
+* W projekcie stosujemy testy manualne do weryfikacji poprawności interakcji użytkownika z aplikacją 
+
+### Przygotowanie środowiska
+* Pliki z opisem sieci
+  * przygotowanie plików .csv z opisem sieci teleinformatycznej (wezly.csv, zajetosc.csv, spectrum_kanaly.csv)
+  * pliki zostały dostarczone przez właściciela projektu, nie mogą znajdować się w publicznym repozytorium
+  * aplikacja umożliwia też pominięcie krok importu plików, wtedy użytkownik może wchodzić interakcję z demonstracyjną siecią 
+* Uruchomienie aplikacji
+  * lokalne uruchomienie aplikacji: `docker compose -f docker-compose.local.yml up --build` w katalogu głównym projektu
+  * otwarcie przeglądarki i wejście na stronę `http://localhost:2137`
+  * lub interakcja z wdrożoną aplikacją na serwerze http://pzsp2.mgrabowski.pl
+
+### Zaimportowanie poprawnego opisu sieci
+1. Użytkownik otwiera stronę importera danych (strona startowa)
+2. Użytkownik wybiera plik `wezly.csv` z opisem węzłów sieci
+3. Użytkownik wybiera plik `zajetosc.csv` z opisem krawędzi sieci
+4. Użytkownik wybiera plik `spectrum_kanaly.csv` z opisem kanałów sieci
+5. Po wybraniu wszystkich plików pojawia się komunikat o pomyślnym zaimportowaniu sieci
+6. Po prawej stronie wyświetla się wizualizacja sieci
+
+
+### Próba zaimportowania błędnego opisu sieci
+1. Użytkownik otwiera stronę importera danych (strona startowa)
+2. Użytkownik wybiera dowolny plik .csv niezawierający poprawnego opisu sieci w miejsce "Węzły", "Zajętość" i "Spektrum kanały"
+3. Po wybraniu pliku pojawia się komunikat o błędzie importu
+
+### Generowanie raportu zajętości pasma przez kanały
+1. Użytkownik otwiera stronę prezentacji sieci
+2. Użytkownik importuje opis sieci.
+3. Użytkownik przechodzi do zakładki "Statystyki"
+4. Użytkownik naciska przycisk "Pobierz raport"
+5. Przeglądarka pobiera plik .csv z raportem
+
+### Podgląd statystyk sieci i jej elementów
+1. Użytkownik otwiera stronę prezentacji sieci
+2. Użytkownik importuje opis sieci.
+3. Użytkownik przechodzi do zakładki "Statystyki"
+4. Na karcie "Sieć" widoczne są globalne statystyki sieci
+5. Na karcie "Kanały" widoczna jest lista identyfikatorów kanałów
+6. Użytkownik klika na dowolny węzeł na prezentacji sieci
+7. Wybrany węzeł wyświetla się w kolorze zielonym na prezentacji sieci
+8. Po lewej stronie widoczna jest karta "Wybrany węzeł" ze statystykami węzła
+9. Użytkownik klika na identyfikator dowolnego sąsiada na karcie "Wybrany węzeł"
+10. Wybrany sąsiad wyświetla się w kolorze zielonym na prezentacji sieci
+11. Na karcie "Wybrany węzeł" wyświetlają się statystyki wybranego sąsiada
+12. Użytkownik klika na dowolną krawędź na prezentacji sieci
+13. Wybrana krawędź wyświetla się w kolorze zielonym na prezentacji sieci
+14. Po lewej stronie wyświetla się karta "Wybrana krawędź" ze statystykami krawędzi
+15. Użytkownik klika na identyfikator węzła z listy "Łączy węzły" na karcie krawędzi
+16. Wybrany węzeł wyświetla się w kolorze zielonym na prezentacji sieci
+17. Użytkownik klika na dowolny identyfikator na karcie "Kanały"
+18. Węzły i krawędzie wybranego kanału wyświetlają się w kolorze czerwonym na prezentacji sieci (lub zostały zaznaczone wcześniej i są zielone)
+19. Po lewej stronie wyświetla się karta "Wybrany kanał" ze statystykami kanału
+20. Użytkownik klika na identyfikator węzła z listy "Węzły" na karcie wybranego kanału
+21. Wybrany węzeł wyświetla się w kolorze zielonym na prezentacji sieci
+22. Karta "Wybrany węzeł" wyświetla statystyki wybranego węzła
+23. Użytkownik klika na identyfikator krawędzi na liście "Krawędzie" na karcie wybranego kanału
+24. Wybrana krawędź wyświetla się w kolorze zielonym na prezentacji sieci
+25. Karta "Wybrana krawędź" wyświetla statystyki wybranej krawędzi
+
+### Wyznaczenie nowego kanału z użyciem modelu programowania całkowitoliczbowego
+1. Użytkownik otwiera stronę prezentacji sieci
+2. Użytkownik importuje opis sieci.
+3. Użytkownik przechodzi do zakładki "Dodaj kanał"
+4. Użytkownik odczytuje z prezentacji identyfikator węzła i wpisuje go w pole "Węzeł startowy"
+5. Użytkownik odczytuje z prezentacji identyfikator innego węzła i wpisuje go w pole "Węzeł końcowy"
+6. Użytkownik wybiera jedną z opcji w polu "Przepustowość"
+7. Użytkownik wybiera "Model całkowitoliczbowy" w polu "Optymalizator"
+8. Użytkownik wpisuje dodatnie liczby w pola "Waga długości krawędzi" i "Waga obciążenia krawędzi"
+9. Użytkownik naciska przycisk "Dodaj kanał"
+10. Pojawia się indykator ładowania do czasu otrzymania wyniku
+11. Po pewnym czasie, na prezentacji sieci pojawia się wyróżniona kolorem czerwonym ścieżka między zadanymi węzłami
+12. Użytkownik przechodzi do zakładki "Statystyki"
+13. Na karcie "Wybrany kanał" widoczne są statystyki i atrybuty nowego kanału
+
+### Wyznaczenie nowego kanału z użyciem modelu Dijkstry
+1. Użytkownik otwiera stronę prezentacji sieci
+2. Użytkownik importuje opis sieci.
+3. Użytkownik przechodzi do zakładki "Dodaj kanał"
+4. Użytkownik odczytuje z prezentacji identyfikator węzła i wpisuje go w pole "Węzeł startowy"
+5. Użytkownik odczytuje z prezentacji identyfikator innego węzła i wpisuje go w pole "Węzeł końcowy"
+6. Użytkownik wybiera jedną z opcji w polu "Przepustowość"
+7. Użytkownik wybiera "Algorytm Dijkstry" w polu "Optymalizator"
+8. Użytkownik wpisuje dodatnie liczby w pola "Waga długości krawędzi" i "Waga obciążenia krawędzi"
+9. Użytkownik naciska przycisk "Dodaj kanał"
+10. Pojawia się indykator ładowania do czasu otrzymania wyniku
+11. Po pewnym czasie, na prezentacji sieci pojawia się wyróżniona kolorem czerwonym ścieżka między zadanymi węzłami
+12. Użytkownik przechodzi do zakładki "Statystyki"
+13. Na karcie "Wybrany kanał" widoczne są statystyki i atrybuty nowego kanału
+
+## Miary jakości testów
