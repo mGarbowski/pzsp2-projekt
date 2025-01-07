@@ -713,3 +713,19 @@ Podglądy widoków widoczne są na rysunkach \ref{fig:figma-importer}, \ref{fig:
   * Aplikacja backendowa, API optymalizatora
   * Wykorzystuje obraz `python:3.12-slim` oparty na systemie Debian
   * Instaluje solwer `cbc` oraz uruchamia aplikację FastAPI
+
+# Bezpieczeństwo
+
+## Zależności
+* Zależności są zapisane w plikach `package.json` i `pdm.lock`
+* Narzędzie `npm` umożliwia sprawdzenie zależności pod kątem luk bezpieczeństwa
+* GitHub Dependabot monitoruje zależności pod kątem znanych podatności
+
+## Bezpieczeństwo aplikacji
+* Aplikacje nie przechowuje żadnych danych w sposób trwały
+* Aplikacja nie przechowuje danych użytkowników, nie wymaga logowania
+* Komunikacja z serwerem jest szyfrowana protokołem HTTPS
+  * chociaż przesyłane dane nie mają charakteru poufnego
+
+## Bezpieczeństwo infrastruktury
+* Logowanie do serwera wymaga uwierzytelnienia kluczem (SSH)
