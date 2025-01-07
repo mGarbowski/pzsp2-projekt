@@ -294,21 +294,75 @@ Scenariusz alternatywny - system nie może wyznaczyć żądanego kanału:
 6. System umożliwia zmianę parametrów i podobną próbę - powrót do kroku 4.
 
 ### Reguły biznesowe
-TODO: Do uzupełnienia, kiedy dostaniemy przykładowy zbiór od właściciela projektu
 
-### RB1 Format pliku opisującego sieć teletransmisyjną
+### RB1 Format plików opisujących sieć teletransmisyjną
+* Pliki w formacie .csv
+* Pierwszy wiersz zawiera nazwy kolumn
+
+#### Węzły sieci (kolumny)
+* ID węzła
+* Szerokość geograficzna (stopnie)
+* Długość geograficzna (stopnie)
+
+#### Krawędzie sieci (kolumny)
+* ID krawędzi
+* ID węzła początkowego
+* ID węzła końcowego
+* Szerokość całego dostępnego pasma (stałe 4.8 THz)
+* Wykorzystane pasmo (procenty)
+
+#### Kanały sieci (kolumny)
+* ID krawędzi
+* ID kanału
+* Częstotliwość środkowa (THz)
+* Szerokość (GHz)
+* Długość fali (redundantna, nieużywana)
+* Redundantne ID kanału (nieużywane)
 
 ### RB2 Parametry węzła sieci
+* ID (napis)
+* Szerokość geograficzna (liczba rzeczywista)
+* Długość geograficzna (liczba rzeczywista)
+* ID sąsiadów (lista napisów)
 
 ### RB3 Parametry krawędzi sieci
+* ID (napis)
+* ID węzła 1 (napis)
+* ID węzła 2 (napis)
+* Szerokość całego dostępnego pasma (napis)
+* Wykorzystane pasmo w procentach (liczba całkowita)
 
 ### RB4 Zbiorcze statystyki sieci
+* Liczba węzłów
+* Liczba krawędzi
+* Liczba kanałów
+* Całkowite obciążenie sieci (procenty)
+* Najbardziej obciążony kanał
 
 ### RB5 Parametry kanału
+* ID (napis)
+* ID kolejnych węzłów na ścieżce (lista napisów)
+* ID kolejnych krawędzi na ścieżce (lista napisów)
+* Częstotliwość środkowa w THz (liczba rzeczywista)
+* Szerokość w GHz (liczba rzeczywista)
 
 ### RB6 Format pliku z zestawieniem zajmowanych slice'ów przez kanały
+* Wiersz 1 - częstotliwości środkowe kanałów 112.5 GHz
+* Wiersz 2 - częstotliwości środkowe kanałów 50 GHz
+* Wiersz 3 - częstotliwości środkowe kanałów 75 GHz
+* Wiersz 4 - częstotliwość początkowa slice'a szerokości 6.25 GHz
+* Kolumna 1 - ID kanału
+* Komórki - wartość 1, jeśli slice jest zajęty przez kanał, pusta w przeciwnym wypadku
 
 ### RB7 Dostępne modele optymalizacyjne i ich parametry
+* Dostępne modele:
+  * algorytm Dijkstry
+  * model całkowitoliczbowy
+* Parametry modelu (jednakowe dla obu)
+  * ID węzła początkowego
+  * ID węzła końcowego
+  * przepustowość kanału w Gb/s
+  * wagi funkcji celu (kosztu) dla poszczególnych kryteriów - długość i obciążenie krawędzi
 
 ## Potwierdzenie zgodności wymagań
 
