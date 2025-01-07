@@ -439,18 +439,33 @@ Formaty plików wejściowych są opisane w punkcie \ref{requirements-analysis}.
 ## Diagram klas
 
 ### Backend
-![Diagram klas modułu models](./diagrams/backend-models.drawio.png){#fig:backend-models}
+![Diagram klas modułu `models`](./diagrams/backend-models.drawio.png){#fig:backend-models}
 
 * Diagram \ref{fig:backend-models} przedstawia klasy z modułu `models`
 * Klasy modelują strukturę sieci teleinformatycznej oraz format zapytań i odpowiedzi API optymalizatora
 * W implementacji wykorzystujemy bibliotekę Pydantic do walidacji oraz serializacji JSON
 
-![Diagram klas modułu optimisation](./diagrams/backend-optimization.drawio.png){#fig:backend-optimization}
+![Diagram klas modułu `optimisation`](./diagrams/backend-optimization.drawio.png){#fig:backend-optimization}
 
 * Diagram \ref{fig:backend-optimization} przedstawia klasy z modułu `optimisation`
 * `Optimizer` to abstrakcyjna klasa bazowa dla konkretnych modeli optymalizacyjnych
 * `DijkstraOptimizer` i `IntegerProgrammingOptimizer` to konkretne implementacje modeli optymalizacyjnych
 * Dla lepszej czytelności kodu źródłowego stosujemy aliasy typów, co jest widoczne w sygnaturach metod
+
+### Frontend
+
+![Diagram klas komponentów React](./diagrams/frontend-components.drawio.png){#fig:frontend-components}
+
+* Diagram \ref{fig:frontend-components} przedstawia klasy komponentów React z podziałem na katalogi, w których się znajdują
+* Komponenty są zorganizowane w katalogach odpowiadających ich funkcjonalności
+* Na diagramie nie zostały przedstawione komponenty pomocnicze, takie jak stylowane przyciski czy pola tekstowe
+
+![Diagram klas modułu `network`](./diagrams/frontend-network.drawio.png){#fig:frontend-network}
+
+* Diagram \ref{fig:frontend-network} przedstawia klasy z modułu `network`
+* Moduł ten zawiera interfejsy modelujące sieć teleinformatyczną
+* Model w aplikacji frontendowej jest analogiczny do modelu przedstawionego na diagramie \ref{fig:backend-models}
+
 
 ## Statystyki
 <!--
