@@ -431,10 +431,21 @@ Formaty plików wejściowych są opisane w punkcie \ref{requirements-analysis}.
 * Biblioteki
   * FastAPI
   * Pyomo
-  * React
   * cbc
-* Środowiska
-  * Docker
+  * React
+  * Reagraph
+* Frameworki testowe
+  * pytest
+  * Jest
+* Środowisko uruchomieniowe - Docker
+* System kontroli wersji - Git
+* System uruchamiania aplikacji, testów, narzędzi pomocniczych, zarządzania zależnościami
+  * npm (frontend)
+  * pdm (backend)
+* Środowisko ciągłej integracji - GitHub Actions
+* Narzędzia do komunikacji i zarządzania projektem
+  * Discord
+  * GitHub (Issues, Pull Requests)
 
 ## Diagram klas
 
