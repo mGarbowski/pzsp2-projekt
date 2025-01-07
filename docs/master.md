@@ -515,14 +515,16 @@ Użytkownik aplikacji - analityk sieci teleinformatycznej w dużej firmie teleko
 5. Jako analityk sieci teleinformatycznej, chcę optymalnie wykorzystywać przepustowość sieci, aby zminimalizować koszty ponoszone przez moją firmę i zapewnić, że sieć będzie gotowa na dalsze rozszerzenia.
 
 ## Makiety interfejsu użytkownika
-Makiety trzech proponowanych widoków w programie Figma dostępne są do podglądu pod [(tym URL)](https://www.figma.com/design/LSVdFyCmJqtZo8UsO2cd5q/PZPS2_2024?node-id=0-1&t=1bl4m1dv9aWKn0LJ-1)
+Makiety trzech proponowanych widoków w programie Figma dostępne są do pod [(tym URL)](https://www.figma.com/design/LSVdFyCmJqtZo8UsO2cd5q/PZPS2_2024?node-id=0-1&t=1bl4m1dv9aWKn0LJ-1).
+Podglądy widoków widoczne są na rysunkach \ref{fig:figma-importer}, \ref{fig:figma-presentation} i \ref{fig:figma-optimizer}.
 
-![Widok importera danych](./images/figma/start-screen.png)
+![Widok importera danych](./images/figma/start-screen.png){#fig:figma-importer}
 
-![Widok prezentacji sieci](./images/figma/general-info.png)
+![Widok prezentacji sieci](./images/figma/general-info.png){#fig:figma-presentation}
 
-![Widok dodawania kanału (użycie modelu optymalizacyjnego)](./images/figma/add-channel.png)
+![Widok dodawania kanału (użycie modelu optymalizacyjnego)](./images/figma/add-channel.png){#fig:figma-optimizer}
 
+\newpage
 # Specyfikacja testów
 
 ## Testy jednostkowe
