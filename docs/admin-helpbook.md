@@ -6,7 +6,7 @@ Obsługuje dwa tryby uruchomienia:
 - produkcyjny, w którym wszystkie kontenery uruchamiane są na jednej maszynie, dostępna przez HTTP
 
 Do uruchomienia lokalnego potrzebne jest jedynie narzędzie Docker.
-Wdrożenie produkcyjne przystosowane jest do uruchomienia systemu na maszynie wirtualnej dostarczonej przez usługę Microsoft Azure.
+Wdrożenie produkcyjne przystosowane jest do usługi Microsoft Azure.
 
 Pliki używane do uruchomienia:
 1. Lokalnie:
