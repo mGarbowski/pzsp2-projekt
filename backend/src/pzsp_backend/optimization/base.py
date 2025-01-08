@@ -44,10 +44,17 @@ class Optimizer(ABC):
 
     def num_slices_from_bandwidth(self, bandwidth: str) -> int:
         """Calculate the minimum number of slices needed for given bandwidth"""
-        # TODO: more realistic mapping needed here
-        mapping = {10: 1, 40: 4, 100: 10, 400: 40}
+        mapping = {  # bandwidth in Gbps: n_slices
+            10: 2,
+            40: 4,
+            100: 8,
+            200: 12,
+            400: 18,
+            800: 24,
+            1000: 32,
+        }
         bw_as_int = self.bandwidth_from_string(bandwidth)
-        return mapping.get(bw_as_int, 20)  # should actually calculate stuff here
+        return mapping.get(bw_as_int, 8)  # fallback
 
     @staticmethod
     def get_slice_indices_from_freq_and_width(width: float, freq: float) -> list[int]:
