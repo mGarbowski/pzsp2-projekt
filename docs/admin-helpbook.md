@@ -2,7 +2,7 @@
 Aplikacja jest w pełni skonteneryzowana.
 
 Obsługuje dwa tryby uruchomienia:
-- lokalny, w celu testowania i developmentu
+- lokalny, w celu testowania i wytwarzania
 - produkcyjny, w którym wszystkie kontenery uruchamiane są na jednej maszynie, dostępna przez HTTP
 
 Do uruchomienia lokalnego potrzebne jest jedynie narzędzie Docker.
@@ -24,8 +24,8 @@ Pliki używane do uruchomienia:
 
 
 # Wdrożenie produkcyjne
-## 1. Stworzenie infrastrktury
-Do stworzenia infrastruktury chmmurowej wykorzystywane jest narzędzie Terraform. Przygotowany skrypt używa usługi Microsoft Azure.
+## 1. Stworzenie infrastruktury
+Do stworzenia infrastruktury chmurowej wykorzystywane jest narzędzie Terraform. Przygotowany skrypt używa usługi Microsoft Azure.
 Aplikacja nie jest uzależniona od tego wyboru. Możliwe jest stworzenie własnej architektury fizycznej lub chmurowej we własnym zakresie.
 
 ### Korzystanie z przygotowanego rozwiązania:
@@ -46,7 +46,7 @@ terraform init
 terraform apply
 ```
 
-## 2. Wdrożenie aplikacja używając Ansible
+## 2. Wdrożenie aplikacji używając Ansible
 Do wdrożenia aplikacja na istniejącej infrastrukturze używane jest narzędzie Ansible.
 1. Upewnić się, że maszyna wirtualna z adresem publicznym jest uruchomiona
 2. W pliku inventory.ini zmienić adres na adres publiczny maszyny wirtualnej
@@ -58,7 +58,7 @@ Do wdrożenia aplikacja na istniejącej infrastrukturze używane jest narzędzie
 ``` shell  
 $user@computer: ~/projekt/cloud/ansible$ ansible-playbook -i inventory.ini  ./full-deployment.yaml --user azureuser
 ```
-W przypadku wykorzystania innego rozwiazania niż Azure, należy zastąpić "azureuser" nazwą użytkownika z dostępem do uprawnień root
+W przypadku wykorzystania innego rozwiązania niż Azure należy zastąpić "azureuser" nazwą użytkownika z dostępem do uprawnień root
 7. Po każdym kolejnym uruchomieniu zapisani użytkownicy mogą wdrożyć aplikację na nowo poleceniem
 ``` shell  
 $user@computer: ~/projekt/cloud/ansible$ ansible-playbook -i inventory.ini  ./full-deployment.yaml --user {nazwa uzytkownika}
