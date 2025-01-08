@@ -5,13 +5,13 @@
 \usepackage{amsmath,amssymb}
 \begin{document}
 
-\section*{Całkowitoliczbowy model wyznaczania najtańszej \\ ścieżki z wymogiem ciągłego przedziału wycinków}
+\section*{Całkowitoliczbowy model wyznaczania najtańszej \\ ścieżki z wymogiem ciągłego przedziału slice'ów}
 
 \noindent \textbf{Zbiory i indeksy:}
 \begin{align*}
 	 & N: \text{zbiór węzłów (wierzchołków).}                              \\
-	 & E \subseteq N \times N: \text{zbiór skierowanych krawędzi (łuków).} \\
-	 & K = \{0,1,\dots,767\}: \text{zbiór indeksów wycinków (slices).}
+	 & E \subseteq N \times N: \text{zbiór skierowanych krawędzi.} \\
+	 & K = \{0,1,\dots,767\}: \text{zbiór indeksów slice'ów.}
 \end{align*}
 
 \vspace{1em}
@@ -25,10 +25,10 @@
 	 & t \in N
 	 &                                       & \text{wierzchołek docelowy (target).}                                                                                              \\
 	 & \text{Occupied}_{(i,j),k} \in \{0,1\}
-	 &                                       & \text{parametr binarny wskazujący, czy wycinek }k \text{ jest zajęty (}1\text{) }                                                  \\
+	 &                                       & \text{parametr binarny wskazujący, czy slice }k \text{ jest zajęty (}1\text{) }                                                  \\
 	 &                                       &                                                                                   & \text{czy wolny (}0\text{) na krawędzi }(i,j). \\
 	 & S \in \mathbb{Z}_{\ge 0}
-	 &                                       & \text{liczba \emph{ciągłych} wycinków wymagana na każdej wybranej krawędzi.}
+	 &                                       & \text{liczba \emph{ciągłych} slice'ów wymagana na każdej wybranej krawędzi.}
 \end{align*}
 
 \vspace{1em}
@@ -38,7 +38,7 @@
 	 & x_{ij} \in \{0,1\}
 	 &                         & \text{równe }1\text{, jeśli krawędź }(i,j)\text{ jest użyta w ścieżce; }0\text{ w p.p.}                                               \\
 	 & y_{k} \in \{0,1\}
-	 &                         & \text{równe }1\text{, jeśli wycinek }k \text{ jest wybrany jako \emph{początek} }                                                     \\
+	 &                         & \text{równe }1\text{, jeśli slice }k \text{ jest wybrany jako \emph{początek} }                                                     \\
 	 &                         &                                                                                         & \text{ciągłego przedziału; }0\text{ w p.p.} \\
 	 & z_{(i,j),k} \in \{0,1\}
 	 &                         & \text{zmienna pomocnicza do powiązania }x_{ij} \text{ i } y_k.
@@ -75,9 +75,9 @@ Jej celem jest zminimalizowanie łącznego kosztu (wagi) wszystkich wybranych kr
 
 	      \vspace{1em}
 
-	\item \textbf{Dostępność wolnych wycinków na każdej wybranej krawędzi.}
+	\item \textbf{Dostępność wolnych slice'ów na każdej wybranej krawędzi.}
 
-	      Dla każdej krawędzi \((i,j)\in E\) musi istnieć co najmniej jeden indeks początkowy \(k\), dla którego (1) wycinki od \(k\) do \(k+S-1\) są wolne oraz (2) \(y_k=1\). W zapisie z uwzględnieniem iloczynu binarnych parametrów:
+	      Dla każdej krawędzi \((i,j)\in E\) musi istnieć co najmniej jeden indeks początkowy \(k\), dla którego (1) slice'y od \(k\) do \(k+S-1\) są wolne oraz (2) \(y_k=1\). W zapisie z uwzględnieniem iloczynu binarnych parametrów:
 	      \[
 		      \forall\,(i,j) \in E:\quad
 		      \sum_{\substack{k \in K \\ k + S - 1 \,\le\, \max(K)}}
@@ -87,13 +87,13 @@ Jej celem jest zminimalizowanie łącznego kosztu (wagi) wszystkich wybranych kr
 		      \Biggr)
 		      \;\;\ge\;\; x_{ij}.
 	      \]
-	      Jeśli \(x_{ij} = 1\), to co najmniej jeden blok \(S\) kolejnych wolnych wycinków (począwszy od pewnego \(k\)) musi być dostępny.
+	      Jeśli \(x_{ij} = 1\), to co najmniej jeden blok \(S\) kolejnych wolnych slice'ów (począwszy od pewnego \(k\)) musi być dostępny.
 
 	      \emph{Uwaga:} W ściśle liniowej wersji modelu należy taką formułę zlinearyzować (np. \emph{big-M} lub precomputing wartości produktu) bądź posłużyć się innymi sztuczkami MILP.
 
 	      \vspace{1em}
 
-	\item \textbf{Zgodność wybranego wycinka z istniejącym zajęciem (ang. occupancy).}
+	\item \textbf{Zgodność wybranego slice'a z istniejącym zajęciem.}
 
 	      \[
 		      \forall\,(i,j)\in E,\;\forall\,k \in K: \;
@@ -102,7 +102,7 @@ Jej celem jest zminimalizowanie łącznego kosztu (wagi) wszystkich wybranych kr
 			       & \text{w przeciwnym razie } z_{(i,j),k} \;\le\; 1 - \text{Occupied}_{(i,j),k}.
 		      \end{aligned}
 	      \]
-	      Jeżeli wycinek \(k\) jest zajęty na krawędzi \((i,j)\), to zmienna \(z_{(i,j),k}\) musi wynosić 0.
+	      Jeżeli slice \(k\) jest zajęty na krawędzi \((i,j)\), to zmienna \(z_{(i,j),k}\) musi wynosić 0.
 
 	      \vspace{1em}
 
@@ -123,14 +123,14 @@ Jej celem jest zminimalizowanie łącznego kosztu (wagi) wszystkich wybranych kr
 
 	      \vspace{1em}
 
-	\item \textbf{Wzajemna wyłączność wybranego wycinka początkowego.}
+	\item \textbf{Wzajemna wyłączność wybranego slice'a początkowego.}
 
 	      \[
 		      \sum_{\substack{k \in K \\ k + S - 1 \,\le\, \max(K)}}
 		      y_k
 		      \;=\; 1.
 	      \]
-	      Dokładnie jeden wycinek \(k\) zostaje wybrany jako początek bloku długości \(S\).
+	      Dokładnie jeden slice \(k\) zostaje wybrany jako początek bloku długości \(S\).
 
 \end{enumerate}
 
