@@ -8,11 +8,14 @@ import {useNetwork} from "../NetworkModel/NetworkContext";
 import {Loader2} from "lucide-react";
 import {OptimizerRequest, OptimizerResponse, useOptimizer} from "./useOptimizer.ts";
 
+interface OptimizerFormProps {
+  handleResponse: (response: OptimizerResponse) => void;
+}
 
-export const OptimizerForm = () => {
+export const OptimizerForm = (props: OptimizerFormProps) => {
   const apiBaseUrl = import.meta.env.VITE_BACKEND_URL;
   const apiUrl = `${apiBaseUrl}/ws/optimizer`;
-  const {network, setNetwork, setSelectedChannelId} = useNetwork();
+  const {network} = useNetwork();
   const {sendQuery, lastMessage} = useOptimizer(apiUrl, (_) => false);
 
   const [startNode, setStartNode] = useState<string | null>(null);
@@ -60,20 +63,11 @@ export const OptimizerForm = () => {
 
     const response = JSON.parse(JSON.parse(lastMessage!)) as OptimizerResponse;
     console.info(response);
-    if (response.type === "Success") {
-      setLoading(false);
-      const updatedNetwork = {
-        ...network!,
-        channels: {
-          ...network!.channels,
-          [response.channel.id]: response.channel,
-        }
-      }
-      setNetwork(updatedNetwork);
-      setSelectedChannelId(response.channel.id);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lastMessage, setNetwork, setSelectedChannelId]);
+    props.handleResponse(response);
+    setLoading(false);
+
+    // eslint-disable-next-line
+  }, [lastMessage]);
 
 
   return <StyledForm onSubmit={handleSubmit}>

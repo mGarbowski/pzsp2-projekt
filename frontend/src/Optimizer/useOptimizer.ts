@@ -16,11 +16,13 @@ type OptimizerSuccessResponse = {
   type: "Success";
   channel: Channel;
   message?: string;
+  time: number;
 }
 
 type OptimizerErrorResponse = {
   type: "Failure";
   message: string;
+  time: number;
 }
 
 export type OptimizerResponse = OptimizerSuccessResponse | OptimizerErrorResponse;
