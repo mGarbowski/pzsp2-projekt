@@ -864,3 +864,85 @@ Podglądy widoków widoczne są na rysunkach \ref{fig:figma-importer}, \ref{fig:
 
 
 # Podręcznik użytkownika
+
+## Lokalne uruchomienie aplikacji
+Aplikację można uruchomić lokalnie, korzystając ze środowiska Docker.
+Aplikacja jest również wdrożona w chmurze i dostępna pod adresem [http://pzsp2.mgrabowski.pl](http://pzsp2.mgrabowski.pl).
+
+* [Zainstaluj Docker i Docker Compose](https://docs.docker.com/engine/install/)
+* Sklonuj repozytorium: `git clone git@github.com:mGarbowski/pzsp2-projekt.git`
+* Przejdź do katalogu projektu: `cd pzsp2-projekt`
+* Uruchom aplikację: `docker compose -f docker-compose.local.yml up --build`
+* Interfejs użytkownika będzie dostępny w przeglądarce pod adresem [http://localhost:2137](http://localhost:2137)
+
+## Funkcje aplikacji
+* Importer danych
+  * wczytanie opisu sieci z zestawu plików .csv
+  * załadowanie demonstracyjnej sieci
+  * eksport stanu sieci do pliku JSON
+  * import stanu sieci z pliku JSON
+* Generowanie raportu zajętości pasma przez kanały w formacie .csv
+* Wizualizacja grafu sieci teleinformatycznej
+* Prezentacja statystyk i atrybutów sieci i jej elementów
+* Wyznaczanie nowego kanału z użyciem modelu optymalizacyjnego
+
+## Obsługa aplikacji
+
+### Ładowanie danych
+
+* Otwórz stronę startową aplikacji
+* Podstawowym krokiem jest załadowanie plików .csv z opisem sieci
+  * przygotuj pliki "wezly.csv", "zajetosc.csv" i "spectrum_kanaly.csv"
+  * na panelu "Zaimportuj dane sieci" wybierz przygotowane pliki w odpowiednich polach
+  * po załadowaniu wszystkich plików pojawi się komunikat o sukcesie
+* Możesz również pominąć krok importu plików i korzystać z demonstracyjnej sieci
+  * aby ją załadować, naciśnij przycisk "Wczytaj demo" na panelu "Zaimportuj dane demonstracyjne"
+* Stan załadowanej sieci, np. po wyznaczeniu nowych kanałów z użyciem modeli optymalizacyjnych, można zapisać do pliku JSON
+  * naciśnij przycisk "Pobierz" na panelu "Pobierz lub załaduj stan sieci"
+  * ten sam plik można następnie załadować, np. po zakończeniu sesji, naciskając przycisk "Załaduj"
+* Po załadowaniu sieci w dowolny z wymienionych sposobów, po prawej stronie pojawi się wizualizacja grafu sieci
+* Możesz powrócić do tej strony, naciskając "Import" na pasku nawigacyjnym
+* Pamiętaj, że system nie przechowuje danych po zamknięciu przeglądarki
+
+### Generowanie raportu
+
+* Po załadowaniu sieci w zakładce "Import" przejdź do zakładki "Statystyki"
+* Aby pobrać raport, naciśnij przycisk "Pobierz raport" na dole strony
+* Zostanie pobrany plik w formacie .csv z raportem zajętości pasma przez kanały
+  * można go otworzyć i wygodnie przeglądać w arkuszu kalkulacyjnym z pakietu biurowego
+
+### Prezentacja sieci
+
+* Po załadowaniu sieci w zakładce "Import" przejdź do zakładki "Statystyki"
+* Wizualizację grafu sieci po prawej stronie możesz przesuwać przytrzymując lewy przycisk myszy
+* Wizualizację można przybliżać i oddalać za pomocą kółka myszy
+* Po najechaniu na węzeł lub krawędź kliknij lewym przyciskiem myszy
+  * wybrany element zostanie wyróżniony kolorem na wizualizacji
+  * po lewej stronie pojawi się karta z jego atrybutami i statystykami
+* Użyj kółka myszy, aby przewinąć karty statystyk, jeśli nie wszystkie mieszczą się na ekranie
+* Na kartach po lewej stronie pojawiają się identyfikatory kanałów, węzłów i krawędzi
+  * kliknij identyfikator, aby zobaczyć atrybuty wybranego elementu oraz wyróżnić go na wizualizacji
+
+
+### Wyznaczanie nowego kanału
+
+* Po załadowaniu sieci w zakładce "Import" przejdź do zakładki "Dodaj kanał"
+* W polach "Węzeł startowy" i "Węzeł końcowy" wpisz identyfikatory węzłów, między którymi ma być wyznaczony kanał
+  * możesz je odczytać z wizualizacji sieci
+  * jeśli sieć jest zbyt duża i identyfikatory nie są widoczne, przybliż wizualizację kółkiem myszy
+* Wybierz jedną z opcji w polu "Przepustowość"
+  * określa ona, jaką przepustowość ma mieć nowy kanał
+* Wybierz jeden z modeli optymalizacyjnych w polu "Optymalizator"
+* Model całkowitoliczbowy
+  * znajdzie optymalny przebieg kanału, o ile można go wytyczyć przy zadanych parametrach i stanie sieci
+  * wyznaczanie kanału może zająć kilka minut
+* Algorytm Dijkstry
+  * znajduje optymalną ścieżkę znacznie szybciej
+  * nie gwarantuje sukcesu we wszystkich przypadkach, które obsłuży model całkowitoliczbowy
+* Wprowadź wagi długości i obciążenia krawędzi
+  * określają one, jak ważne będą względem siebie te parametry przy wyznaczaniu kanału
+* Po wypełnieniu wszystkich opcji naciśnij przycisk "Dodaj kanał" i poczekaj na wynik
+* Po pewnym czasie zobaczysz komunikat o wyniku i czasie obliczeń
+* Znaleziony kanał zostanie wyróżniony na wizualizacji sieci kolorem fioletowym
+* Możesz obejrzeć szczegółowe parametry nowego kanału w zakładce "Statystyki"
+* Nowy kanał zostanie również ujęty w raporcie zajętości pasma, który możesz pobrać w zakładce "Statystyki"
