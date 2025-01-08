@@ -10,8 +10,10 @@ import {OptimizerRequest, OptimizerResponse, useOptimizer} from "./useOptimizer.
 
 
 export const OptimizerForm = () => {
+  const apiBaseUrl = import.meta.env.VITE_BACKEND_URL;
+  const apiUrl = `${apiBaseUrl}/ws/optimizer`;
   const {network, setNetwork, setSelectedChannelId} = useNetwork();
-  const {sendQuery, lastMessage} = useOptimizer("ws://localhost:8000/ws/optimizer", (_) => false);
+  const {sendQuery, lastMessage} = useOptimizer(apiUrl, (_) => false);
 
   const [startNode, setStartNode] = useState<string | null>(null);
   const [endNode, setEndNode] = useState<string | null>(null);
