@@ -15,6 +15,22 @@ const totalChannelLength = (network: Network, channel: Channel) => {
   return Math.round(totalLength);
 }
 
+const calculateBandwidth = (channel: Channel) => {
+  const widthToBandwidthGbps: Record<string, number> = {
+    "12.5": 10,
+    "25.0": 40,
+    "50.0": 100,
+    "75.0": 200,
+    "112.5": 400,
+    "150.0": 800,
+    "200.0": 1000,
+  }
+
+  const width = channel.width.toFixed(1);
+  const bandwidth = widthToBandwidthGbps[width];
+  return bandwidth ?? 0;
+}
+
 export const ChannelStats = () => {
   const {network, selectedChannelId, setSelectedNodeId, setSelectedEdgeId} = useNetwork();
   if (!network || !selectedChannelId) {
@@ -33,7 +49,8 @@ export const ChannelStats = () => {
       <p>Liczba krawędzi: {edgeCount}</p>
       <p>Długość: {totalChannelLength(network, channel)} km</p>
       <p>Częstotliwość środkowa: {channel.frequency} THz</p>
-      <p>Szerokość pasma: {channel.width.toFixed(2)} GHz</p>
+      <p>Szerokość pasma: {channel.width.toFixed(1)} GHz</p>
+      <p>Przepustowość: {calculateBandwidth(channel)} Gb/s</p>
       <p>Węzły:</p>
       <List>
         {channel.nodes.map((nodeId) => (
