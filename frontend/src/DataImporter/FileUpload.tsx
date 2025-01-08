@@ -5,6 +5,7 @@ import { Button } from "../Components/UI/button";
 interface FileUploadProps {
   onUpload: (data: string) => void;
   accept: string;
+  buttonText: string
 }
 
 export const FileUpload = (props: FileUploadProps) => {
@@ -29,7 +30,7 @@ export const FileUpload = (props: FileUploadProps) => {
   return <div className="flex flex-col w-1/2">
     <HiddenFileInput type="file" accept={props.accept} ref={fileInputRef} onChange={handleFileUpload} />
     <Button className="mb-3" variant={"outline"} onClick={() => fileInputRef.current?.click()}>
-      Wybierz plik
+      {props.buttonText}
     </Button>
     {fileName && <p className="mb-5 text-center">{fileName}</p>}
   </div>

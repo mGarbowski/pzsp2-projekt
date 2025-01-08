@@ -39,7 +39,7 @@ export const JsonImporterExporter = () => {
           <Button className="mb-3" variant={"outline"} onClick={handleDownload}>
             Pobierz
           </Button>
-          <FileUpload accept=".json" onUpload={handleUpload}/>
+          <FileUpload buttonText="Załaduj" accept=".json" onUpload={handleUpload}/>
           <p className="text-center font-bold text-green-200">{message}</p>
         </ContentContainer>
       </CardContent>
@@ -48,7 +48,9 @@ export const JsonImporterExporter = () => {
 }
 
 const ContentContainer = styled.div({
+  marginTop: "1rem",
   display: "flex",
   flexDirection: "column",
+  alignItems: "center",
   gap: "1rem",
 });

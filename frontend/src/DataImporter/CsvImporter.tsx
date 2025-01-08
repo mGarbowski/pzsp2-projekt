@@ -49,11 +49,11 @@ export const CsvImporter = () => {
 
         <ImporterUploadContainer>
           <p className="font-bold">Węzły</p>
-          <FileUpload accept=".csv" onUpload={(data) => setNodesCsv(data)}/>
+          <FileUpload buttonText="Wybierz plik" accept=".csv" onUpload={(data) => setNodesCsv(data)}/>
           <p className="font-bold">Zajętość</p>
-          <FileUpload accept=".csv" onUpload={(data) => setEdgesCsv(data)}/>
+          <FileUpload buttonText="Wybierz plik" accept=".csv" onUpload={(data) => setEdgesCsv(data)}/>
           <p className="font-bold">Spektrum kanały</p>
-          <FileUpload accept=".csv" onUpload={(data) => setSpectrumCsv(data)}/>
+          <FileUpload buttonText="Wybierz plik" accept=".csv" onUpload={(data) => setSpectrumCsv(data)}/>
         </ImporterUploadContainer>
         <p
           className="text-center font-bold text-green-200">{message}</p> {/* FIXME: should be red when incorrect data is loaded */}
