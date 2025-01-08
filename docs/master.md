@@ -728,7 +728,7 @@ Podglądy widoków widoczne są na rysunkach \ref{fig:figma-importer}, \ref{fig:
   * otwarcie przeglądarki i wejście na stronę `http://localhost:2137`
   * lub interakcja z wdrożoną aplikacją na serwerze http://pzsp2.mgrabowski.pl
 
-### Zaimportowanie poprawnego opisu sieci
+### Zaimportowanie poprawnego opisu sieci z csv
 1. Użytkownik otwiera stronę importera danych (strona startowa)
 2. Użytkownik wybiera plik `wezly.csv` z opisem węzłów sieci
 3. Użytkownik wybiera plik `zajetosc.csv` z opisem krawędzi sieci
@@ -736,11 +736,18 @@ Podglądy widoków widoczne są na rysunkach \ref{fig:figma-importer}, \ref{fig:
 5. Po wybraniu wszystkich plików pojawia się komunikat o pomyślnym zaimportowaniu sieci
 6. Po prawej stronie wyświetla się wizualizacja sieci
 
-
-### Próba zaimportowania błędnego opisu sieci
+### Import i eksport stanu sieci z formatu json
 1. Użytkownik otwiera stronę importera danych (strona startowa)
-2. Użytkownik wybiera dowolny plik .csv niezawierający poprawnego opisu sieci w miejsce "Węzły", "Zajętość" i "Spektrum kanały"
-3. Po wybraniu pliku pojawia się komunikat o błędzie importu
+2. Użytkownik wybiera plik `wezly.csv` z opisem węzłów sieci
+3. Użytkownik wybiera plik `zajetosc.csv` z opisem krawędzi sieci
+4. Użytkownik wybiera plik `spectrum_kanaly.csv` z opisem kanałów sieci
+5. Wczytuje się poprawny opis sieci.
+6. Użytkownik naciska przycisk "Pobierz" w sekcji "Pobierz lub załaduj stan sieci"
+7. Pobiera się plik w formacie json.
+8. Użytkownik odświeża stronę.
+9. Użytkownik naciska przycisk "Załaduj" w sekcji "Pobierz lub załaduj stan sieci"
+10. Użytkownik wybiera wcześniej pobrany plik w formacie json.
+11. Wczytuje się ten sam opis sieci.
 
 ### Generowanie raportu zajętości pasma przez kanały
 1. Użytkownik otwiera stronę prezentacji sieci
@@ -756,24 +763,24 @@ Podglądy widoków widoczne są na rysunkach \ref{fig:figma-importer}, \ref{fig:
 4. Na karcie "Sieć" widoczne są globalne statystyki sieci
 5. Na karcie "Kanały" widoczna jest lista identyfikatorów kanałów
 6. Użytkownik klika na dowolny węzeł na prezentacji sieci
-7. Wybrany węzeł wyświetla się w kolorze zielonym na prezentacji sieci
+7. Wybrany węzeł wyświetla się w kolorze niebieskim na prezentacji sieci
 8. Po lewej stronie widoczna jest karta "Wybrany węzeł" ze statystykami węzła
 9. Użytkownik klika na identyfikator dowolnego sąsiada na karcie "Wybrany węzeł"
-10. Wybrany sąsiad wyświetla się w kolorze zielonym na prezentacji sieci
+10. Wybrany sąsiad wyświetla się w kolorze niebieskim na prezentacji sieci
 11. Na karcie "Wybrany węzeł" wyświetlają się statystyki wybranego sąsiada
 12. Użytkownik klika na dowolną krawędź na prezentacji sieci
-13. Wybrana krawędź wyświetla się w kolorze zielonym na prezentacji sieci
+13. Wybrana krawędź wyświetla się w kolorze niebieskim na prezentacji sieci
 14. Po lewej stronie wyświetla się karta "Wybrana krawędź" ze statystykami krawędzi
 15. Użytkownik klika na identyfikator węzła z listy "Łączy węzły" na karcie krawędzi
-16. Wybrany węzeł wyświetla się w kolorze zielonym na prezentacji sieci
+16. Wybrany węzeł wyświetla się w kolorze niebieskim na prezentacji sieci
 17. Użytkownik klika na dowolny identyfikator na karcie "Kanały"
-18. Węzły i krawędzie wybranego kanału wyświetlają się w kolorze czerwonym na prezentacji sieci (lub zostały zaznaczone wcześniej i są zielone)
+18. Węzły i krawędzie wybranego kanału wyświetlają się w kolorze fioletowym na prezentacji sieci (lub zostały zaznaczone wcześniej i są zielone)
 19. Po lewej stronie wyświetla się karta "Wybrany kanał" ze statystykami kanału
 20. Użytkownik klika na identyfikator węzła z listy "Węzły" na karcie wybranego kanału
-21. Wybrany węzeł wyświetla się w kolorze zielonym na prezentacji sieci
+21. Wybrany węzeł wyświetla się w kolorze niebieskim na prezentacji sieci
 22. Karta "Wybrany węzeł" wyświetla statystyki wybranego węzła
 23. Użytkownik klika na identyfikator krawędzi na liście "Krawędzie" na karcie wybranego kanału
-24. Wybrana krawędź wyświetla się w kolorze zielonym na prezentacji sieci
+24. Wybrana krawędź wyświetla się w kolorze niebieskim na prezentacji sieci
 25. Karta "Wybrana krawędź" wyświetla statystyki wybranej krawędzi
 
 ### Wyznaczenie nowego kanału z użyciem modelu programowania całkowitoliczbowego
@@ -787,9 +794,10 @@ Podglądy widoków widoczne są na rysunkach \ref{fig:figma-importer}, \ref{fig:
 8. Użytkownik wpisuje dodatnie liczby w pola "Waga długości krawędzi" i "Waga obciążenia krawędzi"
 9. Użytkownik naciska przycisk "Dodaj kanał"
 10. Pojawia się indykator ładowania do czasu otrzymania wyniku
-11. Po pewnym czasie, na prezentacji sieci pojawia się wyróżniona kolorem czerwonym ścieżka między zadanymi węzłami
-12. Użytkownik przechodzi do zakładki "Statystyki"
-13. Na karcie "Wybrany kanał" widoczne są statystyki i atrybuty nowego kanału
+11. Po pewnym czasie, na prezentacji sieci pojawia się wyróżniona kolorem fioletowym ścieżka między zadanymi węzłami
+12. Pod formularzem pojawia się komunikat z czasem obliczeń
+13. Użytkownik przechodzi do zakładki "Statystyki"
+14. Na karcie "Wybrany kanał" widoczne są statystyki i atrybuty nowego kanału
 
 ### Wyznaczenie nowego kanału z użyciem modelu Dijkstry
 1. Użytkownik otwiera stronę prezentacji sieci
@@ -802,9 +810,11 @@ Podglądy widoków widoczne są na rysunkach \ref{fig:figma-importer}, \ref{fig:
 8. Użytkownik wpisuje dodatnie liczby w pola "Waga długości krawędzi" i "Waga obciążenia krawędzi"
 9. Użytkownik naciska przycisk "Dodaj kanał"
 10. Pojawia się indykator ładowania do czasu otrzymania wyniku
-11. Po pewnym czasie, na prezentacji sieci pojawia się wyróżniona kolorem czerwonym ścieżka między zadanymi węzłami
-12. Użytkownik przechodzi do zakładki "Statystyki"
-13. Na karcie "Wybrany kanał" widoczne są statystyki i atrybuty nowego kanału
+11. Po pewnym czasie, na prezentacji sieci pojawia się wyróżniona kolorem fioletowym ścieżka między zadanymi węzłami
+12. Pod formularzem pojawia się komunikat z czasem obliczeń
+13. Użytkownik przechodzi do zakładki "Statystyki"
+14. Na karcie "Wybrany kanał" widoczne są statystyki i atrybuty nowego kanału
+
 
 ## Miary jakości testów
 * Jako miarę jakości testów jednostkowych przyjmujemy pokrycie linii kodu testami
