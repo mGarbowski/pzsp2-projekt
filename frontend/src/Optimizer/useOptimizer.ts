@@ -27,7 +27,7 @@ type OptimizerErrorResponse = {
 
 export type OptimizerResponse = OptimizerSuccessResponse | OptimizerErrorResponse;
 
-export const useOptimizer = (apiUrl: string, isDisconnetMessage: (msg: string) => boolean) => {
+export const useOptimizer = (apiUrl: string, isDisconnectMessage: (msg: string) => boolean) => {
   const [lastMessage, setLastMessage] = useState<string | null>(null);
   const [socketUrl, setSocketUrl] = useState<string | null>(null);
 
@@ -38,10 +38,7 @@ export const useOptimizer = (apiUrl: string, isDisconnetMessage: (msg: string) =
   const handleMessage = (message: { data: string }) => {
     const msg = message.data as string;
     setLastMessage(msg);
-
-    if (isDisconnetMessage(msg)) {
-      setSocketUrl(null);
-    }
+    setSocketUrl(null);
   };
 
   const { sendMessage } = useWebSocket(socketUrl, {
