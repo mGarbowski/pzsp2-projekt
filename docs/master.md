@@ -724,8 +724,10 @@ Podglądy widoków widoczne są na rysunkach \ref{fig:figma-importer}, \ref{fig:
 ## Bezpieczeństwo aplikacji
 * Aplikacje nie przechowuje żadnych danych w sposób trwały
 * Aplikacja nie przechowuje danych użytkowników, nie wymaga logowania
-* Komunikacja z serwerem jest szyfrowana protokołem HTTPS
-  * chociaż przesyłane dane nie mają charakteru poufnego
+* Dane przesyłane do serwera nie mają charakteru poufnego
 
 ## Bezpieczeństwo infrastruktury
 * Logowanie do serwera wymaga uwierzytelnienia kluczem (SSH)
+
+
+# Podręcznik użytkownika
