@@ -87,6 +87,130 @@ Danymi w projekcie są:
 System nie będzie trwale przechowywać danych.
 
 \newpage
+## Model programowania całkowitoliczbowego
+
+### Zbiory i indeksy
+\begin{align*}
+	 & N: \text{zbiór węzłów (wierzchołków).}                      \\
+	 & E \subseteq N \times N: \text{zbiór skierowanych krawędzi.} \\
+	 & K = \{0,1,\dots,767\}: \text{zbiór indeksów slice'ów.}
+\end{align*}
+
+### Parametry
+
+\begin{align*}
+	& w_{ij}
+	& & \text{koszt (waga) użycia krawędzi }(i,j)\in E.\\
+	&   & & \text{Wyliczanie wartości wagi rozwiązywane jest poza modelem całkowitoliczbowym} \\
+	&   & & \text{i jest częścią wspólną logiki stosowanych optymalizatorów.} \\
+	& s \in N
+	& & \text{wierzchołek źródłowy (source).} \\
+	& t \in N
+	& & \text{wierzchołek docelowy (target).} \\
+	& \text{O}_{(i,j),k} \in \{0,1\}
+	& & \text{parametr binarny wskazujący, czy slice }k \text{ jest zajęty (}1\text{)} \\
+	&   & & \text{czy wolny (}0\text{) na krawędzi }(i,j). \\
+	& S \in \mathbb{Z}_{\ge 0}
+	& & \text{liczba \emph{ciągłych} slice'ów wymagana na każdej wybranej krawędzi.}
+\end{align*}
+
+### Zmienne decyzyjne
+
+\begin{align*}
+	 & x_{ij} \in \{0,1\}
+	 &                         & \text{równe }1\text{, jeśli krawędź }(i,j)\text{ jest użyta w ścieżce; }0\text{ w p.p.}                                               \\
+	 & y_{k} \in \{0,1\}
+	 &                         & \text{równe }1\text{, jeśli slice }k \text{ jest wybrany jako \emph{początek} }                                                       \\
+	 &                         &                                                                                         & \text{ciągłego przedziału; }0\text{ w p.p.} \\
+	 & z_{(i,j),k} \in \{0,1\}
+	 &                         & \text{zmienna pomocnicza do powiązania }x_{ij} \text{ i } y_k.
+\end{align*}
+
+### Funkcja celu
+
+$$
+	\min \sum_{(i,j)\in E} w_{ij} \, x_{ij}.
+$$
+
+Jej celem jest zminimalizowanie łącznego kosztu (wagi) wszystkich wybranych krawędzi.
+Obliczanie wagi jest wspólne dla obu modeli optymalizacyjnych, dlatego nie jest ujęta w samym modelu całkowitoliczbowym.
+Waga krawędzi to suma ważona jej długości (na podstawie współrzędnych geograficznych) oraz obciążenia, gdzie wagi w tej 
+sumie są parametrami użytkownika.
+
+\newpage
+### Ograniczenia
+
+#### Zachowanie przepływu
+$$
+    \forall\, n \in N: \quad
+    \sum_{\substack{(n,j)\in E}} x_{n j}
+    \;-\;
+    \sum_{\substack{(i,n)\in E}} x_{i n}
+    =
+    \begin{cases}
+        1  & \text{jeśli } n = s,       \\
+        -1 & \text{jeśli } n = t,       \\
+        0  & \text{w przeciwnym razie}.
+    \end{cases}
+$$
+
+Zapewnia to, że ze źródła wypływa dokładnie 1 jednostka przepływu, do ujścia wpływa 1 jednostka, a pozostałe węzły mają 
+bilans zerowy (co definiuje ścieżkę od $s$ do $t$).
+
+#### Dostępność wolnych slice'ów na każdej wybranej krawędzi
+
+$$
+    \forall\,(i,j) \in E:\quad
+    \sum_{\substack{k \in K \\ k + S - 1 \,\le\, \max(K)}}
+    \Biggl(
+    y_k \cdot
+    \prod_{r = k}^{k + S - 1} \bigl[1 - \text{O}_{(i,j),r}\bigr]
+    \Biggr)
+    \;\;\ge\;\; x_{ij}.
+$$
+
+Dla każdej krawędzi $(i,j) \in E$ musi istnieć co najmniej jeden indeks początkowy $k$, 
+dla którego (1) slice'y od $k$ do $k+S-1$ są wolne oraz (2) $y_k=1$. 
+
+Jeśli $x_{ij} = 1$, to co najmniej jeden blok $S$ kolejnych wolnych slice'ów (począwszy od pewnego $k$) musi być dostępny.
+
+#### Zgodność wybranego slice'a z istniejącym zajęciem
+
+$$
+    \forall\,(i,j)\in E,\;\forall\,k \in K: \;
+    \begin{aligned}
+         & \text{jeśli }(k + S - 1) > \max(K),\quad \text{pomijamy;}              \\
+         & \text{w przeciwnym razie } z_{(i,j),k} \;\le\; 1 - \text{O}_{(i,j),k}.
+    \end{aligned}
+$$
+
+Jeżeli slice $k$ jest zajęty na krawędzi $(i,j)$, to zmienna $z_{(i,j),k}$ musi wynosić 0.
+
+#### Powiązanie zmiennych $z_{(i,j),k}$ z $x_{ij}$ i $y_k$
+
+$$
+    \forall\,(i,j)\in E,\;\forall\,k \in K:\quad
+    \begin{cases}
+        z_{(i,j),k} \;\le\; y_k,    \\
+        z_{(i,j),k} \;\le\; x_{ij}, \\
+        z_{(i,j),k} \;\ge\; y_k + x_{ij} - 1.
+    \end{cases}
+$$
+Jest to standardowe odwzorowanie równości
+$$
+    z_{(i,j),k} = x_{ij} \cdot y_k.
+$$
+
+#### Wzajemna wyłączność wybranego slice'a początkowego
+
+$$
+    \sum_{\substack{k \in K \\ k + S - 1 \,\le\, \max(K)}}
+    y_k
+    \;=\; 1.
+$$
+Dokładnie jeden slice $k$ zostaje wybrany jako początek bloku długości $S$.
+
+\newpage
 
 # Metodologia wytwarzania
 
