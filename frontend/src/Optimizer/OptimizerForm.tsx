@@ -14,7 +14,7 @@ interface OptimizerFormProps {
 
 export const OptimizerForm = (props: OptimizerFormProps) => {
   const {network} = useNetwork();
-  const {sendQuery, lastMessage} = useOptimizer();
+  const {sendRequest, response} = useOptimizer();
 
   const [startNode, setStartNode] = useState<string | null>(null);
   const [endNode, setEndNode] = useState<string | null>(null);
@@ -51,21 +51,21 @@ export const OptimizerForm = (props: OptimizerFormProps) => {
       distanceWeight: distanceWeight,
       evenLoadWeight: evenLoadWeight,
     };
-    sendQuery(JSON.stringify(request));
+    sendRequest(JSON.stringify(request));
   }
 
   useEffect(() => {
-    if (!lastMessage) {
+    if (!response) {
       return;
     }
 
-    const response = JSON.parse(JSON.parse(lastMessage!)) as OptimizerResponse;
-    console.info(response);
-    props.handleResponse(response);
+    const result = JSON.parse(JSON.parse(response!)) as OptimizerResponse;
+    console.info(result);
+    props.handleResponse(result);
     setLoading(false);
 
     // eslint-disable-next-line
-  }, [lastMessage]);
+  }, [response]);
 
 
   return <StyledForm onSubmit={handleSubmit}>

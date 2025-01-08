@@ -28,7 +28,7 @@ type OptimizerErrorResponse = {
 export type OptimizerResponse = OptimizerSuccessResponse | OptimizerErrorResponse;
 
 export const useOptimizer = () => {
-  const [lastMessage, setLastMessage] = useState<string | null>(null);
+  const [response, setResponse] = useState<string | null>(null);
   const [socketUrl, setSocketUrl] = useState<string | null>(null);
 
   const apiBaseUrl = import.meta.env.VITE_BACKEND_URL;
@@ -40,7 +40,7 @@ export const useOptimizer = () => {
 
   const handleMessage = (message: { data: string }) => {
     const msg = message.data as string;
-    setLastMessage(msg);
+    setResponse(msg);
     setSocketUrl(null);
   };
 
@@ -51,11 +51,11 @@ export const useOptimizer = () => {
     shouldReconnect: () => false,
   });
 
-  const sendQuery = (message: string) => {
+  const sendRequest = (message: string) => {
     setSocketUrl(apiUrl);
     sendMessage(message);
   };
 
-  return { sendQuery, lastMessage };
+  return { sendRequest: sendRequest, response: response };
 };
 
