@@ -18,17 +18,19 @@
 
 \noindent \textbf{Parametry:}
 \begin{align*}
-	 & w_{ij}
-	 &                                & \text{koszt (waga) użycia krawędzi }(i,j)\in E.                                                                                  \\
-	 & s \in N
-	 &                                & \text{wierzchołek źródłowy (source).}                                                                                            \\
-	 & t \in N
-	 &                                & \text{wierzchołek docelowy (target).}                                                                                            \\
-	 & \text{O}_{(i,j),k} \in \{0,1\}
-	 &                                & \text{parametr binarny wskazujący, czy slice }k \text{ jest zajęty (}1\text{) }                                                  \\
-	 &                                &                                                                                 & \text{czy wolny (}0\text{) na krawędzi }(i,j). \\
-	 & S \in \mathbb{Z}_{\ge 0}
-	 &                                & \text{liczba \emph{ciągłych} slice'ów wymagana na każdej wybranej krawędzi.}
+	& w_{ij}
+	& & \text{koszt (waga) użycia krawędzi }(i,j)\in E.\\
+	&   & & \text{Wyliczanie wartości wagi rozwiązywane jest poza modelem całkowitoliczbowym} \\
+	&   & & \text{i jest częścią wspólną logiki stosowanych optymalizatorów.} \\
+	& s \in N
+	& & \text{wierzchołek źródłowy (source).} \\
+	& t \in N
+	& & \text{wierzchołek docelowy (target).} \\
+	& \text{O}_{(i,j),k} \in \{0,1\}
+	& & \text{parametr binarny wskazujący, czy slice }k \text{ jest zajęty (}1\text{)} \\
+	&   & & \text{czy wolny (}0\text{) na krawędzi }(i,j). \\
+	& S \in \mathbb{Z}_{\ge 0}
+	& & \text{liczba \emph{ciągłych} slice'ów wymagana na każdej wybranej krawędzi.}
 \end{align*}
 
 \vspace{1em}
