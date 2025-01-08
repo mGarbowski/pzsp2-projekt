@@ -113,7 +113,10 @@ export const OptimizerForm = () => {
           <SelectItem value="10Gb/s">10Gb/s</SelectItem>
           <SelectItem value="40Gb/s">40Gb/s</SelectItem>
           <SelectItem value="100Gb/s">100Gb/s</SelectItem>
+          <SelectItem value="200Gb/s">200Gb/s</SelectItem>
           <SelectItem value="400Gb/s">400Gb/s</SelectItem>
+          <SelectItem value="800Gb/s">800Gb/s</SelectItem>
+          <SelectItem value="1000Gb/s">1000Gb/s</SelectItem>
         </SelectContent>
       </Select>
     </Label>
