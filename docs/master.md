@@ -862,7 +862,7 @@ Podglądy widoków widoczne są na rysunkach \ref{fig:figma-importer}, \ref{fig:
 ## Bezpieczeństwo infrastruktury
 * Logowanie do serwera wymaga uwierzytelnienia kluczem (SSH)
 
-
+\newpage
 # Podręcznik użytkownika
 
 ## Lokalne uruchomienie aplikacji
@@ -879,18 +879,19 @@ Aplikacja jest również wdrożona w chmurze i dostępna pod adresem [http://pzs
 * Importer danych
   * wczytanie opisu sieci z zestawu plików .csv
   * załadowanie demonstracyjnej sieci
-  * eksport stanu sieci do pliku JSON
-  * import stanu sieci z pliku JSON
-* Generowanie raportu zajętości pasma przez kanały w formacie .csv
+  * eksport stanu sieci do pliku .json
+  * import stanu sieci z pliku .json
 * Wizualizacja grafu sieci teleinformatycznej
 * Prezentacja statystyk i atrybutów sieci i jej elementów
+* Generowanie raportu zajętości pasma przez kanały w formacie .csv
 * Wyznaczanie nowego kanału z użyciem modelu optymalizacyjnego
 
 ## Obsługa aplikacji
 
 ### Ładowanie danych
+![Widok importera danych](./images/importer-page.png){#fig-importer-screenshot}
 
-* Otwórz stronę startową aplikacji
+* Otwórz stronę startową aplikacji (widoczna na zrzucie ekranu \ref{fig-importer-screenshot})
 * Podstawowym krokiem jest załadowanie plików .csv z opisem sieci
   * przygotuj pliki "wezly.csv", "zajetosc.csv" i "spectrum_kanaly.csv"
   * na panelu "Zaimportuj dane sieci" wybierz przygotowane pliki w odpowiednich polach
@@ -904,16 +905,10 @@ Aplikacja jest również wdrożona w chmurze i dostępna pod adresem [http://pzs
 * Możesz powrócić do tej strony, naciskając "Import" na pasku nawigacyjnym
 * Pamiętaj, że system nie przechowuje danych po zamknięciu przeglądarki
 
-### Generowanie raportu
-
-* Po załadowaniu sieci w zakładce "Import" przejdź do zakładki "Statystyki"
-* Aby pobrać raport, naciśnij przycisk "Pobierz raport" na dole strony
-* Zostanie pobrany plik w formacie .csv z raportem zajętości pasma przez kanały
-  * można go otworzyć i wygodnie przeglądać w arkuszu kalkulacyjnym z pakietu biurowego
-
 ### Prezentacja sieci
+![Widok prezentacji sieci](./images/statistics-page.png){#fig-presentation-screenshot}
 
-* Po załadowaniu sieci w zakładce "Import" przejdź do zakładki "Statystyki"
+* Po załadowaniu sieci w zakładce "Import" przejdź do zakładki "Statystyki" (widoczna na zrzucie ekranu \ref{fig-presentation-screenshot})
 * Wizualizację grafu sieci po prawej stronie możesz przesuwać przytrzymując lewy przycisk myszy
 * Wizualizację można przybliżać i oddalać za pomocą kółka myszy
 * Po najechaniu na węzeł lub krawędź kliknij lewym przyciskiem myszy
@@ -924,9 +919,18 @@ Aplikacja jest również wdrożona w chmurze i dostępna pod adresem [http://pzs
   * kliknij identyfikator, aby zobaczyć atrybuty wybranego elementu oraz wyróżnić go na wizualizacji
 
 
-### Wyznaczanie nowego kanału
+### Generowanie raportu
 
-* Po załadowaniu sieci w zakładce "Import" przejdź do zakładki "Dodaj kanał"
+* Po załadowaniu sieci w zakładce "Import" przejdź do zakładki "Statystyki"
+* Aby pobrać raport, naciśnij przycisk "Pobierz raport" na dole strony
+* Zostanie pobrany plik w formacie .csv z raportem zajętości pasma przez kanały
+  * można go otworzyć i wygodnie przeglądać w arkuszu kalkulacyjnym z pakietu biurowego
+
+
+### Wyznaczanie nowego kanału
+![Widok dodawania kanału](./images/optimizer-page.png){#fig-optimizer-screenshot}
+
+* Po załadowaniu sieci w zakładce "Import" przejdź do zakładki "Dodaj kanał" (widoczna na zrzucie ekranu \ref{fig-optimizer-screenshot})
 * W polach "Węzeł startowy" i "Węzeł końcowy" wpisz identyfikatory węzłów, między którymi ma być wyznaczony kanał
   * możesz je odczytać z wizualizacji sieci
   * jeśli sieć jest zbyt duża i identyfikatory nie są widoczne, przybliż wizualizację kółkiem myszy
