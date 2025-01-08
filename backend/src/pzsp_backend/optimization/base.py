@@ -1,6 +1,5 @@
 import uuid
 from abc import ABC, abstractmethod
-from typing import Literal
 
 from attrs import define
 
