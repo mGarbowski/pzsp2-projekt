@@ -1,0 +1,137 @@
+\documentclass[12pt]{article}
+\usepackage[polish]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[ top=30mm, bottom=30mm, right=20mm, left=20mm ]{geometry}
+\usepackage{amsmath,amssymb}
+\begin{document}
+
+\section*{Całkowitoliczbowy model wyznaczania najtańszej \\ ścieżki z wymogiem ciągłego przedziału wycinków}
+
+\noindent \textbf{Zbiory i indeksy:}
+\begin{align*}
+	 & N: \text{zbiór węzłów (wierzchołków).}                              \\
+	 & E \subseteq N \times N: \text{zbiór skierowanych krawędzi (łuków).} \\
+	 & K = \{0,1,\dots,767\}: \text{zbiór indeksów wycinków (slices).}
+\end{align*}
+
+\vspace{1em}
+
+\noindent \textbf{Parametry:}
+\begin{align*}
+	 & w_{ij}
+	 &                                       & \text{koszt (waga) użycia krawędzi }(i,j)\in E.                                                                                    \\
+	 & s \in N
+	 &                                       & \text{wierzchołek źródłowy (source).}                                                                                              \\
+	 & t \in N
+	 &                                       & \text{wierzchołek docelowy (target).}                                                                                              \\
+	 & \text{Occupied}_{(i,j),k} \in \{0,1\}
+	 &                                       & \text{parametr binarny wskazujący, czy wycinek }k \text{ jest zajęty (}1\text{) }                                                  \\
+	 &                                       &                                                                                   & \text{czy wolny (}0\text{) na krawędzi }(i,j). \\
+	 & S \in \mathbb{Z}_{\ge 0}
+	 &                                       & \text{liczba \emph{ciągłych} wycinków wymagana na każdej wybranej krawędzi.}
+\end{align*}
+
+\vspace{1em}
+
+\noindent \textbf{Zmienne decyzyjne:}
+\begin{align*}
+	 & x_{ij} \in \{0,1\}
+	 &                         & \text{równe }1\text{, jeśli krawędź }(i,j)\text{ jest użyta w ścieżce; }0\text{ w p.p.}                                               \\
+	 & y_{k} \in \{0,1\}
+	 &                         & \text{równe }1\text{, jeśli wycinek }k \text{ jest wybrany jako \emph{początek} }                                                     \\
+	 &                         &                                                                                         & \text{ciągłego przedziału; }0\text{ w p.p.} \\
+	 & z_{(i,j),k} \in \{0,1\}
+	 &                         & \text{zmienna pomocnicza do powiązania }x_{ij} \text{ i } y_k.
+\end{align*}
+
+\vspace{2em}
+
+\noindent \textbf{Funkcja celu:}
+\[
+	\min \sum_{(i,j)\in E} w_{ij} \, x_{ij}.
+\]
+Jej celem jest zminimalizowanie łącznego kosztu (wagi) wszystkich wybranych krawędzi.
+
+\vspace{2em}
+
+\noindent \textbf{Ograniczenia:}
+
+\begin{enumerate}
+	\item \textbf{Zachowanie przepływu (równowaga przepływów).}
+
+	      \[
+		      \forall\, n \in N: \quad
+		      \sum_{\substack{(n,j)\in E}} x_{n j}
+		      \;-\;
+		      \sum_{\substack{(i,n)\in E}} x_{i n}
+		      =
+		      \begin{cases}
+			      1  & \text{jeśli } n = s,       \\
+			      -1 & \text{jeśli } n = t,       \\
+			      0  & \text{w przeciwnym razie}.
+		      \end{cases}
+	      \]
+	      Zapewnia to, że ze źródła wypływa dokładnie 1 jednostka przepływu, do ujścia wpływa 1 jednostka, a pozostałe węzły mają bilans zerowy (co definiuje ścieżkę od \(\,s\) do \(\,t\)).
+
+	      \vspace{1em}
+
+	\item \textbf{Dostępność wolnych wycinków na każdej wybranej krawędzi.}
+
+	      Dla każdej krawędzi \((i,j)\in E\) musi istnieć co najmniej jeden indeks początkowy \(k\), dla którego (1) wycinki od \(k\) do \(k+S-1\) są wolne oraz (2) \(y_k=1\). W zapisie z uwzględnieniem iloczynu binarnych parametrów:
+	      \[
+		      \forall\,(i,j) \in E:\quad
+		      \sum_{\substack{k \in K \\ k + S - 1 \,\le\, \max(K)}}
+		      \Biggl(
+		      y_k \times
+		      \prod_{r = k}^{k + S - 1} \bigl[1 - \text{Occupied}_{(i,j),r}\bigr]
+		      \Biggr)
+		      \;\;\ge\;\; x_{ij}.
+	      \]
+	      Jeśli \(x_{ij} = 1\), to co najmniej jeden blok \(S\) kolejnych wolnych wycinków (począwszy od pewnego \(k\)) musi być dostępny.
+
+	      \emph{Uwaga:} W ściśle liniowej wersji modelu należy taką formułę zlinearyzować (np. \emph{big-M} lub precomputing wartości produktu) bądź posłużyć się innymi sztuczkami MILP.
+
+	      \vspace{1em}
+
+	\item \textbf{Zgodność wybranego wycinka z istniejącym zajęciem (ang. occupancy).}
+
+	      \[
+		      \forall\,(i,j)\in E,\;\forall\,k \in K: \;
+		      \begin{aligned}
+			       & \text{jeśli }(k + S - 1) > \max(K),\quad \text{pomijamy;}                     \\
+			       & \text{w przeciwnym razie } z_{(i,j),k} \;\le\; 1 - \text{Occupied}_{(i,j),k}.
+		      \end{aligned}
+	      \]
+	      Jeżeli wycinek \(k\) jest zajęty na krawędzi \((i,j)\), to zmienna \(z_{(i,j),k}\) musi wynosić 0.
+
+	      \vspace{1em}
+
+	\item \textbf{Powiązanie zmiennych \(z_{(i,j),k}\) z \(x_{ij}\) i \(y_k\).}
+
+	      \[
+		      \forall\,(i,j)\in E,\;\forall\,k \in K:\quad
+		      \begin{cases}
+			      z_{(i,j),k} \;\le\; y_k,    \\
+			      z_{(i,j),k} \;\le\; x_{ij}, \\
+			      z_{(i,j),k} \;\ge\; y_k + x_{ij} - 1.
+		      \end{cases}
+	      \]
+	      Jest to standardowe \emph{big-M}-stylowe odwzorowanie równości
+	      \[
+		      z_{(i,j),k} = x_{ij} \cdot y_k.
+	      \]
+
+	      \vspace{1em}
+
+	\item \textbf{Wzajemna wyłączność wybranego wycinka początkowego.}
+
+	      \[
+		      \sum_{\substack{k \in K \\ k + S - 1 \,\le\, \max(K)}}
+		      y_k
+		      \;=\; 1.
+	      \]
+	      Dokładnie jeden wycinek \(k\) zostaje wybrany jako początek bloku długości \(S\).
+
+\end{enumerate}
+
+\end{document}
