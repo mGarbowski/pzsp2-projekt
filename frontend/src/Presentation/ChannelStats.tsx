@@ -33,7 +33,7 @@ export const ChannelStats = () => {
       <p>Liczba krawędzi: {edgeCount}</p>
       <p>Długość: {totalChannelLength(network, channel)} km</p>
       <p>Częstotliwość środkowa: {channel.frequency} THz</p>
-      <p>Szerokość pasma: {channel.width} GHz</p>
+      <p>Szerokość pasma: {channel.width.toFixed(2)} GHz</p>
       <p>Węzły:</p>
       <List>
         {channel.nodes.map((nodeId) => (
