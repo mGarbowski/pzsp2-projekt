@@ -133,19 +133,18 @@ Aktorzy: osoba zarządzająca rozkładem połączeń w sieci
 **Wymagania systemowe**
 
 1. System powinien udostępnić użytkownikowi graficzną reprezentację sieci w formie grafu
-2. System powinien móc wyświetlać graf rzutowany na mapę geograficzną obszaru na podstawie współrzędnych poszczególnych węzłów
-3. System powinien wyświetlać zajętość slice'ów danej krawędzi po najechaniu na nią myszką
-4. System powinien wyświetlać krawędzie w różnych kolorach reprezentujących zajętość pasma
-5. System powinien ustalać optymalne ułożenie nowo zdefiniowanego kanału
-6. System powinien udostępniać optymalizację ułożenia dodawanego kanału przy pomocy algorytmu Dijkstry
-7. System powinien udostępniać optymalizację ułożenia dodawanego kanału przy pomocy modelu całkowitoliczbowego
-8. System powinien umożliwić wyeksportowanie reprezentacji sieci w pliku CSV w następującym formacie:
+2. System powinien wyświetlać zajętość slice'ów danej krawędzi po naciśnięciu na nią myszką
+3. System powinien wyświetlać krawędzie w różnych kolorach reprezentujących zajętość pasma
+4. System powinien ustalać optymalne ułożenie nowo zdefiniowanego kanału
+5. System powinien udostępniać optymalizację ułożenia dodawanego kanału przy pomocy algorytmu Dijkstry
+6. System powinien udostępniać optymalizację ułożenia dodawanego kanału przy pomocy modelu całkowitoliczbowego
+7. System powinien umożliwić wyeksportowanie reprezentacji sieci w pliku CSV w następującym formacie:
     * Wierszowi tabeli odpowiada pojedynczy kanał
     * Kolumnie tabeli odpowiada pojedynczy slice
     * Zawartością komórki tabeli jest binarna informacja o zajętości kanału w danej ścieżce
-9. Reprezentacja sieci w sesji danego użytkownika powinna być widoczna tylko dla niego
-10. System powinien umożliwić zapisanie stanu sieci
-11. System powinien umożliwić odtworzenie sieci z wcześniej zapisanego stanu
+8. Reprezentacja sieci w sesji danego użytkownika powinna być widoczna tylko dla niego
+9. System powinien umożliwić zapisanie stanu sieci
+10. System powinien umożliwić odtworzenie sieci z wcześniej zapisanego stanu
 
 ## Wymagania funkcjonalne i niefunkcjonalne
 
