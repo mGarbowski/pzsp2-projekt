@@ -9,7 +9,7 @@
 
 \noindent \textbf{Zbiory i indeksy:}
 \begin{align*}
-	 & N: \text{zbiór węzłów (wierzchołków).}                              \\
+	 & N: \text{zbiór węzłów (wierzchołków).}                      \\
 	 & E \subseteq N \times N: \text{zbiór skierowanych krawędzi.} \\
 	 & K = \{0,1,\dots,767\}: \text{zbiór indeksów slice'ów.}
 \end{align*}
@@ -19,16 +19,16 @@
 \noindent \textbf{Parametry:}
 \begin{align*}
 	 & w_{ij}
-	 &                                       & \text{koszt (waga) użycia krawędzi }(i,j)\in E.                                                                                    \\
+	 &                                & \text{koszt (waga) użycia krawędzi }(i,j)\in E.                                                                                  \\
 	 & s \in N
-	 &                                       & \text{wierzchołek źródłowy (source).}                                                                                              \\
+	 &                                & \text{wierzchołek źródłowy (source).}                                                                                            \\
 	 & t \in N
-	 &                                       & \text{wierzchołek docelowy (target).}                                                                                              \\
-	 & \text{Occupied}_{(i,j),k} \in \{0,1\}
-	 &                                       & \text{parametr binarny wskazujący, czy slice }k \text{ jest zajęty (}1\text{) }                                                  \\
-	 &                                       &                                                                                   & \text{czy wolny (}0\text{) na krawędzi }(i,j). \\
+	 &                                & \text{wierzchołek docelowy (target).}                                                                                            \\
+	 & \text{O}_{(i,j),k} \in \{0,1\}
+	 &                                & \text{parametr binarny wskazujący, czy slice }k \text{ jest zajęty (}1\text{) }                                                  \\
+	 &                                &                                                                                 & \text{czy wolny (}0\text{) na krawędzi }(i,j). \\
 	 & S \in \mathbb{Z}_{\ge 0}
-	 &                                       & \text{liczba \emph{ciągłych} slice'ów wymagana na każdej wybranej krawędzi.}
+	 &                                & \text{liczba \emph{ciągłych} slice'ów wymagana na każdej wybranej krawędzi.}
 \end{align*}
 
 \vspace{1em}
@@ -38,7 +38,7 @@
 	 & x_{ij} \in \{0,1\}
 	 &                         & \text{równe }1\text{, jeśli krawędź }(i,j)\text{ jest użyta w ścieżce; }0\text{ w p.p.}                                               \\
 	 & y_{k} \in \{0,1\}
-	 &                         & \text{równe }1\text{, jeśli slice }k \text{ jest wybrany jako \emph{początek} }                                                     \\
+	 &                         & \text{równe }1\text{, jeśli slice }k \text{ jest wybrany jako \emph{początek} }                                                       \\
 	 &                         &                                                                                         & \text{ciągłego przedziału; }0\text{ w p.p.} \\
 	 & z_{(i,j),k} \in \{0,1\}
 	 &                         & \text{zmienna pomocnicza do powiązania }x_{ij} \text{ i } y_k.
@@ -82,14 +82,13 @@ Jej celem jest zminimalizowanie łącznego kosztu (wagi) wszystkich wybranych kr
 		      \forall\,(i,j) \in E:\quad
 		      \sum_{\substack{k \in K \\ k + S - 1 \,\le\, \max(K)}}
 		      \Biggl(
-		      y_k \times
-		      \prod_{r = k}^{k + S - 1} \bigl[1 - \text{Occupied}_{(i,j),r}\bigr]
+		      y_k \cdot
+		      \prod_{r = k}^{k + S - 1} \bigl[1 - \text{O}_{(i,j),r}\bigr]
 		      \Biggr)
 		      \;\;\ge\;\; x_{ij}.
 	      \]
 	      Jeśli \(x_{ij} = 1\), to co najmniej jeden blok \(S\) kolejnych wolnych slice'ów (począwszy od pewnego \(k\)) musi być dostępny.
 
-	      \emph{Uwaga:} W ściśle liniowej wersji modelu należy taką formułę zlinearyzować (np. \emph{big-M} lub precomputing wartości produktu) bądź posłużyć się innymi sztuczkami MILP.
 
 	      \vspace{1em}
 
@@ -98,8 +97,8 @@ Jej celem jest zminimalizowanie łącznego kosztu (wagi) wszystkich wybranych kr
 	      \[
 		      \forall\,(i,j)\in E,\;\forall\,k \in K: \;
 		      \begin{aligned}
-			       & \text{jeśli }(k + S - 1) > \max(K),\quad \text{pomijamy;}                     \\
-			       & \text{w przeciwnym razie } z_{(i,j),k} \;\le\; 1 - \text{Occupied}_{(i,j),k}.
+			       & \text{jeśli }(k + S - 1) > \max(K),\quad \text{pomijamy;}              \\
+			       & \text{w przeciwnym razie } z_{(i,j),k} \;\le\; 1 - \text{O}_{(i,j),k}.
 		      \end{aligned}
 	      \]
 	      Jeżeli slice \(k\) jest zajęty na krawędzi \((i,j)\), to zmienna \(z_{(i,j),k}\) musi wynosić 0.
@@ -116,7 +115,7 @@ Jej celem jest zminimalizowanie łącznego kosztu (wagi) wszystkich wybranych kr
 			      z_{(i,j),k} \;\ge\; y_k + x_{ij} - 1.
 		      \end{cases}
 	      \]
-	      Jest to standardowe \emph{big-M}-stylowe odwzorowanie równości
+	      Jest to standardowe odwzorowanie równości
 	      \[
 		      z_{(i,j),k} = x_{ij} \cdot y_k.
 	      \]
