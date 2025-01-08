@@ -27,8 +27,8 @@ class Optimizer(ABC):
 
     @abstractmethod
     def find_channel(self, request: OptimisationRequest) -> Channel:
-        """Find a channel that satisfies the desscription in an
-        optimaly way for the given network."""
+        """Find a channel that satisfies the description in an
+        optimal way for the given network."""
 
     def calculate_edge_weight(self, e: Edge) -> float:
         """Calculates the weights of an edge based on the optimizer's params"""
