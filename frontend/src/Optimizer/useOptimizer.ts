@@ -27,9 +27,12 @@ type OptimizerErrorResponse = {
 
 export type OptimizerResponse = OptimizerSuccessResponse | OptimizerErrorResponse;
 
-export const useOptimizer = (apiUrl: string) => {
+export const useOptimizer = () => {
   const [lastMessage, setLastMessage] = useState<string | null>(null);
   const [socketUrl, setSocketUrl] = useState<string | null>(null);
+
+  const apiBaseUrl = import.meta.env.VITE_BACKEND_URL;
+  const apiUrl = `${apiBaseUrl}/ws/optimizer`;
 
   const handleOpen = () => console.log("WebSocket connection opened.");
 

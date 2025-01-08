@@ -13,10 +13,8 @@ interface OptimizerFormProps {
 }
 
 export const OptimizerForm = (props: OptimizerFormProps) => {
-  const apiBaseUrl = import.meta.env.VITE_BACKEND_URL;
-  const apiUrl = `${apiBaseUrl}/ws/optimizer`;
   const {network} = useNetwork();
-  const {sendQuery, lastMessage} = useOptimizer(apiUrl);
+  const {sendQuery, lastMessage} = useOptimizer();
 
   const [startNode, setStartNode] = useState<string | null>(null);
   const [endNode, setEndNode] = useState<string | null>(null);
