@@ -5,7 +5,7 @@ from attrs import define
 from loguru import logger
 from pyomo.opt import SolverResults
 
-from src.pzsp_backend.models import Channel, OptimisationRequest
+from src.pzsp_backend.models import Channel, Edge, OptimisationRequest
 from src.pzsp_backend.optimization.base import Optimizer
 from src.pzsp_backend.optimization.integer.abstract import model
 
@@ -51,16 +51,37 @@ class IntegerProgrammingOptimizer(Optimizer):
             {
                 "S": pyo_mapping(self.num_slices_from_bandwidth(request.bandwidth)),
                 "Nodes": list(self.network.nodes.keys()),
-                "Edges": [(e.node1Id, e.node2Id) for e in self.network.edges.values()],
-                "Weights": {
-                    (e.node1Id, e.node2Id): self.calculate_edge_weight(e)
-                    for e in self.network.edges.values()
-                },
+                "Edges": self.generate_edge_list_for_solver(),
+                "Weights": self.generate_weights_for_solver(),
                 "Source": pyo_mapping(request.source),
                 "Target": pyo_mapping(request.target),
                 "Slices": list(range(768)),
                 "Occupied": self.edge_slice_occupancy_map(),
             }
+        )
+
+    def generate_edge_list_for_solver(self) -> list[tuple[str, str]]:
+        """Generates a list of edges for the solver to use. Since the graph is not directed, we need to
+        include both directions of each edge"""
+        return [(e.node1Id, e.node2Id) for e in self.network.edges.values()] + [
+            (e.node2Id, e.node1Id) for e in self.network.edges.values()
+        ]
+
+    def generate_weights_for_solver(self) -> dict[tuple[str, str], float]:
+        """Generates a dictionary of edge weights for the solver to use,
+        storing both (node1, node2) and (node2, node1) for undirected edges."""
+        weights = {}
+        for edge in self.network.edges.values():
+            w = self.calculate_edge_weight(edge)
+            weights[(edge.node1Id, edge.node2Id)] = w
+            weights[(edge.node2Id, edge.node1Id)] = w
+        return weights
+
+    def calculate_edge_weight(self, e: Edge) -> float:
+        """Calculates the weights of an edge based on the optimizer's params"""
+        return (
+            self.distance_weight * self.network.edge_length(e)
+            + self.even_load_weight * e.provisionedCapacity
         )
 
     def instantiate_model(self, request: OptimisationRequest) -> pyo.ConcreteModel:
@@ -91,7 +112,7 @@ class IntegerProgrammingOptimizer(Optimizer):
 
     def channel_from_solved_instance(self, model: pyo.ConcreteModel) -> Channel:
         """Creates a channel object from the solver's result"""
-        edge_node_ids: list[tuple[str, str]] = [e for e in model.Edges]  # type: ignore
+        edge_node_ids: list[tuple[str, str]] = [e for e in model.Edges if pyo.value(model.x[e]) > 0.5]  # type: ignore
         edges = [self.network.find_edge_by_node_ids(*ids) for ids in edge_node_ids]
 
         node_ids = set()
@@ -115,7 +136,8 @@ class IntegerProgrammingOptimizer(Optimizer):
 
     def edge_slice_occupancy_map(self) -> dict[tuple[str, str, int], Literal[0, 1]]:
         """Create a dictionary (node_1_id, node_2_id, slice_idx): slice_occupancy
-        where slice_occupancy is binary (0 - free, 1 - occupied)."""
+        where slice_occupancy is binary (0 - free, 1 - occupied) in both edge directions.
+        """
         # Initialize the dictionary with all combinations defaulting to 0
         rv: dict[tuple[str, str, int], Literal[0, 1]] = {}
         slice_indices = range(768)  # Slice indices from 0 to 767
@@ -124,6 +146,7 @@ class IntegerProgrammingOptimizer(Optimizer):
         for _, edge in self.network.edges.items():
             for slice_idx in slice_indices:
                 rv[(edge.node1Id, edge.node2Id, slice_idx)] = 0
+                rv[(edge.node2Id, edge.node1Id, slice_idx)] = 0
 
         # Update the dictionary with occupied slices
         for _, ch in self.network.channels.items():
@@ -134,5 +157,6 @@ class IntegerProgrammingOptimizer(Optimizer):
             for edge in edges:
                 for slice_idx in occupied_slice_indices:
                     rv[(edge.node1Id, edge.node2Id, slice_idx)] = 1
+                    rv[(edge.node2Id, edge.node1Id, slice_idx)] = 1
 
         return rv

@@ -19,9 +19,32 @@ export const GraphVisualisation = () => {
 
   const highlightedChannel = selectedChannelId ? network.channels[selectedChannelId] : null;
 
-  const normalColor = "#0000FF";
-  const channelColor = "#FF0000";
-  const selectedColor = "#00FF00";
+  const normalColor = "#000000";
+  const channelColor = "#5313ae";
+  const selectedColor = "#00b2ff";
+
+  const colorFromProvisionedCapacity = (provisionedCapacity: number): string => {
+    if (provisionedCapacity < 0 || provisionedCapacity > 100) {
+      throw new Error("provisionedCapacity must be between 0 and 100");
+    }
+
+    if (provisionedCapacity < 10) {
+      return "#00FF00";
+    } else if (provisionedCapacity < 20) {
+      return "#aaff00";
+    } else if (provisionedCapacity < 30) {
+      return "#ffe900";
+    } else if (provisionedCapacity < 40) {
+      return "#ffa600";
+    } else if (provisionedCapacity < 50) {
+      return "#ff6a00";
+    } else if (provisionedCapacity < 75) {
+      return "#ff4400";
+    } else {
+      return "#FF0000";
+    }
+
+  };
 
   const nodeColor = (nodeId: string) => {
     if (selectedNodeId === nodeId) {
@@ -44,7 +67,7 @@ export const GraphVisualisation = () => {
       return channelColor;
     }
 
-    return normalColor;
+    return colorFromProvisionedCapacity(network.edges[edgeId].provisionedCapacity);
   }
 
   const visNodes = Object.values(network.nodes).map(node => {
