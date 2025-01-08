@@ -18,8 +18,7 @@ model.Occupied = pyo.Param(
 model.S = pyo.Param(
     domain=pyo.NonNegativeIntegers,
     mutable=True,
-    default=2,  # TODO: how to initialize this
-)  # Required consecutive free slices
+)
 
 # Variables
 # Binary decision variables for edge selection
