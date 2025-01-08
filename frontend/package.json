@@ -9,7 +9,8 @@
     "build-dev": "tsc -b && vite build --mode=development",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "jest"
+    "test": "jest",
+    "coverage": "npm test -- --coverage --watchAll=false"
   },
   "dependencies": {
     "@emotion/styled": "^11.14.0",
