@@ -16,18 +16,23 @@ type OptimizerSuccessResponse = {
   type: "Success";
   channel: Channel;
   message?: string;
+  time: number;
 }
 
 type OptimizerErrorResponse = {
   type: "Failure";
   message: string;
+  time: number;
 }
 
 export type OptimizerResponse = OptimizerSuccessResponse | OptimizerErrorResponse;
 
-export const useOptimizer = (apiUrl: string, isDisconnetMessage: (msg: string) => boolean) => {
-  const [lastMessage, setLastMessage] = useState<string | null>(null);
+export const useOptimizer = () => {
+  const [response, setResponse] = useState<string | null>(null);
   const [socketUrl, setSocketUrl] = useState<string | null>(null);
+
+  const apiBaseUrl = import.meta.env.VITE_BACKEND_URL;
+  const apiUrl = `${apiBaseUrl}/ws/optimizer`;
 
   const handleOpen = () => console.log("WebSocket connection opened.");
 
@@ -35,11 +40,8 @@ export const useOptimizer = (apiUrl: string, isDisconnetMessage: (msg: string) =
 
   const handleMessage = (message: { data: string }) => {
     const msg = message.data as string;
-    setLastMessage(msg);
-
-    if (isDisconnetMessage(msg)) {
-      setSocketUrl(null);
-    }
+    setResponse(msg);
+    setSocketUrl(null);
   };
 
   const { sendMessage } = useWebSocket(socketUrl, {
@@ -49,11 +51,11 @@ export const useOptimizer = (apiUrl: string, isDisconnetMessage: (msg: string) =
     shouldReconnect: () => false,
   });
 
-  const sendQuery = (message: string) => {
+  const sendRequest = (message: string) => {
     setSocketUrl(apiUrl);
     sendMessage(message);
   };
 
-  return { sendQuery, lastMessage };
+  return { sendRequest: sendRequest, response: response };
 };
 

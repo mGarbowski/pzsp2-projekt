@@ -8,12 +8,13 @@ import {useNetwork} from "../NetworkModel/NetworkContext";
 import {Loader2} from "lucide-react";
 import {OptimizerRequest, OptimizerResponse, useOptimizer} from "./useOptimizer.ts";
 
+interface OptimizerFormProps {
+  handleResponse: (response: OptimizerResponse) => void;
+}
 
-export const OptimizerForm = () => {
-  const apiBaseUrl = import.meta.env.VITE_BACKEND_URL;
-  const apiUrl = `${apiBaseUrl}/ws/optimizer`;
-  const {network, setNetwork, setSelectedChannelId} = useNetwork();
-  const {sendQuery, lastMessage} = useOptimizer(apiUrl, (_) => false);
+export const OptimizerForm = (props: OptimizerFormProps) => {
+  const {network} = useNetwork();
+  const {sendRequest, response} = useOptimizer();
 
   const [startNode, setStartNode] = useState<string | null>(null);
   const [endNode, setEndNode] = useState<string | null>(null);
@@ -50,30 +51,21 @@ export const OptimizerForm = () => {
       distanceWeight: distanceWeight,
       evenLoadWeight: evenLoadWeight,
     };
-    sendQuery(JSON.stringify(request));
+    sendRequest(JSON.stringify(request));
   }
 
   useEffect(() => {
-    if (!lastMessage) {
+    if (!response) {
       return;
     }
 
-    const response = JSON.parse(JSON.parse(lastMessage!)) as OptimizerResponse;
-    console.info(response);
-    if (response.type === "Success") {
-      setLoading(false);
-      const updatedNetwork = {
-        ...network!,
-        channels: {
-          ...network!.channels,
-          [response.channel.id]: response.channel,
-        }
-      }
-      setNetwork(updatedNetwork);
-      setSelectedChannelId(response.channel.id);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lastMessage, setNetwork, setSelectedChannelId]);
+    const result = JSON.parse(JSON.parse(response!)) as OptimizerResponse;
+    console.info(result);
+    props.handleResponse(result);
+    setLoading(false);
+
+    // eslint-disable-next-line
+  }, [response]);
 
 
   return <StyledForm onSubmit={handleSubmit}>
@@ -113,7 +105,10 @@ export const OptimizerForm = () => {
           <SelectItem value="10Gb/s">10Gb/s</SelectItem>
           <SelectItem value="40Gb/s">40Gb/s</SelectItem>
           <SelectItem value="100Gb/s">100Gb/s</SelectItem>
+          <SelectItem value="200Gb/s">200Gb/s</SelectItem>
           <SelectItem value="400Gb/s">400Gb/s</SelectItem>
+          <SelectItem value="800Gb/s">800Gb/s</SelectItem>
+          <SelectItem value="1000Gb/s">1000Gb/s</SelectItem>
         </SelectContent>
       </Select>
     </Label>

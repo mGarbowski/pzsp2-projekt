@@ -1,86 +1,50 @@
 import styled from "@emotion/styled";
-import { Card, CardContent, CardHeader, CardTitle } from "../Components/UI/card.tsx";
-import { useEffect, useState } from "react";
-import { CsvUpload } from "./CsvUpload.tsx";
-import { parseEdges, parseEdgeSpectrum, parseNodes } from "./parseCsv.ts";
-import { buildNetwork } from "./buildNetwork.ts";
-import { useNetwork } from "../NetworkModel/NetworkContext.tsx";
-import { demoNetwork } from "../NetworkModel/demoNetwork.ts";
-import {convertToRenderable} from "../NetworkModel/convertToRenderable.ts";
-import {Button} from "../Components/UI/button.tsx";
+import {MainContainer} from "../StyledComponents/MainContainer.tsx";
+import {CsvImporter} from "./CsvImporter.tsx";
+import {DemoDataImporter} from "./DemoDataImporter.tsx";
+import {JsonImporterExporter} from "./JsonImporterExporter.tsx";
 
 export const DataImporterPage = () => {
-  const { setNetwork } = useNetwork();
-
-  const [message, setMessage] = useState<string | null>("");
-  const [nodesCsv, setNodesCsv] = useState<string | null>(null);
-  const [edgesCsv, setEdgesCsv] = useState<string | null>(null);
-  const [spectrumCsv, setSpectrumCsv] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (nodesCsv && edgesCsv && spectrumCsv) {
-      try {
-        const nodesData = parseNodes(nodesCsv);
-        const edgesData = parseEdges(edgesCsv);
-        const spectrumData = parseEdgeSpectrum(spectrumCsv);
-        console.log("Nodes", nodesData);
-        console.log("Edges", edgesData);
-        console.log("Spectrum", spectrumData);
-        const network = buildNetwork(nodesData, edgesData, spectrumData);
-        console.log("Network", network);
-        setNetwork(convertToRenderable(network))
-        setMessage("Dane zaimportowane pomyślnie");
-      } catch (e) {
-        console.error(e);
-        // setMessage("Nie udało się zaimportować danych"); FIXME
-        // ;)
-        setMessage("Dane zaimportowane pomyślnie");
-      }
-    }
-  }, [nodesCsv, edgesCsv, spectrumCsv, setNetwork]);
-
   return (
-    <ImporterOuterContainer>
-      <Card className="mx-4 mb-16 w-min-9/12">
-        <CardHeader>
-          <CardTitle className="text-3xl font-bold">
-            Zaimportuj dane sieci
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p>Wymagane są pliki w formacie .csv</p>
-
-          <ImporterUploadContainer>
-            <p className="font-bold">Węzły</p>
-            <CsvUpload onUpload={(data) => setNodesCsv(data)} />
-            <p className="font-bold">Zajętość</p>
-            <CsvUpload onUpload={(data) => setEdgesCsv(data)} />
-            <p className="font-bold">Spektrum kanały</p>
-            <CsvUpload onUpload={(data) => setSpectrumCsv(data)}/>
-            <Button className="mb-3" variant={"outline"} onClick={(_) => setNetwork(demoNetwork)}>
-              Wczytaj demo
-            </Button>
-          </ImporterUploadContainer>
-          <p className="text-center font-bold text-green-200">{message}</p> {/* FIXME: should be red when incorrect data is loaded */}
-        </CardContent>
-
-      </Card>
-    </ImporterOuterContainer>
+    <MainContainer>
+      <PageOuterContainer>
+        <h1 className="text-3xl font-bold mb-8">Importer danych</h1>
+        <ImporterOuterContainer>
+          <Column>
+            <CsvImporter/>
+          </Column>
+          <Column>
+            <DemoDataImporter/>
+            <JsonImporterExporter/>
+          </Column>
+        </ImporterOuterContainer>
+      </PageOuterContainer>
+    </MainContainer>
   );
 }
 
+const PageOuterContainer = styled.div({
+  height: "80vh",
+  marginBottom: "10rem",
+  marginLeft: "3rem",
+  marginRight: "3rem",
+  display: "flex",
+  flexDirection: "column",
+  placeContent: "center",
+  gap: "1rem",
+})
 
 const ImporterOuterContainer = styled.div({
   display: 'flex',
-  flexDirection: 'column',
+  flexDirection: 'row',
   height: '100vh',
   alignItems: 'center',
   justifyContent: 'center',
 })
 
-const ImporterUploadContainer = styled.div({
+const Column = styled.div({
+  height: '100%',
   display: 'flex',
   flexDirection: 'column',
-  alignItems: 'center',
-  marginTop: '2.5rem',
-})
+  gap: '1rem',
+});
