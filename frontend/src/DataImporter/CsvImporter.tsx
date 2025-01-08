@@ -1,5 +1,5 @@
 import {Card, CardContent, CardHeader, CardTitle} from "../Components/UI/card.tsx";
-import {CsvUpload} from "./CsvUpload.tsx";
+import {FileUpload} from "./FileUpload.tsx";
 import styled from "@emotion/styled";
 import {useNetwork} from "../NetworkModel/NetworkContext.tsx";
 import {useEffect, useState} from "react";
@@ -49,11 +49,11 @@ export const CsvImporter = () => {
 
         <ImporterUploadContainer>
           <p className="font-bold">Węzły</p>
-          <CsvUpload onUpload={(data) => setNodesCsv(data)}/>
+          <FileUpload accept=".csv" onUpload={(data) => setNodesCsv(data)}/>
           <p className="font-bold">Zajętość</p>
-          <CsvUpload onUpload={(data) => setEdgesCsv(data)}/>
+          <FileUpload accept=".csv" onUpload={(data) => setEdgesCsv(data)}/>
           <p className="font-bold">Spektrum kanały</p>
-          <CsvUpload onUpload={(data) => setSpectrumCsv(data)}/>
+          <FileUpload accept=".csv" onUpload={(data) => setSpectrumCsv(data)}/>
         </ImporterUploadContainer>
         <p
           className="text-center font-bold text-green-200">{message}</p> {/* FIXME: should be red when incorrect data is loaded */}
