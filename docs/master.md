@@ -87,6 +87,130 @@ Danymi w projekcie są:
 System nie będzie trwale przechowywać danych.
 
 \newpage
+## Model programowania całkowitoliczbowego
+
+### Zbiory i indeksy
+\begin{align*}
+	 & N: \text{zbiór węzłów (wierzchołków).}                      \\
+	 & E \subseteq N \times N: \text{zbiór skierowanych krawędzi.} \\
+	 & K = \{0,1,\dots,767\}: \text{zbiór indeksów slice'ów.}
+\end{align*}
+
+### Parametry
+
+\begin{align*}
+	& w_{ij}
+	& & \text{koszt (waga) użycia krawędzi }(i,j)\in E.\\
+	&   & & \text{Wyliczanie wartości wagi rozwiązywane jest poza modelem całkowitoliczbowym} \\
+	&   & & \text{i jest częścią wspólną logiki stosowanych optymalizatorów.} \\
+	& s \in N
+	& & \text{wierzchołek źródłowy (source).} \\
+	& t \in N
+	& & \text{wierzchołek docelowy (target).} \\
+	& \text{O}_{(i,j),k} \in \{0,1\}
+	& & \text{parametr binarny wskazujący, czy slice }k \text{ jest zajęty (}1\text{)} \\
+	&   & & \text{czy wolny (}0\text{) na krawędzi }(i,j). \\
+	& S \in \mathbb{Z}_{\ge 0}
+	& & \text{liczba \emph{ciągłych} slice'ów wymagana na każdej wybranej krawędzi.}
+\end{align*}
+
+### Zmienne decyzyjne
+
+\begin{align*}
+	 & x_{ij} \in \{0,1\}
+	 &                         & \text{równe }1\text{, jeśli krawędź }(i,j)\text{ jest użyta w ścieżce; }0\text{ w p.p.}                                               \\
+	 & y_{k} \in \{0,1\}
+	 &                         & \text{równe }1\text{, jeśli slice }k \text{ jest wybrany jako \emph{początek} }                                                       \\
+	 &                         &                                                                                         & \text{ciągłego przedziału; }0\text{ w p.p.} \\
+	 & z_{(i,j),k} \in \{0,1\}
+	 &                         & \text{zmienna pomocnicza do powiązania }x_{ij} \text{ i } y_k.
+\end{align*}
+
+### Funkcja celu
+
+$$
+	\min \sum_{(i,j)\in E} w_{ij} \, x_{ij}.
+$$
+
+Jej celem jest zminimalizowanie łącznego kosztu (wagi) wszystkich wybranych krawędzi.
+Obliczanie wagi jest wspólne dla obu modeli optymalizacyjnych, dlatego nie jest ujęta w samym modelu całkowitoliczbowym.
+Waga krawędzi to suma ważona jej długości (na podstawie współrzędnych geograficznych) oraz obciążenia, gdzie wagi w tej 
+sumie są parametrami użytkownika.
+
+\newpage
+### Ograniczenia
+
+#### Zachowanie przepływu
+$$
+    \forall\, n \in N: \quad
+    \sum_{\substack{(n,j)\in E}} x_{n j}
+    \;-\;
+    \sum_{\substack{(i,n)\in E}} x_{i n}
+    =
+    \begin{cases}
+        1  & \text{jeśli } n = s,       \\
+        -1 & \text{jeśli } n = t,       \\
+        0  & \text{w przeciwnym razie}.
+    \end{cases}
+$$
+
+Zapewnia to, że ze źródła wypływa dokładnie 1 jednostka przepływu, do ujścia wpływa 1 jednostka, a pozostałe węzły mają 
+bilans zerowy (co definiuje ścieżkę od $s$ do $t$).
+
+#### Dostępność wolnych slice'ów na każdej wybranej krawędzi
+
+$$
+    \forall\,(i,j) \in E:\quad
+    \sum_{\substack{k \in K \\ k + S - 1 \,\le\, \max(K)}}
+    \Biggl(
+    y_k \cdot
+    \prod_{r = k}^{k + S - 1} \bigl[1 - \text{O}_{(i,j),r}\bigr]
+    \Biggr)
+    \;\;\ge\;\; x_{ij}.
+$$
+
+Dla każdej krawędzi $(i,j) \in E$ musi istnieć co najmniej jeden indeks początkowy $k$, 
+dla którego (1) slice'y od $k$ do $k+S-1$ są wolne oraz (2) $y_k=1$. 
+
+Jeśli $x_{ij} = 1$, to co najmniej jeden blok $S$ kolejnych wolnych slice'ów (począwszy od pewnego $k$) musi być dostępny.
+
+#### Zgodność wybranego slice'a z istniejącym zajęciem
+
+$$
+    \forall\,(i,j)\in E,\;\forall\,k \in K: \;
+    \begin{aligned}
+         & \text{jeśli }(k + S - 1) > \max(K),\quad \text{pomijamy;}              \\
+         & \text{w przeciwnym razie } z_{(i,j),k} \;\le\; 1 - \text{O}_{(i,j),k}.
+    \end{aligned}
+$$
+
+Jeżeli slice $k$ jest zajęty na krawędzi $(i,j)$, to zmienna $z_{(i,j),k}$ musi wynosić 0.
+
+#### Powiązanie zmiennych $z_{(i,j),k}$ z $x_{ij}$ i $y_k$
+
+$$
+    \forall\,(i,j)\in E,\;\forall\,k \in K:\quad
+    \begin{cases}
+        z_{(i,j),k} \;\le\; y_k,    \\
+        z_{(i,j),k} \;\le\; x_{ij}, \\
+        z_{(i,j),k} \;\ge\; y_k + x_{ij} - 1.
+    \end{cases}
+$$
+Jest to standardowe odwzorowanie równości
+$$
+    z_{(i,j),k} = x_{ij} \cdot y_k.
+$$
+
+#### Wzajemna wyłączność wybranego slice'a początkowego
+
+$$
+    \sum_{\substack{k \in K \\ k + S - 1 \,\le\, \max(K)}}
+    y_k
+    \;=\; 1.
+$$
+Dokładnie jeden slice $k$ zostaje wybrany jako początek bloku długości $S$.
+
+\newpage
 
 # Metodologia wytwarzania
 
@@ -133,19 +257,18 @@ Aktorzy: osoba zarządzająca rozkładem połączeń w sieci
 **Wymagania systemowe**
 
 1. System powinien udostępnić użytkownikowi graficzną reprezentację sieci w formie grafu
-2. System powinien móc wyświetlać graf rzutowany na mapę geograficzną obszaru na podstawie współrzędnych poszczególnych węzłów
-3. System powinien wyświetlać zajętość slice'ów danej krawędzi po najechaniu na nią myszką
-4. System powinien wyświetlać krawędzie w różnych kolorach reprezentujących zajętość pasma
-5. System powinien ustalać optymalne ułożenie nowo zdefiniowanego kanału
-6. System powinien udostępniać optymalizację ułożenia dodawanego kanału przy pomocy algorytmu Dijkstry
-7. System powinien udostępniać optymalizację ułożenia dodawanego kanału przy pomocy modelu całkowitoliczbowego
-8. System powinien umożliwić wyeksportowanie reprezentacji sieci w pliku CSV w następującym formacie:
+2. System powinien wyświetlać zajętość slice'ów danej krawędzi po naciśnięciu na nią myszką
+3. System powinien wyświetlać krawędzie w różnych kolorach reprezentujących zajętość pasma
+4. System powinien ustalać optymalne ułożenie nowo zdefiniowanego kanału
+5. System powinien udostępniać optymalizację ułożenia dodawanego kanału przy pomocy algorytmu Dijkstry
+6. System powinien udostępniać optymalizację ułożenia dodawanego kanału przy pomocy modelu całkowitoliczbowego
+7. System powinien umożliwić wyeksportowanie reprezentacji sieci w pliku CSV w następującym formacie:
     * Wierszowi tabeli odpowiada pojedynczy kanał
     * Kolumnie tabeli odpowiada pojedynczy slice
     * Zawartością komórki tabeli jest binarna informacja o zajętości kanału w danej ścieżce
-9. Reprezentacja sieci w sesji danego użytkownika powinna być widoczna tylko dla niego
-10. System powinien umożliwić zapisanie stanu sieci
-11. System powinien umożliwić odtworzenie sieci z wcześniej zapisanego stanu
+8. Reprezentacja sieci w sesji danego użytkownika powinna być widoczna tylko dla niego
+9. System powinien umożliwić zapisanie stanu sieci
+10. System powinien umożliwić odtworzenie sieci z wcześniej zapisanego stanu
 
 ## Wymagania funkcjonalne i niefunkcjonalne
 
@@ -294,21 +417,75 @@ Scenariusz alternatywny - system nie może wyznaczyć żądanego kanału:
 6. System umożliwia zmianę parametrów i podobną próbę - powrót do kroku 4.
 
 ### Reguły biznesowe
-TODO: Do uzupełnienia, kiedy dostaniemy przykładowy zbiór od właściciela projektu
 
-### RB1 Format pliku opisującego sieć teletransmisyjną
+### RB1 Format plików opisujących sieć teletransmisyjną
+* Pliki w formacie .csv
+* Pierwszy wiersz zawiera nazwy kolumn
+
+#### Węzły sieci (kolumny)
+* ID węzła
+* Szerokość geograficzna (stopnie)
+* Długość geograficzna (stopnie)
+
+#### Krawędzie sieci (kolumny)
+* ID krawędzi
+* ID węzła początkowego
+* ID węzła końcowego
+* Szerokość całego dostępnego pasma (stałe 4.8 THz)
+* Wykorzystane pasmo (procenty)
+
+#### Kanały sieci (kolumny)
+* ID krawędzi
+* ID kanału
+* Częstotliwość środkowa (THz)
+* Szerokość (GHz)
+* Długość fali (redundantna, nieużywana)
+* Redundantne ID kanału (nieużywane)
 
 ### RB2 Parametry węzła sieci
+* ID (napis)
+* Szerokość geograficzna (liczba rzeczywista)
+* Długość geograficzna (liczba rzeczywista)
+* ID sąsiadów (lista napisów)
 
 ### RB3 Parametry krawędzi sieci
+* ID (napis)
+* ID węzła 1 (napis)
+* ID węzła 2 (napis)
+* Szerokość całego dostępnego pasma (napis)
+* Wykorzystane pasmo w procentach (liczba całkowita)
 
 ### RB4 Zbiorcze statystyki sieci
+* Liczba węzłów
+* Liczba krawędzi
+* Liczba kanałów
+* Całkowite obciążenie sieci (procenty)
+* Najbardziej obciążony kanał
 
 ### RB5 Parametry kanału
+* ID (napis)
+* ID kolejnych węzłów na ścieżce (lista napisów)
+* ID kolejnych krawędzi na ścieżce (lista napisów)
+* Częstotliwość środkowa w THz (liczba rzeczywista)
+* Szerokość w GHz (liczba rzeczywista)
 
 ### RB6 Format pliku z zestawieniem zajmowanych slice'ów przez kanały
+* Wiersz 1 - częstotliwości środkowe kanałów 112.5 GHz
+* Wiersz 2 - częstotliwości środkowe kanałów 50 GHz
+* Wiersz 3 - częstotliwości środkowe kanałów 75 GHz
+* Wiersz 4 - częstotliwość początkowa slice'a szerokości 6.25 GHz
+* Kolumna 1 - ID kanału
+* Komórki - wartość 1, jeśli slice jest zajęty przez kanał, pusta w przeciwnym wypadku
 
 ### RB7 Dostępne modele optymalizacyjne i ich parametry
+* Dostępne modele:
+  * algorytm Dijkstry
+  * model całkowitoliczbowy
+* Parametry modelu (jednakowe dla obu)
+  * ID węzła początkowego
+  * ID węzła końcowego
+  * przepustowość kanału w Gb/s
+  * wagi funkcji celu (kosztu) dla poszczególnych kryteriów - długość i obciążenie krawędzi
 
 ## Potwierdzenie zgodności wymagań
 
@@ -425,18 +602,78 @@ Formaty plików wejściowych są opisane w punkcie \ref{requirements-analysis}.
 [https://github.com/mGarbowski/pzsp2-projekt](https://github.com/mGarbowski/pzsp2-projekt)
 
 ## Wykorzystane technologie
-* React (Typescript)
-* FastAPI (Python)
-* Pyomo (Python)
-* Docker
-* Nginx
-* WebSockets
+* Języki programowania
+  * Python
+  * Typescript
+* Biblioteki
+  * FastAPI
+  * Pyomo
+  * cbc
+  * React
+  * Reagraph
+* Frameworki testowe
+  * pytest
+  * Jest
+* Środowisko uruchomieniowe - Docker
+* System kontroli wersji - Git
+* System uruchamiania aplikacji, testów, narzędzi pomocniczych, zarządzania zależnościami
+  * npm (frontend)
+  * pdm (backend)
+* Środowisko ciągłej integracji - GitHub Actions
+* Narzędzia do komunikacji i zarządzania projektem
+  * Discord
+  * GitHub (Issues, Pull Requests)
 
 ## Diagram klas
-Dotyczy kolejnych etapów projektu.
+
+### Backend
+![Diagram klas modułu `models`](./diagrams/backend-models.drawio.png){#fig:backend-models}
+
+* Diagram \ref{fig:backend-models} przedstawia klasy z modułu `models`
+* Klasy modelują strukturę sieci teleinformatycznej oraz format zapytań i odpowiedzi API optymalizatora
+* W implementacji wykorzystujemy bibliotekę Pydantic do walidacji oraz serializacji JSON
+
+![Diagram klas modułu `optimisation`](./diagrams/backend-optimization.drawio.png){#fig:backend-optimization}
+
+* Diagram \ref{fig:backend-optimization} przedstawia klasy z modułu `optimisation`
+* `Optimizer` to abstrakcyjna klasa bazowa dla konkretnych modeli optymalizacyjnych
+* `DijkstraOptimizer` i `IntegerProgrammingOptimizer` to konkretne implementacje modeli optymalizacyjnych
+* Dla lepszej czytelności kodu źródłowego stosujemy aliasy typów, co jest widoczne w sygnaturach metod
+
+### Frontend
+
+![Diagram klas komponentów React](./diagrams/frontend-components.drawio.png){#fig:frontend-components}
+
+* Diagram \ref{fig:frontend-components} przedstawia klasy komponentów React z podziałem na katalogi, w których się znajdują
+* Komponenty są zorganizowane w katalogach odpowiadających ich funkcjonalności
+* Na diagramie nie zostały przedstawione komponenty pomocnicze, takie jak stylowane przyciski czy pola tekstowe
+
+![Diagram klas modułu `network`](./diagrams/frontend-network.drawio.png){#fig:frontend-network}
+
+* Diagram \ref{fig:frontend-network} przedstawia klasy z modułu `network`
+* Moduł ten zawiera interfejsy modelujące sieć teleinformatyczną
+* Model w aplikacji frontendowej jest analogiczny do modelu przedstawionego na diagramie \ref{fig:backend-models}
+
 
 ## Statystyki
-Dotyczy kolejnych etapów projektu.
+<!--
+Liczba plików
+sum=$(( $(find backend/src -type f \( -name "*.py" \) | wc -l) + $(find backend/tests -type f \( -name "*.py" \) | wc -l) + $(find frontend/src -type f \( -name "*.ts" -o -name "*.tsx" \) | wc -l) ))
+echo $sum
+
+Liczba linii kodu
+find frontend/src -name "*.tsx" | xargs wc -l | tail -n 1
+find frontend/src -name "*.ts" | xargs wc -l | tail -n 1
+find backend/src -name "*.py" | xargs wc -l | tail -n 1
+
+Liczba testów
+npm test
+pdm test
+-->
+
+* Liczba plików z kodem źródłowym: 56
+* Liczba linii kodu źródłowego: 3715
+* Liczba testów jednostkowych: 33
 
 \newpage
 
@@ -455,84 +692,165 @@ Użytkownik aplikacji - analityk sieci teleinformatycznej w dużej firmie teleko
 5. Jako analityk sieci teleinformatycznej, chcę optymalnie wykorzystywać przepustowość sieci, aby zminimalizować koszty ponoszone przez moją firmę i zapewnić, że sieć będzie gotowa na dalsze rozszerzenia.
 
 ## Makiety interfejsu użytkownika
-Makiety trzech proponowanych widoków w programie Figma dostępne są do podglądu pod [(tym URL)](https://www.figma.com/design/LSVdFyCmJqtZo8UsO2cd5q/PZPS2_2024?node-id=0-1&t=1bl4m1dv9aWKn0LJ-1)
+Makiety trzech proponowanych widoków w programie Figma dostępne są do pod [(tym URL)](https://www.figma.com/design/LSVdFyCmJqtZo8UsO2cd5q/PZPS2_2024?node-id=0-1&t=1bl4m1dv9aWKn0LJ-1).
+Podglądy widoków widoczne są na rysunkach \ref{fig:figma-importer}, \ref{fig:figma-presentation} i \ref{fig:figma-optimizer}.
 
-![Widok importera danych](./images/figma/start-screen.png)
+![Widok importera danych](./images/figma/start-screen.png){#fig:figma-importer}
 
-![Widok prezentacji sieci](./images/figma/general-info.png)
+![Widok prezentacji sieci](./images/figma/general-info.png){#fig:figma-presentation}
 
-![Widok dodawania kanału (użycie modelu optymalizacyjnego)](./images/figma/add-channel.png)
+![Widok dodawania kanału (użycie modelu optymalizacyjnego)](./images/figma/add-channel.png){#fig:figma-optimizer}
 
+\newpage
+# Specyfikacja testów
 
-# Instrukcja dla administratora
-Aplikacja jest w pełni skonteneryzowana.
+## Testy jednostkowe
+* W projekcie stosujemy testy jednostkowe do weryfikacji poprawności implementacji pojedynczych modułów w izolacji
+* Backend
+  * testy jednostkowe dla backendu są zaimplementowane w plikach `test_*.py` w katalogu `backend/tests`
+  * do testów wykorzystujemy bibliotekę `pytest`
+  * uruchomienie wszystkich testów: `pdm test` w katalogu `backend`
+* Frontend
+  * testy jednostkowe dla frontendu są zaimplementowane w plikach `*.test.ts`, obok plików `*.ts` które podlegają testowaniu
+  * do testów wykorzystujemy bibliotekę `Jest`
+  * uruchomienie wszystkich testów: `npm test` w katalogu `frontend`
 
-Obsługuje dwa tryby uruchomienia:
-- lokalny, w celu testowania i wytwarzania
-- produkcyjny, w którym wszystkie kontenery uruchamiane są na jednej maszynie, dostępna przez HTTP
+## Scenariusze testów manualnych
+* W projekcie stosujemy testy manualne do weryfikacji poprawności interakcji użytkownika z aplikacją 
 
-Do uruchomienia lokalnego potrzebne jest jedynie narzędzie Docker.
-Wdrożenie produkcyjne przystosowane jest do usługi Microsoft Azure.
+### Przygotowanie środowiska
+* Pliki z opisem sieci
+  * przygotowanie plików .csv z opisem sieci teleinformatycznej (wezly.csv, zajetosc.csv, spectrum_kanaly.csv)
+  * pliki zostały dostarczone przez właściciela projektu, nie mogą znajdować się w publicznym repozytorium
+  * aplikacja umożliwia też pominięcie krok importu plików, wtedy użytkownik może wchodzić interakcję z demonstracyjną siecią 
+* Uruchomienie aplikacji
+  * lokalne uruchomienie aplikacji: `docker compose -f docker-compose.local.yml up --build` w katalogu głównym projektu
+  * otwarcie przeglądarki i wejście na stronę `http://localhost:2137`
+  * lub interakcja z wdrożoną aplikacją na serwerze http://pzsp2.mgrabowski.pl
 
-Pliki używane do uruchomienia:
-1. Lokalnie:
-  * frontend/Dockerfile.dev
-  * backend/Dockerfile
-  * docker-compose.local.yml
-  * nginx.local.conf
-  * .env.development
-2. Produkcyjnie:
-  * frontend/Dockerfile.prod
-  * backend/Dockerfile
-  * docker-compose.prod.yml
-  * nginx.prod.conf
-  * .env.production
-
-
-# Wdrożenie produkcyjne
-## 1. Stworzenie infrastruktury
-Do stworzenia infrastruktury chmurowej wykorzystywane jest narzędzie Terraform. Przygotowany skrypt używa usługi Microsoft Azure.
-Aplikacja nie jest uzależniona od tego wyboru. Możliwe jest stworzenie własnej architektury fizycznej lub chmurowej we własnym zakresie.
-
-### Korzystanie z przygotowanego rozwiązania:
-- Wymagane jest posiadanie konta i subskrypcji Microsoft Azure, na której dostępne są co najmniej:
-  * Jeden adres publiczny ip
-  * Jedna maszyna wirtualna
-  * 4 rdzenie procesorów wirtualnych
-### Na własnej maszynie:
-- Należy mieć zainstalowane narzędzie AZ (Azure CLI), zalogować się na swoje konto Azure i wybrać subskrypcję, z której korzystać ma aplikacja
-- Należy zainstalować narzędzie Terraform
-- w pliku terraform.tfvars ustawić zmienną "public_ssh_key_file" na ścieżkę do pliku zawierającego klucz publiczny, który będzie potrzebny
-  do pierwszego zalogowania się na maszynę wirtualną (domyślnie: "~/.ssh/id_rsa.pub")
-- (opcjonalnie) w pliku main.tf zmienić nazwy i lokalizacje zasobów alokowanych na platformie Azure wedle potrzeb
-- W katalogu cloud/terraform wykonać polecenia:
-
-```shell
-terraform init
-terraform apply
-```
-
-## 2. Wdrożenie aplikacji używając Ansible
-Do wdrożenia aplikacja na istniejącej infrastrukturze używane jest narzędzie Ansible.
-1. Upewnić się, że maszyna wirtualna z adresem publicznym jest uruchomiona
-2. W pliku inventory.ini zmienić adres na adres publiczny maszyny wirtualnej
-3. W pliku frontend/ngnix.prod.conf i frontend/.env.production zmienić ".*pzsp2.mgarbowski.pl" na adres używany przez maszynę wirtualną
-4. W pliku full-deployment.yaml, w zadaniu "Create users and add SSH keys", dopasować listę użytkowników, których chcemy dodać na maszynie
-5. Pliki z kluczami publicznymi użytkowników zdefiniowanych w poprzednim kroku umieścić w katalogu "/cloud/ansible/public_keys/". Nazwa pliku musi odpowiadać nazwie użytkownika zdefiniowanej w poprzednim kroku.
-
-6. Po pierwszym uruchomieniu maszyny administrator operujący kluczem ssh zdefiniowanym przy tworzeniu architektury musi wykonać na swojej maszynie
-``` shell  
-$user@computer: ~/projekt/cloud/ansible$ ansible-playbook -i inventory.ini  ./full-deployment.yaml --user azureuser
-```
-W przypadku wykorzystania innego rozwiązania niż Azure należy zastąpić "azureuser" nazwą użytkownika z dostępem do uprawnień root
-7. Po każdym kolejnym uruchomieniu zapisani użytkownicy mogą wdrożyć aplikację na nowo poleceniem
-``` shell  
-$user@computer: ~/projekt/cloud/ansible$ ansible-playbook -i inventory.ini  ./full-deployment.yaml --user {nazwa uzytkownika}
-``` 
-
-Aplikacja powinna być teraz dostępna pod adresem http://{adres publiczny maszyny}
+### Zaimportowanie poprawnego opisu sieci
+1. Użytkownik otwiera stronę importera danych (strona startowa)
+2. Użytkownik wybiera plik `wezly.csv` z opisem węzłów sieci
+3. Użytkownik wybiera plik `zajetosc.csv` z opisem krawędzi sieci
+4. Użytkownik wybiera plik `spectrum_kanaly.csv` z opisem kanałów sieci
+5. Po wybraniu wszystkich plików pojawia się komunikat o pomyślnym zaimportowaniu sieci
+6. Po prawej stronie wyświetla się wizualizacja sieci
 
 
-## Uwaga!
-Jeśli nie pożądane jest, aby wdrażana była najnowsza dostępna wersja aplikacji (https://github.com/mGarbowski/pzsp2-projekt.git), należy zastąpić adres repozytorium
-w pliku full-deployment, w zadaniu "Clone the project repository" na własne publiczne repozytorium zawierające pożądaną wersję.
+### Próba zaimportowania błędnego opisu sieci
+1. Użytkownik otwiera stronę importera danych (strona startowa)
+2. Użytkownik wybiera dowolny plik .csv niezawierający poprawnego opisu sieci w miejsce "Węzły", "Zajętość" i "Spektrum kanały"
+3. Po wybraniu pliku pojawia się komunikat o błędzie importu
+
+### Generowanie raportu zajętości pasma przez kanały
+1. Użytkownik otwiera stronę prezentacji sieci
+2. Użytkownik importuje opis sieci.
+3. Użytkownik przechodzi do zakładki "Statystyki"
+4. Użytkownik naciska przycisk "Pobierz raport"
+5. Przeglądarka pobiera plik .csv z raportem
+
+### Podgląd statystyk sieci i jej elementów
+1. Użytkownik otwiera stronę prezentacji sieci
+2. Użytkownik importuje opis sieci.
+3. Użytkownik przechodzi do zakładki "Statystyki"
+4. Na karcie "Sieć" widoczne są globalne statystyki sieci
+5. Na karcie "Kanały" widoczna jest lista identyfikatorów kanałów
+6. Użytkownik klika na dowolny węzeł na prezentacji sieci
+7. Wybrany węzeł wyświetla się w kolorze zielonym na prezentacji sieci
+8. Po lewej stronie widoczna jest karta "Wybrany węzeł" ze statystykami węzła
+9. Użytkownik klika na identyfikator dowolnego sąsiada na karcie "Wybrany węzeł"
+10. Wybrany sąsiad wyświetla się w kolorze zielonym na prezentacji sieci
+11. Na karcie "Wybrany węzeł" wyświetlają się statystyki wybranego sąsiada
+12. Użytkownik klika na dowolną krawędź na prezentacji sieci
+13. Wybrana krawędź wyświetla się w kolorze zielonym na prezentacji sieci
+14. Po lewej stronie wyświetla się karta "Wybrana krawędź" ze statystykami krawędzi
+15. Użytkownik klika na identyfikator węzła z listy "Łączy węzły" na karcie krawędzi
+16. Wybrany węzeł wyświetla się w kolorze zielonym na prezentacji sieci
+17. Użytkownik klika na dowolny identyfikator na karcie "Kanały"
+18. Węzły i krawędzie wybranego kanału wyświetlają się w kolorze czerwonym na prezentacji sieci (lub zostały zaznaczone wcześniej i są zielone)
+19. Po lewej stronie wyświetla się karta "Wybrany kanał" ze statystykami kanału
+20. Użytkownik klika na identyfikator węzła z listy "Węzły" na karcie wybranego kanału
+21. Wybrany węzeł wyświetla się w kolorze zielonym na prezentacji sieci
+22. Karta "Wybrany węzeł" wyświetla statystyki wybranego węzła
+23. Użytkownik klika na identyfikator krawędzi na liście "Krawędzie" na karcie wybranego kanału
+24. Wybrana krawędź wyświetla się w kolorze zielonym na prezentacji sieci
+25. Karta "Wybrana krawędź" wyświetla statystyki wybranej krawędzi
+
+### Wyznaczenie nowego kanału z użyciem modelu programowania całkowitoliczbowego
+1. Użytkownik otwiera stronę prezentacji sieci
+2. Użytkownik importuje opis sieci.
+3. Użytkownik przechodzi do zakładki "Dodaj kanał"
+4. Użytkownik odczytuje z prezentacji identyfikator węzła i wpisuje go w pole "Węzeł startowy"
+5. Użytkownik odczytuje z prezentacji identyfikator innego węzła i wpisuje go w pole "Węzeł końcowy"
+6. Użytkownik wybiera jedną z opcji w polu "Przepustowość"
+7. Użytkownik wybiera "Model całkowitoliczbowy" w polu "Optymalizator"
+8. Użytkownik wpisuje dodatnie liczby w pola "Waga długości krawędzi" i "Waga obciążenia krawędzi"
+9. Użytkownik naciska przycisk "Dodaj kanał"
+10. Pojawia się indykator ładowania do czasu otrzymania wyniku
+11. Po pewnym czasie, na prezentacji sieci pojawia się wyróżniona kolorem czerwonym ścieżka między zadanymi węzłami
+12. Użytkownik przechodzi do zakładki "Statystyki"
+13. Na karcie "Wybrany kanał" widoczne są statystyki i atrybuty nowego kanału
+
+### Wyznaczenie nowego kanału z użyciem modelu Dijkstry
+1. Użytkownik otwiera stronę prezentacji sieci
+2. Użytkownik importuje opis sieci.
+3. Użytkownik przechodzi do zakładki "Dodaj kanał"
+4. Użytkownik odczytuje z prezentacji identyfikator węzła i wpisuje go w pole "Węzeł startowy"
+5. Użytkownik odczytuje z prezentacji identyfikator innego węzła i wpisuje go w pole "Węzeł końcowy"
+6. Użytkownik wybiera jedną z opcji w polu "Przepustowość"
+7. Użytkownik wybiera "Algorytm Dijkstry" w polu "Optymalizator"
+8. Użytkownik wpisuje dodatnie liczby w pola "Waga długości krawędzi" i "Waga obciążenia krawędzi"
+9. Użytkownik naciska przycisk "Dodaj kanał"
+10. Pojawia się indykator ładowania do czasu otrzymania wyniku
+11. Po pewnym czasie, na prezentacji sieci pojawia się wyróżniona kolorem czerwonym ścieżka między zadanymi węzłami
+12. Użytkownik przechodzi do zakładki "Statystyki"
+13. Na karcie "Wybrany kanał" widoczne są statystyki i atrybuty nowego kanału
+
+## Miary jakości testów
+* Jako miarę jakości testów jednostkowych przyjmujemy pokrycie linii kodu testami
+* Do mierzenia pokrycia wykorzystujemy narzędzia dostarczone przez biblioteki testowe
+* Komendy do zmierzenia pokrycia testami:
+  * `pdm cov` w katalogu `backend`
+  * `npm run coverage` w katalogu `frontend`
+* Powyższe komendy wypisują w konsoli statystyki pokrycia całościowe oraz z podziałem na pliki
+
+
+\newpage
+# Wirtualizacja/konteneryzacja
+* W projekcie stosujemy konteneryzację, wykorzystujemy środowisko Docker
+* Schemat wdrożenia aplikacji jest przedstawiony na rysunku \ref{fig:physical-view}
+* Aplikacja składa się z dwóch kontenerów
+  * `web-server`
+  * `backend`
+* Kontenery są uruchamiane w jednej sieci `app-network` (Docker network)
+* Przygotowane są oddzielne pliki konfiguracyjne dla środowisk lokalnego i produkcyjnego
+  * `docker-compose.local.yml`
+  * `docker-compose.prod.yml`
+* `web-server`
+  * Serwer HTTP i reverse proxy
+  * Wykorzystuje obraz `nginx` oraz `node:18` (przy wieloetapowym budowaniu)
+  * Serwuje aplikację frontendową
+  * Przekierowuje zapytania do aplikacji backendowej (reverse proxy)
+  * Oddzielne Dockerfile i plik konfiguracyjny Nginx dla uruchomienia lokalnego i produkcyjnego
+* `backend`
+  * Aplikacja backendowa, API optymalizatora
+  * Wykorzystuje obraz `python:3.12-slim` oparty na systemie Debian
+  * Instaluje solwer `cbc` oraz uruchamia aplikację FastAPI
+
+# Bezpieczeństwo
+
+## Zależności
+* Zależności są zapisane w plikach `package.json` i `pdm.lock`
+* Narzędzie `npm` umożliwia sprawdzenie zależności pod kątem luk bezpieczeństwa
+* GitHub Dependabot monitoruje zależności pod kątem znanych podatności
+
+## Bezpieczeństwo aplikacji
+* Aplikacje nie przechowuje żadnych danych w sposób trwały
+* Aplikacja nie przechowuje danych użytkowników, nie wymaga logowania
+* Dane przesyłane do serwera nie mają charakteru poufnego
+
+## Bezpieczeństwo infrastruktury
+* Logowanie do serwera wymaga uwierzytelnienia kluczem (SSH)
+
+
+# Podręcznik użytkownika

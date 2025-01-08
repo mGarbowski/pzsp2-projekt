@@ -77,12 +77,6 @@ class IntegerProgrammingOptimizer(Optimizer):
             weights[(edge.node2Id, edge.node1Id)] = w
         return weights
 
-    def calculate_edge_weight(self, e: Edge) -> float:
-        """Calculates the weights of an edge based on the optimizer's params"""
-        return (
-            self.distance_weight * self.network.edge_length(e)
-            + self.even_load_weight * e.provisionedCapacity
-        )
 
     def instantiate_model(self, request: OptimisationRequest) -> pyo.ConcreteModel:
         """Creates a concrete model based on the network and

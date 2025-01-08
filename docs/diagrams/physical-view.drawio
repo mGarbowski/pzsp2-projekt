@@ -1,13 +1,13 @@
 <mxfile host="Electron" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.7.17 Chrome/128.0.6613.36 Electron/32.0.1 Safari/537.36" version="24.7.17">
   <diagram name="Page-1" id="L8HgYFLzfneuWHU7ppSS">
-    <mxGraphModel dx="446" dy="411" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1234" dy="1132" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
         <mxCell id="cNow1WQmDCVTFzCeLtUg-1" value="deployment Network Optimisation &amp;amp; Visualisation" style="verticalAlign=top;align=left;shape=cube;size=10;direction=south;fontStyle=0;html=1;boundedLbl=1;spacingLeft=5;whiteSpace=wrap;" parent="1" vertex="1">
           <mxGeometry x="120" y="20" width="960" height="700" as="geometry" />
         </mxCell>
-        <mxCell id="cNow1WQmDCVTFzCeLtUg-2" value="&amp;lt;&amp;lt;device&amp;gt;&amp;gt; Raspberry Pi" style="verticalAlign=top;align=center;shape=cube;size=10;direction=south;html=1;boundedLbl=1;spacingLeft=5;whiteSpace=wrap;" parent="cNow1WQmDCVTFzCeLtUg-1" vertex="1">
+        <mxCell id="cNow1WQmDCVTFzCeLtUg-2" value="&amp;lt;&amp;lt;device&amp;gt;&amp;gt; Azure VM" style="verticalAlign=top;align=center;shape=cube;size=10;direction=south;html=1;boundedLbl=1;spacingLeft=5;whiteSpace=wrap;" parent="cNow1WQmDCVTFzCeLtUg-1" vertex="1">
           <mxGeometry width="910" height="620" relative="1" as="geometry">
             <mxPoint x="20" y="70" as="offset" />
           </mxGeometry>
