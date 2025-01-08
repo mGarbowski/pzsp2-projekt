@@ -16,7 +16,7 @@ export const OptimizerForm = (props: OptimizerFormProps) => {
   const apiBaseUrl = import.meta.env.VITE_BACKEND_URL;
   const apiUrl = `${apiBaseUrl}/ws/optimizer`;
   const {network} = useNetwork();
-  const {sendQuery, lastMessage} = useOptimizer(apiUrl, (_) => false);
+  const {sendQuery, lastMessage} = useOptimizer(apiUrl);
 
   const [startNode, setStartNode] = useState<string | null>(null);
   const [endNode, setEndNode] = useState<string | null>(null);

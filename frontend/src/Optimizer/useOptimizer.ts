@@ -27,7 +27,7 @@ type OptimizerErrorResponse = {
 
 export type OptimizerResponse = OptimizerSuccessResponse | OptimizerErrorResponse;
 
-export const useOptimizer = (apiUrl: string, isDisconnectMessage: (msg: string) => boolean) => {
+export const useOptimizer = (apiUrl: string) => {
   const [lastMessage, setLastMessage] = useState<string | null>(null);
   const [socketUrl, setSocketUrl] = useState<string | null>(null);
 
