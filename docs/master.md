@@ -590,7 +590,8 @@ Model sieci teleinformatycznej (wraz ze wszystkimi zmianami) będzie przechowywa
 do momentu zamknięcia lub odświeżania strony. Po tym okresie konieczne będzie ponowne wgranie opisu. 
 Po stronie serwera nie są przechowywane stale żadne dane. Działa on jak funkcja, która otrzymuje model sieci 
 i parametry optymalizatora, oblicza optymalną trasę kanału, zwraca ją aplikacji przeglądarkowej, 
-a następnie usuwa te dane, wracając do stanu początkowego.
+a następnie usuwa te dane, wracając do stanu początkowego. Ewentualne zachowanie wyników optymalizacji w celu dalszej pracy
+możliwe jest dzięki funkcjonalności eksportowania oraz importowania sieci w formacie `json`.
 
 Formaty plików wejściowych są opisane w punkcie \ref{requirements-analysis}.
 
@@ -726,7 +727,7 @@ Podglądy widoków widoczne są na rysunkach \ref{fig:figma-importer}, \ref{fig:
 * Uruchomienie aplikacji
   * lokalne uruchomienie aplikacji: `docker compose -f docker-compose.local.yml up --build` w katalogu głównym projektu
   * otwarcie przeglądarki i wejście na stronę `http://localhost:2137`
-  * lub interakcja z wdrożoną aplikacją na serwerze http://pzsp2.mgrabowski.pl
+  * lub interakcja z wdrożoną aplikacją na serwerze http://pzsp2.mgarbowski.pl
 
 ### Zaimportowanie poprawnego opisu sieci z csv
 1. Użytkownik otwiera stronę importera danych (strona startowa)
