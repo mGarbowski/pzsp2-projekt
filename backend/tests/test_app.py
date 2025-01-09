@@ -3,7 +3,6 @@ from fastapi.testclient import TestClient
 from src.pzsp_backend.optimization.constants import FAILURE, INVALID_REQUEST, SUCCESS
 from src.pzsp_backend.app import app
 from src.pzsp_backend.models import Channel, OptimisationRequest, OptimisationResponse
-from tests.util import test_network
 
 client = TestClient(app=app)
 

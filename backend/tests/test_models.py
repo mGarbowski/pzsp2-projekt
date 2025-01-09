@@ -1,5 +1,4 @@
 import pytest
-from tests.util import test_network
 
 
 def test_find_edge_by_node_ids(test_network):
