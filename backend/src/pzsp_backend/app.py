@@ -3,7 +3,7 @@ import time
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from loguru import logger
-from pydantic import BaseModel
+from pydantic import BaseModel, ValidationError
 from starlette.websockets import WebSocket, WebSocketDisconnect, WebSocketState
 
 from src.pzsp_backend.models import OptimisationRequest, OptimisationResponse
@@ -50,6 +50,11 @@ async def optimizer_endpoint(websocket: WebSocket):
         await websocket.send_json(response.model_dump_json())
     except WebSocketDisconnect:
         print("Client disconnected")
+    except ValidationError:
+        response = OptimisationResponse(
+            type=FAILURE, channel=None, message="Invalid request format", time=None
+        )
+        await websocket.send_json(response.model_dump())
     finally:
         if websocket.client_state != WebSocketState.DISCONNECTED:
             await websocket.close()
@@ -78,16 +83,17 @@ def dispatch_optimizer(request: OptimisationRequest) -> OptimisationResponse:
                 type=INVALID_REQUEST,
                 channel=None,
                 message="Invalid optimizer requested: " + request.optimizer,
+                time=None,
             )
 
     except NotImplementedError:
         return OptimisationResponse(
-            type=FAILURE, channel=None, message="Optimizer not implemented"
+            type=FAILURE, channel=None, message="Optimizer not implemented", time=None
         )
 
     except Exception as e:
         return OptimisationResponse(
-            type=FAILURE, channel=None, message="Optimizer failed: " + str(e)
+            type=FAILURE, channel=None, message="Optimizer failed: " + str(e), time=None
         )
 
     start_time = time.time()

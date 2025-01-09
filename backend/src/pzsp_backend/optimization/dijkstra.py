@@ -57,7 +57,7 @@ class DijkstraOptimizer(Optimizer):
                 if cost < lowest_costs[neighbor_id]:
                     lowest_costs[neighbor_id] = cost
                     previous_nodes[neighbor_id] = current_node
-                    heapq.heappush(priority_queue, (cost, neighbor_id))
+                    heapq.heappush(priority_queue, (cost, neighbor_id))  # type: ignore
 
         # Reconstruct the lowest cost path
         path = []
