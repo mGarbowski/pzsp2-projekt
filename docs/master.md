@@ -672,9 +672,9 @@ npm test
 pdm test
 -->
 
-* Liczba plików z kodem źródłowym: 56
-* Liczba linii kodu źródłowego: 3715
-* Liczba testów jednostkowych: 33
+* Liczba plików z kodem źródłowym: 61
+* Liczba linii kodu źródłowego: 3880
+* Liczba testów jednostkowych: 52
 
 \newpage
 
