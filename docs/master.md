@@ -1076,4 +1076,4 @@ Aplikacja realizuje wszystkie funkcje zdefiniowane w specyfikacji funkcjonalnej,
 TODO
 
 # Bibliografia
-Nie dotyczy
+1. Taccari, Leonardo. "Integer programming formulations for the elementary shortest path problem." European Journal of Operational Research (2016). http://dx.doi.org/10.1016/j.ejor.2016.01.003
