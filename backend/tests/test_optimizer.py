@@ -124,6 +124,34 @@ def test_dijkstra_reconstruct_channel(test_network):
     assert channel.width == approx(12.5)
 
 
+def test_dijkstra_reconstruct_nonexisting_channel(test_network):
+    op = DijkstraOptimizer(test_network, False, 1, 1)
+    path = ["N1", "N4"]
+    first_slice = 0
+    n_slices = 2
+    with raises(ValueError):
+        op.reconstruct_channel(path, first_slice, n_slices)
+
+
+def test_dijkstra_slice_occupancy_map(test_network):
+    op = DijkstraOptimizer(test_network, False, 1, 1)
+    occupancy = op.make_slice_occupancy_map()
+
+    assert len(occupancy) == 4
+    assert sum(occupancy["E1"]) == 8
+    assert sum(occupancy["E2"]) == 0
+    assert sum(occupancy["E3"]) == 8
+    assert sum(occupancy["E4"]) == 0
+
+
+def test_dijkstra_edges_from_node_ids(test_network):
+    op = DijkstraOptimizer(test_network, False, 1, 1)
+    path = ["N1", "N2", "N4"]
+    edges = op.edges_from_node_ids(path)
+
+    assert [e.id for e in edges] == ["E1", "E3"]
+
+
 @pytest.mark.slow
 def test_integer_find_possible_path(test_network):
     requests = [
