@@ -816,7 +816,7 @@ Podglądy widoków widoczne są na rysunkach \ref{fig:figma-importer}, \ref{fig:
 13. Użytkownik przechodzi do zakładki "Statystyki"
 14. Na karcie "Wybrany kanał" widoczne są statystyki i atrybuty nowego kanału
 
-
+\newpage
 ## Miary jakości testów
 * Jako miarę jakości testów jednostkowych przyjmujemy pokrycie linii kodu testami
 * Do mierzenia pokrycia wykorzystujemy narzędzia dostarczone przez biblioteki testowe
@@ -824,7 +824,42 @@ Podglądy widoków widoczne są na rysunkach \ref{fig:figma-importer}, \ref{fig:
   * `pdm cov` w katalogu `backend`
   * `npm run coverage` w katalogu `frontend`
 * Powyższe komendy wypisują w konsoli statystyki pokrycia całościowe oraz z podziałem na pliki
+* Poziom pokrycia kodu biznesowego wynosi w obu projektach ponad 95%
 
+### Raport pokrycia aplikacji backend
+```
+Name                                                 Stmts   Miss Branch BrPart  Cover   Missing
+------------------------------------------------------------------------------------------------
+src/pzsp_backend/__init__.py                             0      0      0      0   100%
+src/pzsp_backend/app.py                                 54      7      6      2    85%   52, 59->61, 74-75, 89-95
+src/pzsp_backend/models.py                              52      0      6      0   100%
+src/pzsp_backend/optimization/__init__.py                0      0      0      0   100%
+src/pzsp_backend/optimization/base.py                   40      0      0      0   100%
+src/pzsp_backend/optimization/constants.py              11      0      0      0   100%
+src/pzsp_backend/optimization/dijkstra.py               72      0     22      1    99%   46->63
+src/pzsp_backend/optimization/integer/__init__.py        0      0      0      0   100%
+src/pzsp_backend/optimization/integer/abstract.py       50      0      6      0   100%
+src/pzsp_backend/optimization/integer/optimizer.py      78      4     26      2    94%   93-94, 98-101
+------------------------------------------------------------------------------------------------
+TOTAL                                                  357     11     66      5    96%
+```
+
+### Raport pokrycia palikacji frontend
+```
+----------------------|---------|----------|---------|---------|-------------------
+File                  | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+----------------------|---------|----------|---------|---------|-------------------
+All files             |   98.13 |     91.3 |   95.91 |   97.75 |                   
+ DataImporter         |   98.08 |    90.24 |   97.56 |   97.67 |                   
+  buildNetwork.ts     |   97.95 |     87.5 |     100 |   97.14 | 46                
+  createChannels.ts   |   97.05 |    78.57 |   91.66 |   96.49 | 158,174           
+  parseCsv.ts         |     100 |      100 |     100 |     100 |                   
+ NetworkModel         |     100 |      100 |     100 |     100 |                   
+  calcNodeDistance.ts |     100 |      100 |     100 |     100 |                   
+ ReportGeneration     |   97.67 |      100 |   83.33 |   97.29 |                   
+  generateReport.ts   |   97.67 |      100 |   83.33 |   97.29 | 6                 
+----------------------|---------|----------|---------|---------|-------------------
+```
 
 \newpage
 # Wirtualizacja/konteneryzacja
