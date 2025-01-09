@@ -1,4 +1,8 @@
-from pytest import approx
+from pyomo.common.config import Integer
+from pytest import approx, raises
+import pytest
+from src.pzsp_backend.models import OptimisationRequest
+from src.pzsp_backend.optimization.dijkstra import DijkstraOptimizer
 from src.pzsp_backend.optimization.integer.optimizer import IntegerProgrammingOptimizer
 from src.pzsp_backend.optimization.base import Optimizer
 from tests.util import test_network
@@ -55,3 +59,111 @@ def test_num_slices_from_bandwidth(test_network):
     for s, expected in cases:
         op = IntegerProgrammingOptimizer(test_network, False, 1, 1)
         assert op.num_slices_from_bandwidth(s) == expected
+
+
+def test_dijkstra_find_possible_path(test_network):
+    requests = [
+        OptimisationRequest(
+            network=test_network,
+            source="N1",
+            target="N4",
+            bandwidth="100GB/s",
+            optimizer="dijkstra",
+            evenLoadWeight=1,
+            distanceWeight=1,
+        ),
+        OptimisationRequest(
+            network=test_network,
+            source="N4",
+            target="N2",
+            bandwidth="100GB/s",
+            optimizer="dijkstra",
+            evenLoadWeight=1,
+            distanceWeight=5,
+        ),
+    ]
+
+    for request in requests:
+        op = DijkstraOptimizer(
+            test_network, False, request.distanceWeight, request.evenLoadWeight
+        )
+        # No exception should occur, these are valid paths
+        op.find_channel(request)
+
+
+def test_dijkstra_find_impossible_path(test_network, monkeypatch):
+    monkeypatch.setattr(
+        "src.pzsp_backend.optimization.base.Optimizer.num_slices_from_bandwidth",
+        lambda *_: 769,  # Too large to fit into any edge
+    )
+    request = OptimisationRequest(
+        network=test_network,
+        source="N4",
+        target="N2",
+        bandwidth="100GB/s",
+        optimizer="dijkstra",
+        evenLoadWeight=1,
+        distanceWeight=5,
+    )
+
+    op = DijkstraOptimizer(
+        test_network, False, request.distanceWeight, request.evenLoadWeight
+    )
+
+    with raises(Exception):
+        op.find_channel(request)
+
+
+@pytest.mark.slow
+def test_integer_find_possible_path(test_network):
+    requests = [
+        OptimisationRequest(
+            network=test_network,
+            source="N1",
+            target="N4",
+            bandwidth="100GB/s",
+            optimizer="dijkstra",
+            evenLoadWeight=1,
+            distanceWeight=1,
+        ),
+        OptimisationRequest(
+            network=test_network,
+            source="N4",
+            target="N2",
+            bandwidth="100GB/s",
+            optimizer="dijkstra",
+            evenLoadWeight=1,
+            distanceWeight=5,
+        ),
+    ]
+
+    for request in requests:
+        op = IntegerProgrammingOptimizer(
+            test_network, False, request.distanceWeight, request.evenLoadWeight
+        )
+        # No exception should occur, these are valid paths
+        op.find_channel(request)
+
+
+@pytest.mark.slow
+def test_integer_find_impossible_path(test_network, monkeypatch):
+    monkeypatch.setattr(
+        "src.pzsp_backend.optimization.base.Optimizer.num_slices_from_bandwidth",
+        lambda *_: 769,  # Too large to fit into any edge
+    )
+    request = OptimisationRequest(
+        network=test_network,
+        source="N4",
+        target="N2",
+        bandwidth="100GB/s",
+        optimizer="dijkstra",
+        evenLoadWeight=1,
+        distanceWeight=5,
+    )
+
+    op = IntegerProgrammingOptimizer(
+        test_network, False, request.distanceWeight, request.evenLoadWeight
+    )
+
+    with raises(Exception):
+        op.find_channel(request)
