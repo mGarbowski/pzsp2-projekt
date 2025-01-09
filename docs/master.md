@@ -12,7 +12,7 @@ pandoc master.md -o master.pdf \
 ---
 title: "Sieć"
 subtitle: "Dokumentacja projektowa PZSP2"
-date: "2024-11-30"
+date: "2025-01-10"
 titlepage: true
 titlepage-color: "FFFFFF"
 titlepage-text-color: "000000"
@@ -24,7 +24,7 @@ titlepage-rule-height: 2
 
 # Wprowadzenie
 
-**Wersja 1.2**
+**Wersja 2.0**
 
 **Zespół nr 2 w składzie**
 
@@ -1040,3 +1040,40 @@ Aplikacja powinna być teraz dostępna pod adresem http://{adres publiczny maszy
 
 Jeśli nie pożądane jest, aby wdrażana była najnowsza dostępna wersja aplikacji (https://github.com/mGarbowski/pzsp2-projekt.git), należy zastąpić adres repozytorium
 w pliku full-deployment, w zadaniu "Clone the project repository" na własne publiczne repozytorium zawierające pożądaną wersję.
+
+\newpage
+# Podsumowanie
+W projekcie zrealizowane zostały wszystkie wymagania właściciela tematu, które ulegały modyfikacjom i uszczegółowieniom
+w miarę postępu prac.
+Aplikacja realizuje wszystkie funkcje zdefiniowane w specyfikacji funkcjonalnej, a także spełnia wymagania jakościowe.
+
+## Zarządzanie jakością
+* Zespół projektowy, przy wytwarzaniu oprogramowania, stosował GitHub Flow
+  * wprowadzanie zmian w kodzie odbywało się za pomocą Pull Requests
+  * każda zmiana była recenzowana przez jednego lub więcej członków zespołu
+  * dyskusja i krytyczna analiza pozwalała na uniknięcie błędów i zapewnienie jakości kodu
+* Do logiki biznesowej aplikacji powstały testy jednostkowe
+  * pokrycie kodu biznesowego testami jest na poziomie powyżej 95%
+  * testy są uruchamiane automatycznie w potoku CI
+* Aplikacja została poddana testom manualnym
+  * przygotowano scenariusze testów
+  * przetestowano wszystkie funkcje aplikacji
+  * zidentyfikowano i usunięto błędy
+* Zespół wykorzystuje narzędzia do automatycznego formatowania kodu
+  * krok potoku CI zapewnia, że kod jest zgodny z ustalonymi standardami
+* Aplikacja powstawała zgodnie z najlepszymi praktykami programowania
+* Aplikacja wykorzystuje współczesne technologie klasy Open Source
+* Aplikacja jest skonteneryzowana, co znacznie ułatwia rozwój i wdrożenie
+
+## Możliwe kierunki rozwoju
+* Rozwój aplikacji o dodatkowe funkcje
+  * struktura aplikacja pozwala na łatwe rozszerzenie jej o inne modele optymalizacyjne
+* API optymalizatora może być wykorzystane w innych aplikacjach
+  * możliwe jest stworzenie alternatywnej aplikacji klienckiej, która korzystałaby z API optymalizatora
+  * API pozwala na zintegrowanie optymalizatora z innymi systemami
+
+## Slajd
+TODO
+
+# Bibliografia
+Nie dotyczy
