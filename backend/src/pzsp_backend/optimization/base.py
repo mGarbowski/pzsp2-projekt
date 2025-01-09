@@ -19,9 +19,6 @@ class Optimizer(ABC):
 
     network: Network
     debug: bool
-    # The weights we've discussed so far. Probably should add up to 1,
-    # etc, but this is just a rough outline of how it's going to look like.
-    # We might take in different params at the end of the day after all.
     distance_weight: float
     even_load_weight: float
 
