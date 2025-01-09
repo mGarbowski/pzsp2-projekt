@@ -78,16 +78,17 @@ def dispatch_optimizer(request: OptimisationRequest) -> OptimisationResponse:
                 type=INVALID_REQUEST,
                 channel=None,
                 message="Invalid optimizer requested: " + request.optimizer,
+                time=None,
             )
 
     except NotImplementedError:
         return OptimisationResponse(
-            type=FAILURE, channel=None, message="Optimizer not implemented"
+            type=FAILURE, channel=None, message="Optimizer not implemented", time=None
         )
 
     except Exception as e:
         return OptimisationResponse(
-            type=FAILURE, channel=None, message="Optimizer failed: " + str(e)
+            type=FAILURE, channel=None, message="Optimizer failed: " + str(e), time=None
         )
 
     start_time = time.time()

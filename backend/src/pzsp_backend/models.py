@@ -1,7 +1,6 @@
 from __future__ import annotations
+from typing import Optional
 
-from collections import defaultdict
-from typing import Literal
 
 from geopy import distance
 from pydantic import BaseModel
@@ -84,4 +83,4 @@ class OptimisationResponse(BaseModel):
     type: str
     channel: Channel | None
     message: str | None
-    time: float
+    time: Optional[float]
