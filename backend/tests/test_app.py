@@ -11,7 +11,7 @@ def test_optimizer_endpoint_invalid_request():
     with client.websocket_connect("/ws/optimizer") as ws:
         ws.send_json({"can't parse": "me"})
         response = ws.receive_json()
-        response = OptimisationResponse.model_validate(response)
+        response = OptimisationResponse.model_validate_json(response)
         assert response == OptimisationResponse(
             type=FAILURE, channel=None, message="Invalid request format", time=None
         )

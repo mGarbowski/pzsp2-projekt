@@ -12,7 +12,7 @@ pandoc master.md -o master.pdf \
 ---
 title: "Sieć"
 subtitle: "Dokumentacja projektowa PZSP2"
-date: "2024-11-30"
+date: "2025-01-10"
 titlepage: true
 titlepage-color: "FFFFFF"
 titlepage-text-color: "000000"
@@ -24,7 +24,7 @@ titlepage-rule-height: 2
 
 # Wprowadzenie
 
-**Wersja 1.2**
+**Wersja 2.0**
 
 **Zespół nr 2 w składzie**
 
@@ -672,9 +672,9 @@ npm test
 pdm test
 -->
 
-* Liczba plików z kodem źródłowym: 56
-* Liczba linii kodu źródłowego: 3715
-* Liczba testów jednostkowych: 33
+* Liczba plików z kodem źródłowym: 61
+* Liczba linii kodu źródłowego: 3880
+* Liczba testów jednostkowych: 52
 
 \newpage
 
@@ -816,7 +816,7 @@ Podglądy widoków widoczne są na rysunkach \ref{fig:figma-importer}, \ref{fig:
 13. Użytkownik przechodzi do zakładki "Statystyki"
 14. Na karcie "Wybrany kanał" widoczne są statystyki i atrybuty nowego kanału
 
-
+\newpage
 ## Miary jakości testów
 * Jako miarę jakości testów jednostkowych przyjmujemy pokrycie linii kodu testami
 * Do mierzenia pokrycia wykorzystujemy narzędzia dostarczone przez biblioteki testowe
@@ -824,7 +824,42 @@ Podglądy widoków widoczne są na rysunkach \ref{fig:figma-importer}, \ref{fig:
   * `pdm cov` w katalogu `backend`
   * `npm run coverage` w katalogu `frontend`
 * Powyższe komendy wypisują w konsoli statystyki pokrycia całościowe oraz z podziałem na pliki
+* Poziom pokrycia kodu biznesowego wynosi w obu projektach ponad 95%
 
+### Raport pokrycia aplikacji backend
+```
+Name                                                 Stmts   Miss Branch BrPart  Cover   Missing
+------------------------------------------------------------------------------------------------
+src/pzsp_backend/__init__.py                             0      0      0      0   100%
+src/pzsp_backend/app.py                                 54      7      6      2    85%   52, 59->61, 74-75, 89-95
+src/pzsp_backend/models.py                              52      0      6      0   100%
+src/pzsp_backend/optimization/__init__.py                0      0      0      0   100%
+src/pzsp_backend/optimization/base.py                   40      0      0      0   100%
+src/pzsp_backend/optimization/constants.py              11      0      0      0   100%
+src/pzsp_backend/optimization/dijkstra.py               72      0     22      1    99%   46->63
+src/pzsp_backend/optimization/integer/__init__.py        0      0      0      0   100%
+src/pzsp_backend/optimization/integer/abstract.py       50      0      6      0   100%
+src/pzsp_backend/optimization/integer/optimizer.py      78      4     26      2    94%   93-94, 98-101
+------------------------------------------------------------------------------------------------
+TOTAL                                                  357     11     66      5    96%
+```
+
+### Raport pokrycia palikacji frontend
+```
+----------------------|---------|----------|---------|---------|-------------------
+File                  | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+----------------------|---------|----------|---------|---------|-------------------
+All files             |   98.13 |     91.3 |   95.91 |   97.75 |                   
+ DataImporter         |   98.08 |    90.24 |   97.56 |   97.67 |                   
+  buildNetwork.ts     |   97.95 |     87.5 |     100 |   97.14 | 46                
+  createChannels.ts   |   97.05 |    78.57 |   91.66 |   96.49 | 158,174           
+  parseCsv.ts         |     100 |      100 |     100 |     100 |                   
+ NetworkModel         |     100 |      100 |     100 |     100 |                   
+  calcNodeDistance.ts |     100 |      100 |     100 |     100 |                   
+ ReportGeneration     |   97.67 |      100 |   83.33 |   97.29 |                   
+  generateReport.ts   |   97.67 |      100 |   83.33 |   97.29 | 6                 
+----------------------|---------|----------|---------|---------|-------------------
+```
 
 \newpage
 # Wirtualizacja/konteneryzacja
@@ -1040,3 +1075,40 @@ Aplikacja powinna być teraz dostępna pod adresem http://{adres publiczny maszy
 
 Jeśli nie pożądane jest, aby wdrażana była najnowsza dostępna wersja aplikacji (https://github.com/mGarbowski/pzsp2-projekt.git), należy zastąpić adres repozytorium
 w pliku full-deployment, w zadaniu "Clone the project repository" na własne publiczne repozytorium zawierające pożądaną wersję.
+
+\newpage
+# Podsumowanie
+W projekcie zrealizowane zostały wszystkie wymagania właściciela tematu, które ulegały modyfikacjom i uszczegółowieniom
+w miarę postępu prac.
+Aplikacja realizuje wszystkie funkcje zdefiniowane w specyfikacji funkcjonalnej, a także spełnia wymagania jakościowe.
+
+## Zarządzanie jakością
+* Zespół projektowy, przy wytwarzaniu oprogramowania, stosował GitHub Flow
+  * wprowadzanie zmian w kodzie odbywało się za pomocą Pull Requests
+  * każda zmiana była recenzowana przez jednego lub więcej członków zespołu
+  * dyskusja i krytyczna analiza pozwalała na uniknięcie błędów i zapewnienie jakości kodu
+* Do logiki biznesowej aplikacji powstały testy jednostkowe
+  * pokrycie kodu biznesowego testami jest na poziomie powyżej 95%
+  * testy są uruchamiane automatycznie w potoku CI
+* Aplikacja została poddana testom manualnym
+  * przygotowano scenariusze testów
+  * przetestowano wszystkie funkcje aplikacji
+  * zidentyfikowano i usunięto błędy
+* Zespół wykorzystuje narzędzia do automatycznego formatowania kodu
+  * krok potoku CI zapewnia, że kod jest zgodny z ustalonymi standardami
+* Aplikacja powstawała zgodnie z najlepszymi praktykami programowania
+* Aplikacja wykorzystuje współczesne technologie klasy Open Source
+* Aplikacja jest skonteneryzowana, co znacznie ułatwia rozwój i wdrożenie
+
+## Możliwe kierunki rozwoju
+* Rozwój aplikacji o dodatkowe funkcje
+  * struktura aplikacja pozwala na łatwe rozszerzenie jej o inne modele optymalizacyjne
+* API optymalizatora może być wykorzystane w innych aplikacjach
+  * możliwe jest stworzenie alternatywnej aplikacji klienckiej, która korzystałaby z API optymalizatora
+  * API pozwala na zintegrowanie optymalizatora z innymi systemami
+
+## Slajd
+TODO
+
+# Bibliografia
+1. Taccari, Leonardo. "Integer programming formulations for the elementary shortest path problem." European Journal of Operational Research (2016). http://dx.doi.org/10.1016/j.ejor.2016.01.003
