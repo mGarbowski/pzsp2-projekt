@@ -90,7 +90,6 @@ class IntegerProgrammingOptimizer(Optimizer):
         logger.info("Validating solver result")
 
         if status := result.solver.status != "ok":
-            # TODO: dump solver output
             logger.error(f"Solver terminated unsuccesfully: {status}")
             raise RuntimeError(f"Solver terminated unsuccesfully: {status}")
 

@@ -1,5 +1,6 @@
 from pytest import approx, raises
 import pytest
+from src.pzsp_backend.optimization.constants import TOTAL_SLICES
 from src.pzsp_backend.models import OptimisationRequest
 from src.pzsp_backend.optimization.dijkstra import DijkstraOptimizer
 from src.pzsp_backend.optimization.integer.optimizer import IntegerProgrammingOptimizer
@@ -144,6 +145,28 @@ def test_dijkstra_slice_occupancy_map(test_network):
     assert sum(occupancy["E4"]) == 0
 
 
+def test_dijkstra_verify_path_fits(test_network):
+    op = DijkstraOptimizer(test_network, False, 1, 1)
+    path = ["N1", "N2", "N4"]
+    n_slices = 20
+    first_slice = op.verify_path(path, n_slices)
+    assert first_slice == 16  # first 8 are free, 8-15 are taken
+
+
+def test_dijkstra_verify_path_doesnt_fit(test_network):
+    op = DijkstraOptimizer(test_network, False, 1, 1)
+    path = ["N1", "N2", "N4"]
+    n_slices = 760
+    first_slice = op.verify_path(path, n_slices)
+    assert first_slice is None
+
+
+def dijkstra_algorithm_test(test_network):
+    op = DijkstraOptimizer(test_network, False, 1, 1)
+    path = op.dijkstra("N1", "N4")
+    assert path == ["N1", "N2", "N4"]  # shorter than N1->N3->N4
+
+
 def test_dijkstra_edges_from_node_ids(test_network):
     op = DijkstraOptimizer(test_network, False, 1, 1)
     path = ["N1", "N2", "N4"]
@@ -205,3 +228,18 @@ def test_integer_find_impossible_path(test_network, monkeypatch):
 
     with raises(Exception):
         op.find_channel(request)
+
+
+def test_integer_edge_slice_occupancy_map(test_network):
+    op = IntegerProgrammingOptimizer(test_network, False, 1, 1)
+    occupancy = op.edge_slice_occupancy_map()
+
+    assert len(occupancy) == 2 * 4 * TOTAL_SLICES  # 2 directions * 4 edges * num slices
+    e1_occupancy_sum = sum(occupancy[("N1", "N2", i)] for i in range(TOTAL_SLICES))
+    assert e1_occupancy_sum == 8
+    e2_occupancy_sum = sum(occupancy[("N1", "N3", i)] for i in range(TOTAL_SLICES))
+    assert e2_occupancy_sum == 0
+    e3_occupancy_sum = sum(occupancy[("N2", "N4", i)] for i in range(TOTAL_SLICES))
+    assert e3_occupancy_sum == 8
+    e4_occupancy_sum = sum(occupancy[("N3", "N4", i)] for i in range(TOTAL_SLICES))
+    assert e4_occupancy_sum == 0
