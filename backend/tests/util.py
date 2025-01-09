@@ -44,7 +44,7 @@ def test_network():
             node1Id="N1",
             node2Id="N3",
             totalCapacity="100Gbps",
-            provisionedCapacity=50,
+            provisionedCapacity=0,
         ),
         "E3": Edge(
             id="E3",
@@ -58,7 +58,7 @@ def test_network():
             node1Id="N3",
             node2Id="N4",
             totalCapacity="100Gbps",
-            provisionedCapacity=50,
+            provisionedCapacity=0,
         ),
     }
 
