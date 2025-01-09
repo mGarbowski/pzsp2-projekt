@@ -51,13 +51,7 @@ def test_bandwidth_from_string():
 
 
 def test_num_slices_from_bandwidth(test_network):
-    cases = (
-        ("100Gbps", 10),
-        ("10Gbps", 1),
-        ("400Gbps", 40),
-        ("40Gbps", 4),
-        ("50Gbps", 20),
-    )
+    cases = (("10GB/s", 2), ("100GB/s", 8), ("1000GB/s", 32), ("421GB/s", 8))
     for s, expected in cases:
         op = IntegerProgrammingOptimizer(test_network, False, 1, 1)
         assert op.num_slices_from_bandwidth(s) == expected
