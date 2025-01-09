@@ -1,3 +1,4 @@
 .vscode
 .idea
 *.bkp
+docs/optimization/integer_model/build
