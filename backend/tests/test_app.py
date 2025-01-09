@@ -1,8 +1,8 @@
 from fastapi.testclient import TestClient
 
-from src.pzsp_backend.optimization.constants import FAILURE, INVALID_REQUEST, SUCCESS
 from src.pzsp_backend.app import app
 from src.pzsp_backend.models import Channel, OptimisationRequest, OptimisationResponse
+from src.pzsp_backend.optimization.constants import FAILURE, INVALID_REQUEST, SUCCESS
 
 client = TestClient(app=app)
 

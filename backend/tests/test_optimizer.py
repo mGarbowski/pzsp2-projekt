@@ -1,10 +1,11 @@
-from pytest import approx, raises
 import pytest
-from src.pzsp_backend.optimization.constants import TOTAL_SLICES
+from pytest import approx, raises
+
 from src.pzsp_backend.models import OptimisationRequest
+from src.pzsp_backend.optimization.base import Optimizer
+from src.pzsp_backend.optimization.constants import TOTAL_SLICES
 from src.pzsp_backend.optimization.dijkstra import DijkstraOptimizer
 from src.pzsp_backend.optimization.integer.optimizer import IntegerProgrammingOptimizer
-from src.pzsp_backend.optimization.base import Optimizer
 
 
 def test_slices_from_freq_and_width():
