@@ -44,6 +44,7 @@ async def optimizer_endpoint(websocket: WebSocket):
 
         print("Request: ", request)
 
+        validate_request(request)
         response = dispatch_optimizer(request)
         print("Response: ", response)
 
@@ -54,7 +55,12 @@ async def optimizer_endpoint(websocket: WebSocket):
         response = OptimisationResponse(
             type=FAILURE, channel=None, message="Invalid request format", time=None
         )
-        await websocket.send_json(response.model_dump())
+        await websocket.send_json(response.model_dump_json())
+    except ValueError as e:
+        response = OptimisationResponse(
+            type=FAILURE, channel=None, message=str(e), time=None
+        )
+        await websocket.send_json(response.model_dump_json())
     finally:
         if websocket.client_state != WebSocketState.DISCONNECTED:
             await websocket.close()
@@ -104,3 +110,11 @@ def dispatch_optimizer(request: OptimisationRequest) -> OptimisationResponse:
     return OptimisationResponse(
         type=SUCCESS, channel=ch, message="Optimizer found a solution", time=total_time
     )
+
+
+def validate_request(r: OptimisationRequest):
+    """Checks whether the source and target node of a request are actually in its network"""
+    if r.source not in r.network.nodes:
+        raise ValueError("Invalid source node")
+    if r.target not in r.network.nodes:
+        raise ValueError("Invalid target node")
