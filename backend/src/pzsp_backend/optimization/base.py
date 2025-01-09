@@ -27,8 +27,8 @@ class Optimizer(ABC):
 
     @abstractmethod
     def find_channel(self, request: OptimisationRequest) -> Channel:
-        """Find a channel that satisfies the desscription in an
-        optimaly way for the given network."""
+        """Find a channel that satisfies the description in an
+        optimal way for the given network."""
 
     def calculate_edge_weight(self, e: Edge) -> float:
         """Calculates the weights of an edge based on the optimizer's params"""
@@ -44,10 +44,17 @@ class Optimizer(ABC):
 
     def num_slices_from_bandwidth(self, bandwidth: str) -> int:
         """Calculate the minimum number of slices needed for given bandwidth"""
-        # TODO: more realistic mapping needed here
-        mapping = {10: 1, 40: 4, 100: 10, 400: 40}
+        mapping = {  # bandwidth in Gbps: n_slices
+            10: 2,
+            40: 4,
+            100: 8,
+            200: 12,
+            400: 18,
+            800: 24,
+            1000: 32,
+        }
         bw_as_int = self.bandwidth_from_string(bandwidth)
-        return mapping.get(bw_as_int, 20)  # should actually calculate stuff here
+        return mapping.get(bw_as_int, 8)  # fallback
 
     @staticmethod
     def get_slice_indices_from_freq_and_width(width: float, freq: float) -> list[int]:

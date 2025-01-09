@@ -84,3 +84,4 @@ class OptimisationResponse(BaseModel):
     type: str
     channel: Channel | None
     message: str | None
+    time: float

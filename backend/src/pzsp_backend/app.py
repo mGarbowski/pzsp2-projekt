@@ -1,3 +1,5 @@
+import time
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from loguru import logger
@@ -88,8 +90,11 @@ def dispatch_optimizer(request: OptimisationRequest) -> OptimisationResponse:
             type=FAILURE, channel=None, message="Optimizer failed: " + str(e)
         )
 
+    start_time = time.time()
     ch = optimizer.find_channel(request)
-    logger.info("Channel: ", ch)
+    end_time = time.time()
+    total_time = end_time - start_time
+    logger.info("Channel: ", ch, "found in ", total_time, " seconds")
     return OptimisationResponse(
-        type=SUCCESS, channel=ch, message="Optimizer found a solution"
+        type=SUCCESS, channel=ch, message="Optimizer found a solution", time=total_time
     )

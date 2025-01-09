@@ -5,7 +5,7 @@ from attrs import define
 from loguru import logger
 from pyomo.opt import SolverResults
 
-from src.pzsp_backend.models import Channel, Edge, OptimisationRequest
+from src.pzsp_backend.models import Channel, OptimisationRequest
 from src.pzsp_backend.optimization.base import Optimizer
 from src.pzsp_backend.optimization.integer.abstract import model
 
@@ -76,13 +76,6 @@ class IntegerProgrammingOptimizer(Optimizer):
             weights[(edge.node1Id, edge.node2Id)] = w
             weights[(edge.node2Id, edge.node1Id)] = w
         return weights
-
-    def calculate_edge_weight(self, e: Edge) -> float:
-        """Calculates the weights of an edge based on the optimizer's params"""
-        return (
-            self.distance_weight * self.network.edge_length(e)
-            + self.even_load_weight * e.provisionedCapacity
-        )
 
     def instantiate_model(self, request: OptimisationRequest) -> pyo.ConcreteModel:
         """Creates a concrete model based on the network and

@@ -2,11 +2,13 @@ import { ChangeEvent, useRef, useState } from "react";
 import styled from '@emotion/styled'
 import { Button } from "../Components/UI/button";
 
-interface CsvUploadProps {
+interface FileUploadProps {
   onUpload: (data: string) => void;
+  accept: string;
+  buttonText: string
 }
 
-export const CsvUpload = (props: CsvUploadProps) => {
+export const FileUpload = (props: FileUploadProps) => {
   const [fileName, setFileName] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -26,9 +28,9 @@ export const CsvUpload = (props: CsvUploadProps) => {
   }
 
   return <div className="flex flex-col w-1/2">
-    <HiddenFileInput type="file" accept=".csv" ref={fileInputRef} onChange={handleFileUpload} />
+    <HiddenFileInput type="file" accept={props.accept} ref={fileInputRef} onChange={handleFileUpload} />
     <Button className="mb-3" variant={"outline"} onClick={() => fileInputRef.current?.click()}>
-      Wybierz plik
+      {props.buttonText}
     </Button>
     {fileName && <p className="mb-5 text-center">{fileName}</p>}
   </div>
