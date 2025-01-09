@@ -590,7 +590,8 @@ Model sieci teleinformatycznej (wraz ze wszystkimi zmianami) będzie przechowywa
 do momentu zamknięcia lub odświeżania strony. Po tym okresie konieczne będzie ponowne wgranie opisu. 
 Po stronie serwera nie są przechowywane stale żadne dane. Działa on jak funkcja, która otrzymuje model sieci 
 i parametry optymalizatora, oblicza optymalną trasę kanału, zwraca ją aplikacji przeglądarkowej, 
-a następnie usuwa te dane, wracając do stanu początkowego.
+a następnie usuwa te dane, wracając do stanu początkowego. Ewentualne zachowanie wyników optymalizacji w celu dalszej pracy
+możliwe jest dzięki funkcjonalności eksportowania oraz importowania sieci w formacie `json`.
 
 Formaty plików wejściowych są opisane w punkcie \ref{requirements-analysis}.
 
@@ -726,9 +727,9 @@ Podglądy widoków widoczne są na rysunkach \ref{fig:figma-importer}, \ref{fig:
 * Uruchomienie aplikacji
   * lokalne uruchomienie aplikacji: `docker compose -f docker-compose.local.yml up --build` w katalogu głównym projektu
   * otwarcie przeglądarki i wejście na stronę `http://localhost:2137`
-  * lub interakcja z wdrożoną aplikacją na serwerze http://pzsp2.mgrabowski.pl
+  * lub interakcja z wdrożoną aplikacją na serwerze http://pzsp2.mgarbowski.pl
 
-### Zaimportowanie poprawnego opisu sieci
+### Zaimportowanie poprawnego opisu sieci z csv
 1. Użytkownik otwiera stronę importera danych (strona startowa)
 2. Użytkownik wybiera plik `wezly.csv` z opisem węzłów sieci
 3. Użytkownik wybiera plik `zajetosc.csv` z opisem krawędzi sieci
@@ -736,11 +737,18 @@ Podglądy widoków widoczne są na rysunkach \ref{fig:figma-importer}, \ref{fig:
 5. Po wybraniu wszystkich plików pojawia się komunikat o pomyślnym zaimportowaniu sieci
 6. Po prawej stronie wyświetla się wizualizacja sieci
 
-
-### Próba zaimportowania błędnego opisu sieci
+### Import i eksport stanu sieci z formatu json
 1. Użytkownik otwiera stronę importera danych (strona startowa)
-2. Użytkownik wybiera dowolny plik .csv niezawierający poprawnego opisu sieci w miejsce "Węzły", "Zajętość" i "Spektrum kanały"
-3. Po wybraniu pliku pojawia się komunikat o błędzie importu
+2. Użytkownik wybiera plik `wezly.csv` z opisem węzłów sieci
+3. Użytkownik wybiera plik `zajetosc.csv` z opisem krawędzi sieci
+4. Użytkownik wybiera plik `spectrum_kanaly.csv` z opisem kanałów sieci
+5. Wczytuje się poprawny opis sieci.
+6. Użytkownik naciska przycisk "Pobierz" w sekcji "Pobierz lub załaduj stan sieci"
+7. Pobiera się plik w formacie json.
+8. Użytkownik odświeża stronę.
+9. Użytkownik naciska przycisk "Załaduj" w sekcji "Pobierz lub załaduj stan sieci"
+10. Użytkownik wybiera wcześniej pobrany plik w formacie json.
+11. Wczytuje się ten sam opis sieci.
 
 ### Generowanie raportu zajętości pasma przez kanały
 1. Użytkownik otwiera stronę prezentacji sieci
@@ -756,24 +764,24 @@ Podglądy widoków widoczne są na rysunkach \ref{fig:figma-importer}, \ref{fig:
 4. Na karcie "Sieć" widoczne są globalne statystyki sieci
 5. Na karcie "Kanały" widoczna jest lista identyfikatorów kanałów
 6. Użytkownik klika na dowolny węzeł na prezentacji sieci
-7. Wybrany węzeł wyświetla się w kolorze zielonym na prezentacji sieci
+7. Wybrany węzeł wyświetla się w kolorze niebieskim na prezentacji sieci
 8. Po lewej stronie widoczna jest karta "Wybrany węzeł" ze statystykami węzła
 9. Użytkownik klika na identyfikator dowolnego sąsiada na karcie "Wybrany węzeł"
-10. Wybrany sąsiad wyświetla się w kolorze zielonym na prezentacji sieci
+10. Wybrany sąsiad wyświetla się w kolorze niebieskim na prezentacji sieci
 11. Na karcie "Wybrany węzeł" wyświetlają się statystyki wybranego sąsiada
 12. Użytkownik klika na dowolną krawędź na prezentacji sieci
-13. Wybrana krawędź wyświetla się w kolorze zielonym na prezentacji sieci
+13. Wybrana krawędź wyświetla się w kolorze niebieskim na prezentacji sieci
 14. Po lewej stronie wyświetla się karta "Wybrana krawędź" ze statystykami krawędzi
 15. Użytkownik klika na identyfikator węzła z listy "Łączy węzły" na karcie krawędzi
-16. Wybrany węzeł wyświetla się w kolorze zielonym na prezentacji sieci
+16. Wybrany węzeł wyświetla się w kolorze niebieskim na prezentacji sieci
 17. Użytkownik klika na dowolny identyfikator na karcie "Kanały"
-18. Węzły i krawędzie wybranego kanału wyświetlają się w kolorze czerwonym na prezentacji sieci (lub zostały zaznaczone wcześniej i są zielone)
+18. Węzły i krawędzie wybranego kanału wyświetlają się w kolorze fioletowym na prezentacji sieci (lub zostały zaznaczone wcześniej i są zielone)
 19. Po lewej stronie wyświetla się karta "Wybrany kanał" ze statystykami kanału
 20. Użytkownik klika na identyfikator węzła z listy "Węzły" na karcie wybranego kanału
-21. Wybrany węzeł wyświetla się w kolorze zielonym na prezentacji sieci
+21. Wybrany węzeł wyświetla się w kolorze niebieskim na prezentacji sieci
 22. Karta "Wybrany węzeł" wyświetla statystyki wybranego węzła
 23. Użytkownik klika na identyfikator krawędzi na liście "Krawędzie" na karcie wybranego kanału
-24. Wybrana krawędź wyświetla się w kolorze zielonym na prezentacji sieci
+24. Wybrana krawędź wyświetla się w kolorze niebieskim na prezentacji sieci
 25. Karta "Wybrana krawędź" wyświetla statystyki wybranej krawędzi
 
 ### Wyznaczenie nowego kanału z użyciem modelu programowania całkowitoliczbowego
@@ -787,9 +795,10 @@ Podglądy widoków widoczne są na rysunkach \ref{fig:figma-importer}, \ref{fig:
 8. Użytkownik wpisuje dodatnie liczby w pola "Waga długości krawędzi" i "Waga obciążenia krawędzi"
 9. Użytkownik naciska przycisk "Dodaj kanał"
 10. Pojawia się indykator ładowania do czasu otrzymania wyniku
-11. Po pewnym czasie, na prezentacji sieci pojawia się wyróżniona kolorem czerwonym ścieżka między zadanymi węzłami
-12. Użytkownik przechodzi do zakładki "Statystyki"
-13. Na karcie "Wybrany kanał" widoczne są statystyki i atrybuty nowego kanału
+11. Po pewnym czasie, na prezentacji sieci pojawia się wyróżniona kolorem fioletowym ścieżka między zadanymi węzłami
+12. Pod formularzem pojawia się komunikat z czasem obliczeń
+13. Użytkownik przechodzi do zakładki "Statystyki"
+14. Na karcie "Wybrany kanał" widoczne są statystyki i atrybuty nowego kanału
 
 ### Wyznaczenie nowego kanału z użyciem modelu Dijkstry
 1. Użytkownik otwiera stronę prezentacji sieci
@@ -802,9 +811,11 @@ Podglądy widoków widoczne są na rysunkach \ref{fig:figma-importer}, \ref{fig:
 8. Użytkownik wpisuje dodatnie liczby w pola "Waga długości krawędzi" i "Waga obciążenia krawędzi"
 9. Użytkownik naciska przycisk "Dodaj kanał"
 10. Pojawia się indykator ładowania do czasu otrzymania wyniku
-11. Po pewnym czasie, na prezentacji sieci pojawia się wyróżniona kolorem czerwonym ścieżka między zadanymi węzłami
-12. Użytkownik przechodzi do zakładki "Statystyki"
-13. Na karcie "Wybrany kanał" widoczne są statystyki i atrybuty nowego kanału
+11. Po pewnym czasie, na prezentacji sieci pojawia się wyróżniona kolorem fioletowym ścieżka między zadanymi węzłami
+12. Pod formularzem pojawia się komunikat z czasem obliczeń
+13. Użytkownik przechodzi do zakładki "Statystyki"
+14. Na karcie "Wybrany kanał" widoczne są statystyki i atrybuty nowego kanału
+
 
 ## Miary jakości testów
 * Jako miarę jakości testów jednostkowych przyjmujemy pokrycie linii kodu testami
@@ -852,8 +863,94 @@ Podglądy widoków widoczne są na rysunkach \ref{fig:figma-importer}, \ref{fig:
 ## Bezpieczeństwo infrastruktury
 * Logowanie do serwera wymaga uwierzytelnienia kluczem (SSH)
 
-
+\newpage
 # Podręcznik użytkownika
+
+## Lokalne uruchomienie aplikacji
+Aplikację można uruchomić lokalnie, korzystając ze środowiska Docker.
+Aplikacja jest również wdrożona w chmurze i dostępna pod adresem [http://pzsp2.mgrabowski.pl](http://pzsp2.mgrabowski.pl).
+
+* [Zainstaluj Docker i Docker Compose](https://docs.docker.com/engine/install/)
+* Sklonuj repozytorium: `git clone git@github.com:mGarbowski/pzsp2-projekt.git`
+* Przejdź do katalogu projektu: `cd pzsp2-projekt`
+* Uruchom aplikację: `docker compose -f docker-compose.local.yml up --build`
+* Interfejs użytkownika będzie dostępny w przeglądarce pod adresem [http://localhost:2137](http://localhost:2137)
+
+## Funkcje aplikacji
+* Importer danych
+  * wczytanie opisu sieci z zestawu plików .csv
+  * załadowanie demonstracyjnej sieci
+  * eksport stanu sieci do pliku .json
+  * import stanu sieci z pliku .json
+* Wizualizacja grafu sieci teleinformatycznej
+* Prezentacja statystyk i atrybutów sieci i jej elementów
+* Generowanie raportu zajętości pasma przez kanały w formacie .csv
+* Wyznaczanie nowego kanału z użyciem modelu optymalizacyjnego
+
+## Obsługa aplikacji
+
+### Ładowanie danych
+![Widok importera danych](./images/importer-page.png){#fig-importer-screenshot}
+
+* Otwórz stronę startową aplikacji (widoczna na zrzucie ekranu \ref{fig-importer-screenshot})
+* Podstawowym krokiem jest załadowanie plików .csv z opisem sieci
+  * przygotuj pliki "wezly.csv", "zajetosc.csv" i "spectrum_kanaly.csv"
+  * na panelu "Zaimportuj dane sieci" wybierz przygotowane pliki w odpowiednich polach
+  * po załadowaniu wszystkich plików pojawi się komunikat o sukcesie
+* Możesz również pominąć krok importu plików i korzystać z demonstracyjnej sieci
+  * aby ją załadować, naciśnij przycisk "Wczytaj demo" na panelu "Zaimportuj dane demonstracyjne"
+* Stan załadowanej sieci, np. po wyznaczeniu nowych kanałów z użyciem modeli optymalizacyjnych, można zapisać do pliku JSON
+  * naciśnij przycisk "Pobierz" na panelu "Pobierz lub załaduj stan sieci"
+  * ten sam plik można następnie załadować, np. po zakończeniu sesji, naciskając przycisk "Załaduj"
+* Po załadowaniu sieci w dowolny z wymienionych sposobów, po prawej stronie pojawi się wizualizacja grafu sieci
+* Możesz powrócić do tej strony, naciskając "Import" na pasku nawigacyjnym
+* Pamiętaj, że system nie przechowuje danych po zamknięciu przeglądarki
+
+### Prezentacja sieci
+![Widok prezentacji sieci](./images/statistics-page.png){#fig-presentation-screenshot}
+
+* Po załadowaniu sieci w zakładce "Import" przejdź do zakładki "Statystyki" (widoczna na zrzucie ekranu \ref{fig-presentation-screenshot})
+* Wizualizację grafu sieci po prawej stronie możesz przesuwać przytrzymując lewy przycisk myszy
+* Wizualizację można przybliżać i oddalać za pomocą kółka myszy
+* Po najechaniu na węzeł lub krawędź kliknij lewym przyciskiem myszy
+  * wybrany element zostanie wyróżniony kolorem na wizualizacji
+  * po lewej stronie pojawi się karta z jego atrybutami i statystykami
+* Użyj kółka myszy, aby przewinąć karty statystyk, jeśli nie wszystkie mieszczą się na ekranie
+* Na kartach po lewej stronie pojawiają się identyfikatory kanałów, węzłów i krawędzi
+  * kliknij identyfikator, aby zobaczyć atrybuty wybranego elementu oraz wyróżnić go na wizualizacji
+
+
+### Generowanie raportu
+
+* Po załadowaniu sieci w zakładce "Import" przejdź do zakładki "Statystyki"
+* Aby pobrać raport, naciśnij przycisk "Pobierz raport" na dole strony
+* Zostanie pobrany plik w formacie .csv z raportem zajętości pasma przez kanały
+  * można go otworzyć i wygodnie przeglądać w arkuszu kalkulacyjnym z pakietu biurowego
+
+
+### Wyznaczanie nowego kanału
+![Widok dodawania kanału](./images/optimizer-page.png){#fig-optimizer-screenshot}
+
+* Po załadowaniu sieci w zakładce "Import" przejdź do zakładki "Dodaj kanał" (widoczna na zrzucie ekranu \ref{fig-optimizer-screenshot})
+* W polach "Węzeł startowy" i "Węzeł końcowy" wpisz identyfikatory węzłów, między którymi ma być wyznaczony kanał
+  * możesz je odczytać z wizualizacji sieci
+  * jeśli sieć jest zbyt duża i identyfikatory nie są widoczne, przybliż wizualizację kółkiem myszy
+* Wybierz jedną z opcji w polu "Przepustowość"
+  * określa ona, jaką przepustowość ma mieć nowy kanał
+* Wybierz jeden z modeli optymalizacyjnych w polu "Optymalizator"
+* Model całkowitoliczbowy
+  * znajdzie optymalny przebieg kanału, o ile można go wytyczyć przy zadanych parametrach i stanie sieci
+  * wyznaczanie kanału może zająć kilka minut
+* Algorytm Dijkstry
+  * znajduje optymalną ścieżkę znacznie szybciej
+  * nie gwarantuje sukcesu we wszystkich przypadkach, które obsłuży model całkowitoliczbowy
+* Wprowadź wagi długości i obciążenia krawędzi
+  * określają one, jak ważne będą względem siebie te parametry przy wyznaczaniu kanału
+* Po wypełnieniu wszystkich opcji naciśnij przycisk "Dodaj kanał" i poczekaj na wynik
+* Po pewnym czasie zobaczysz komunikat o wyniku i czasie obliczeń
+* Znaleziony kanał zostanie wyróżniony na wizualizacji sieci kolorem fioletowym
+* Możesz obejrzeć szczegółowe parametry nowego kanału w zakładce "Statystyki"
+* Nowy kanał zostanie również ujęty w raporcie zajętości pasma, który możesz pobrać w zakładce "Statystyki"
 
 \newpage
 # Instrukcja dla administratora
