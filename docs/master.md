@@ -1107,8 +1107,6 @@ Aplikacja realizuje wszystkie funkcje zdefiniowane w specyfikacji funkcjonalnej,
   * możliwe jest stworzenie alternatywnej aplikacji klienckiej, która korzystałaby z API optymalizatora
   * API pozwala na zintegrowanie optymalizatora z innymi systemami
 
-## Slajd
-TODO
 
 # Bibliografia
 1. Taccari, Leonardo. "Integer programming formulations for the elementary shortest path problem." European Journal of Operational Research (2016). http://dx.doi.org/10.1016/j.ejor.2016.01.003
